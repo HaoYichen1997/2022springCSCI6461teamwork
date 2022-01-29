@@ -1,0 +1,741 @@
+<html>
+<head>
+<title>main.py</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #629755; font-style: italic;}
+.s1 { color: #a9b7c6;}
+.s2 { color: #cc7832;}
+.s3 { color: #6a8759;}
+.s4 { color: #808080;}
+.s5 { color: #6897bb;}
+</style>
+</head>
+<body bgcolor="#2b2b2b">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+main.py</font>
+</center></td></tr></table>
+<pre><span class="s0">&quot;&quot;&quot; 
+ 
+Creater:Zack 
+Date:01/21/2022 
+ 
+&quot;&quot;&quot;</span>
+<span class="s2">from </span><span class="s1">tkinter </span><span class="s2">import </span><span class="s1">*</span>
+<span class="s2">import </span><span class="s1">PyPDF2</span>
+<span class="s2">from </span><span class="s1">PIL </span><span class="s2">import </span><span class="s1">Image</span><span class="s2">, </span><span class="s1">ImageTk</span>
+<span class="s2">from </span><span class="s1">tkinter.filedialog </span><span class="s2">import </span><span class="s1">askopenfile</span>
+
+<span class="s1">root = Tk()</span>
+<span class="s1">root.title(</span><span class="s3">&quot;6461 Project1&quot;</span><span class="s1">)</span>
+<span class="s1">root.geometry(</span><span class="s3">&quot;1130x450&quot;</span><span class="s1">)</span>
+<span class="s4">#Btn Frame</span>
+
+<span class="s1">frameBtn =  LabelFrame(root</span><span class="s2">, </span><span class="s1">text=</span><span class="s3">&quot;Num Button&quot;</span><span class="s1">)</span>
+<span class="s1">frameBtn.grid(row=</span><span class="s5">9</span><span class="s2">,</span><span class="s1">column=</span><span class="s5">1</span><span class="s2">,</span><span class="s1">columnspan=</span><span class="s5">5</span><span class="s2">,</span><span class="s1">padx=</span><span class="s5">50</span><span class="s2">, </span><span class="s1">pady=</span><span class="s5">10</span><span class="s1">)</span>
+
+<span class="s1">frameOpBtn =  LabelFrame(root</span><span class="s2">, </span><span class="s1">text=</span><span class="s3">&quot;Op Button&quot;</span><span class="s1">)</span>
+<span class="s1">frameOpBtn.grid(row=</span><span class="s5">8</span><span class="s2">,</span><span class="s1">column=</span><span class="s5">6</span><span class="s2">,</span><span class="s1">columnspan=</span><span class="s5">1</span><span class="s2">,</span><span class="s1">padx=</span><span class="s5">50</span><span class="s2">, </span><span class="s1">pady=</span><span class="s5">10</span><span class="s1">)</span>
+
+<span class="s1">frameSysBtn =  LabelFrame(root</span><span class="s2">, </span><span class="s1">text=</span><span class="s3">&quot;Sys Button&quot;</span><span class="s1">)</span>
+<span class="s1">frameSysBtn.grid(row=</span><span class="s5">9</span><span class="s2">,</span><span class="s1">column=</span><span class="s5">6</span><span class="s2">,</span><span class="s1">columnspan=</span><span class="s5">1</span><span class="s2">,</span><span class="s1">padx=</span><span class="s5">50</span><span class="s2">, </span><span class="s1">pady=</span><span class="s5">10</span><span class="s1">)</span>
+
+
+<span class="s4">#Label of the panel</span>
+<span class="s1">GPR0Label = Label(root</span><span class="s2">, </span><span class="s1">text=</span><span class="s3">&quot;GRP 0(16bits)&quot;</span><span class="s1">)</span>
+<span class="s1">GPR1Label = Label(root</span><span class="s2">, </span><span class="s1">text=</span><span class="s3">&quot;GRP 1(16bits)&quot;</span><span class="s1">)</span>
+<span class="s1">GPR2Label = Label(root</span><span class="s2">, </span><span class="s1">text=</span><span class="s3">&quot;GRP 2(16bits)&quot;</span><span class="s1">)</span>
+<span class="s1">GPR3Label = Label(root</span><span class="s2">, </span><span class="s1">text=</span><span class="s3">&quot;GRP 3(16bits)&quot;</span><span class="s1">)</span>
+
+<span class="s1">SpaceGPRIXR = Label(root</span><span class="s2">, </span><span class="s1">text=</span><span class="s3">&quot; &quot;</span><span class="s1">)</span>
+
+<span class="s1">IXR1Label = Label(root</span><span class="s2">, </span><span class="s1">text=</span><span class="s3">&quot;IXR1(16bits)&quot;</span><span class="s1">)</span>
+<span class="s1">IXR2Label = Label(root</span><span class="s2">, </span><span class="s1">text=</span><span class="s3">&quot;IXR2(16bits)&quot;</span><span class="s1">)</span>
+<span class="s1">IXR3Label = Label(root</span><span class="s2">, </span><span class="s1">text=</span><span class="s3">&quot;IXR3(16bits)&quot;</span><span class="s1">)</span>
+
+<span class="s1">SpaceIXROperation = Label(root</span><span class="s2">, </span><span class="s1">text=</span><span class="s3">&quot; &quot;</span><span class="s1">)</span>
+<span class="s1">SpaceGPRPC = Label(root</span><span class="s2">, </span><span class="s1">text=</span><span class="s3">&quot; &quot;</span><span class="s1">)</span>
+
+<span class="s1">PCLabel = Label(root</span><span class="s2">, </span><span class="s1">text=</span><span class="s3">&quot;PC(12bits)&quot;</span><span class="s1">)</span>
+<span class="s1">MARLabel = Label(root</span><span class="s2">, </span><span class="s1">text=</span><span class="s3">&quot;MAR(12bits)&quot;</span><span class="s1">)</span>
+<span class="s1">MBRLabel = Label(root</span><span class="s2">, </span><span class="s1">text=</span><span class="s3">&quot;MBR(16bits)&quot;</span><span class="s1">)</span>
+<span class="s1">IRLabel = Label(root</span><span class="s2">, </span><span class="s1">text=</span><span class="s3">&quot;IR(16bits)&quot;</span><span class="s1">)</span>
+<span class="s1">MFRLabel = Label(root</span><span class="s2">, </span><span class="s1">text=</span><span class="s3">&quot;MFR(4bits)&quot;</span><span class="s1">)</span>
+<span class="s1">PrivailegedLabel = Label(root</span><span class="s2">, </span><span class="s1">text=</span><span class="s3">&quot;Privaileged(1bits)&quot;</span><span class="s1">)</span>
+
+<span class="s1">SpaceSSRUN = Label(frameSysBtn</span><span class="s2">, </span><span class="s1">text=</span><span class="s3">&quot;          &quot;</span><span class="s1">)</span>
+<span class="s1">HaltLabel =Label(frameSysBtn</span><span class="s2">, </span><span class="s1">text=</span><span class="s3">&quot;Halt&quot;</span><span class="s1">)</span>
+<span class="s1">RunLabel =Label(frameSysBtn</span><span class="s2">, </span><span class="s1">text=</span><span class="s3">&quot;Run&quot;</span><span class="s1">)</span>
+<span class="s4">#Textbox(light)</span>
+
+<span class="s4"># GPR0 = ['0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0']</span>
+<span class="s4"># GPR0Value=['0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0']</span>
+<span class="s4"># for i in range(len(GPR0)) :</span>
+<span class="s4">#     GPR0[i] = Entry(root, width=1, borderwidth=3)</span>
+<span class="s4">#     GPR0[i].insert(0, &quot;&quot; + str(GPR0Value[i]))</span>
+<span class="s4">#     GPR0[i].grid(row=0, column=i+1)</span>
+
+<span class="s1">GPR0 = Entry(root</span><span class="s2">, </span><span class="s1">width=</span><span class="s5">60</span><span class="s2">, </span><span class="s1">borderwidth=</span><span class="s5">5</span><span class="s2">,</span><span class="s1">)</span>
+<span class="s1">GPR1 = Entry(root</span><span class="s2">, </span><span class="s1">width=</span><span class="s5">60</span><span class="s2">, </span><span class="s1">borderwidth=</span><span class="s5">5</span><span class="s1">)</span>
+<span class="s1">GPR2 = Entry(root</span><span class="s2">, </span><span class="s1">width=</span><span class="s5">60</span><span class="s2">, </span><span class="s1">borderwidth=</span><span class="s5">5</span><span class="s1">)</span>
+<span class="s1">GPR3 = Entry(root</span><span class="s2">, </span><span class="s1">width=</span><span class="s5">60</span><span class="s2">, </span><span class="s1">borderwidth=</span><span class="s5">5</span><span class="s1">)</span>
+<span class="s1">IXR3 = Entry(root</span><span class="s2">, </span><span class="s1">width=</span><span class="s5">60</span><span class="s2">, </span><span class="s1">borderwidth=</span><span class="s5">5</span><span class="s1">)</span>
+<span class="s1">IXR1 = Entry(root</span><span class="s2">, </span><span class="s1">width=</span><span class="s5">60</span><span class="s2">, </span><span class="s1">borderwidth=</span><span class="s5">5</span><span class="s1">)</span>
+<span class="s1">IXR2 = Entry(root</span><span class="s2">, </span><span class="s1">width=</span><span class="s5">60</span><span class="s2">, </span><span class="s1">borderwidth=</span><span class="s5">5</span><span class="s1">)</span>
+<span class="s1">IXR3 = Entry(root</span><span class="s2">, </span><span class="s1">width=</span><span class="s5">60</span><span class="s2">, </span><span class="s1">borderwidth=</span><span class="s5">5</span><span class="s1">)</span>
+
+<span class="s1">PC = Entry(root</span><span class="s2">, </span><span class="s1">width=</span><span class="s5">60</span><span class="s2">, </span><span class="s1">borderwidth=</span><span class="s5">5</span><span class="s1">)</span>
+<span class="s1">MAR = Entry(root</span><span class="s2">, </span><span class="s1">width=</span><span class="s5">60</span><span class="s2">, </span><span class="s1">borderwidth=</span><span class="s5">5</span><span class="s1">)</span>
+<span class="s1">MBR = Entry(root</span><span class="s2">, </span><span class="s1">width=</span><span class="s5">60</span><span class="s2">, </span><span class="s1">borderwidth=</span><span class="s5">5</span><span class="s1">)</span>
+<span class="s1">IR = Entry(root</span><span class="s2">, </span><span class="s1">width=</span><span class="s5">60</span><span class="s2">, </span><span class="s1">borderwidth=</span><span class="s5">5</span><span class="s1">)</span>
+<span class="s1">MFR = Entry(root</span><span class="s2">, </span><span class="s1">width=</span><span class="s5">60</span><span class="s2">, </span><span class="s1">borderwidth=</span><span class="s5">5</span><span class="s1">)</span>
+<span class="s1">Privaileged = Entry(root</span><span class="s2">, </span><span class="s1">width=</span><span class="s5">60</span><span class="s2">, </span><span class="s1">borderwidth=</span><span class="s5">5</span><span class="s1">)</span>
+
+<span class="s1">RunLight = Entry(frameSysBtn</span><span class="s2">, </span><span class="s1">width=</span><span class="s5">1</span><span class="s2">, </span><span class="s1">borderwidth=</span><span class="s5">1</span><span class="s1">)</span>
+<span class="s1">HaltLight = Entry(frameSysBtn</span><span class="s2">, </span><span class="s1">width=</span><span class="s5">1</span><span class="s2">, </span><span class="s1">borderwidth=</span><span class="s5">1</span><span class="s1">)</span>
+
+<span class="s4"># GPR1 = ['0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0']</span>
+<span class="s4"># GPR1Value=['0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0']</span>
+<span class="s4"># for i in range(len(GPR1)) :</span>
+<span class="s4">#     GPR1[i] = Entry(root, width=1, borderwidth=3)</span>
+<span class="s4">#     GPR1[i].insert(0, &quot;&quot; + str(GPR1Value[i]))</span>
+<span class="s4">#     GPR1[i].grid(row=1, column=i+1)</span>
+<span class="s4">#</span>
+<span class="s4"># GPR2 = ['0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0']</span>
+<span class="s4"># GPR2Value=['0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0']</span>
+<span class="s4"># for i in range(len(GPR2)) :</span>
+<span class="s4">#     GPR2[i] = Entry(root, width=1, borderwidth=3)</span>
+<span class="s4">#     GPR2[i].insert(0, &quot;&quot; + str(GPR2Value[i]))</span>
+<span class="s4">#     GPR2[i].grid(row=2, column=i+1)</span>
+
+
+
+
+<span class="s4"># GPR01 =Entry(root, width=3, borderwidth=3)</span>
+<span class="s4"># GPR01.insert(0,&quot;0&quot;)</span>
+
+<span class="s4"># GPR11 =Entry(root, width=3, borderwidth=3)</span>
+<span class="s4"># GPR11.insert(0,&quot;0&quot;)</span>
+<span class="s4">#</span>
+<span class="s4"># GPR21 =Entry(root, width=3, borderwidth=3)</span>
+<span class="s4"># GPR21.insert(0,&quot;0&quot;)</span>
+<span class="s4">#</span>
+<span class="s4"># GPR31 =Entry(root, width=3, borderwidth=3)</span>
+<span class="s4"># GPR31.insert(0,&quot;0&quot;)</span>
+
+<span class="s4"># IXR11 = Entry(root, width=3, borderwidth=3)</span>
+<span class="s4"># IXR11.insert(0,&quot;0&quot;)</span>
+<span class="s4">#</span>
+<span class="s4"># IXR21 = Entry(root, width=3, borderwidth=3)</span>
+<span class="s4"># IXR21.insert(0,&quot;0&quot;)</span>
+<span class="s4">#</span>
+<span class="s4"># IXR31 = Entry(root, width=3, borderwidth=3)</span>
+<span class="s4"># IXR31.insert(0,&quot;0&quot;)</span>
+
+
+<span class="s4">#Btn Click Function</span>
+<span class="s4"># def Click15():</span>
+<span class="s4">#     Label15 = Label(root, text=&quot;15 has been clicked&quot;, bg=&quot;yellow&quot;)</span>
+<span class="s4">#     Label15.grid(row=15,column=0)</span>
+<span class="s4">#define intial value</span>
+<span class="s1">num15: int =</span><span class="s5">0</span>
+<span class="s1">num14: int =</span><span class="s5">0</span>
+<span class="s1">num13: int =</span><span class="s5">0</span>
+<span class="s1">num12: int =</span><span class="s5">0</span>
+<span class="s1">num11: int =</span><span class="s5">0</span>
+<span class="s1">num10: int =</span><span class="s5">0</span>
+<span class="s1">num9: int =</span><span class="s5">0</span>
+<span class="s1">num8: int =</span><span class="s5">0</span>
+<span class="s1">num7: int =</span><span class="s5">0</span>
+<span class="s1">num6: int =</span><span class="s5">0</span>
+<span class="s1">num5: int =</span><span class="s5">0</span>
+<span class="s1">num4: int =</span><span class="s5">0</span>
+<span class="s1">num3: int =</span><span class="s5">0</span>
+<span class="s1">num2: int =</span><span class="s5">0</span>
+<span class="s1">num1: int =</span><span class="s5">0</span>
+<span class="s1">num0: int =</span><span class="s5">0</span>
+
+<span class="s1">GPR0.insert(</span><span class="s5">0</span><span class="s2">,</span><span class="s3">&quot;0000000000000000&quot;</span><span class="s1">)</span>
+<span class="s1">GPR1.insert(</span><span class="s5">0</span><span class="s2">,</span><span class="s3">&quot;0000000000000000&quot;</span><span class="s1">)</span>
+<span class="s1">GPR2.insert(</span><span class="s5">0</span><span class="s2">,</span><span class="s3">&quot;0000000000000000&quot;</span><span class="s1">)</span>
+<span class="s1">GPR3.insert(</span><span class="s5">0</span><span class="s2">,</span><span class="s3">&quot;0000000000000000&quot;</span><span class="s1">)</span>
+<span class="s1">IXR1.insert(</span><span class="s5">0</span><span class="s2">,</span><span class="s3">&quot;0000000000000000&quot;</span><span class="s1">)</span>
+<span class="s1">IXR2.insert(</span><span class="s5">0</span><span class="s2">,</span><span class="s3">&quot;0000000000000000&quot;</span><span class="s1">)</span>
+<span class="s1">IXR3.insert(</span><span class="s5">0</span><span class="s2">,</span><span class="s3">&quot;0000000000000000&quot;</span><span class="s1">)</span>
+
+<span class="s1">PC.insert(</span><span class="s5">0</span><span class="s2">,</span><span class="s3">&quot;000000000000&quot;</span><span class="s1">)</span>
+<span class="s1">MAR.insert(</span><span class="s5">0</span><span class="s2">,</span><span class="s3">&quot;000000000000&quot;</span><span class="s1">)</span>
+<span class="s1">MBR.insert(</span><span class="s5">0</span><span class="s2">,</span><span class="s3">&quot;0000000000000000&quot;</span><span class="s1">)</span>
+<span class="s1">IR.insert(</span><span class="s5">0</span><span class="s2">,</span><span class="s3">&quot;0000000000000000&quot;</span><span class="s1">)</span>
+<span class="s1">MFR.insert(</span><span class="s5">0</span><span class="s2">,</span><span class="s3">&quot;0000&quot;</span><span class="s1">)</span>
+<span class="s1">Privaileged.insert(</span><span class="s5">0</span><span class="s2">,</span><span class="s3">&quot;0&quot;</span><span class="s1">)</span>
+<span class="s1">RunLight.insert(</span><span class="s5">0</span><span class="s2">,</span><span class="s3">&quot;0&quot;</span><span class="s1">)</span>
+<span class="s1">HaltLight.insert(</span><span class="s5">0</span><span class="s2">,</span><span class="s3">&quot;0&quot;</span><span class="s1">)</span>
+
+
+
+
+<span class="s4"># frameOperation =  LabelFrame(root, text=&quot;Operation&quot;)</span>
+<span class="s4"># frameOperation.grid(row=14,column=0,columnspan=1,padx=50, pady=10)</span>
+<span class="s4"># frameGPR =  LabelFrame(root, text=&quot;GPR&quot;)</span>
+<span class="s4"># frameGPR.grid(row=14,column=1,columnspan=1,padx=50, pady=10)</span>
+<span class="s4"># frameIXR =  LabelFrame(root, text=&quot;IXR&quot;)</span>
+<span class="s4"># frameIXR.grid(row=14,column=2,columnspan=1,padx=50, pady=10)</span>
+<span class="s4"># frameI =  LabelFrame(root, text=&quot;I&quot;)</span>
+<span class="s4"># frameI.grid(row=14,column=3,columnspan=1,padx=50, pady=10)</span>
+<span class="s4"># frameAddress =  LabelFrame(root, text=&quot;Address&quot;)</span>
+<span class="s4"># frameAddress.grid(row=14,column=4,columnspan=1,padx=50, pady=10)</span>
+
+<span class="s4">#Btn Status</span>
+<span class="s1">Status15 = Label(frameBtn</span><span class="s2">, </span><span class="s1">text=</span><span class="s3">&quot;&quot; </span><span class="s1">+ str(num15))</span>
+<span class="s1">Status14 = Label(frameBtn</span><span class="s2">, </span><span class="s1">text=</span><span class="s3">&quot;&quot; </span><span class="s1">+ str(num14))</span>
+<span class="s1">Status13 = Label(frameBtn</span><span class="s2">, </span><span class="s1">text=</span><span class="s3">&quot;&quot; </span><span class="s1">+ str(num13))</span>
+<span class="s1">Status12 = Label(frameBtn</span><span class="s2">, </span><span class="s1">text=</span><span class="s3">&quot;&quot; </span><span class="s1">+ str(num12))</span>
+<span class="s1">Status11 = Label(frameBtn</span><span class="s2">, </span><span class="s1">text=</span><span class="s3">&quot;&quot; </span><span class="s1">+ str(num11))</span>
+<span class="s1">Status10 = Label(frameBtn</span><span class="s2">, </span><span class="s1">text=</span><span class="s3">&quot;&quot; </span><span class="s1">+ str(num10))</span>
+
+<span class="s1">Status9 = Label(frameBtn</span><span class="s2">, </span><span class="s1">text=</span><span class="s3">&quot;&quot; </span><span class="s1">+ str(num9))</span>
+<span class="s1">Status8 = Label(frameBtn</span><span class="s2">, </span><span class="s1">text=</span><span class="s3">&quot;&quot; </span><span class="s1">+ str(num8))</span>
+
+<span class="s1">Status7 = Label(frameBtn</span><span class="s2">, </span><span class="s1">text=</span><span class="s3">&quot;&quot; </span><span class="s1">+ str(num7))</span>
+<span class="s1">Status6 = Label(frameBtn</span><span class="s2">, </span><span class="s1">text=</span><span class="s3">&quot;&quot; </span><span class="s1">+ str(num6))</span>
+
+<span class="s1">Status5 = Label(frameBtn</span><span class="s2">, </span><span class="s1">text=</span><span class="s3">&quot;&quot; </span><span class="s1">+ str(num5))</span>
+
+<span class="s1">Status4 = Label(frameBtn</span><span class="s2">, </span><span class="s1">text=</span><span class="s3">&quot;&quot; </span><span class="s1">+ str(num4))</span>
+<span class="s1">Status3 = Label(frameBtn</span><span class="s2">, </span><span class="s1">text=</span><span class="s3">&quot;&quot; </span><span class="s1">+ str(num3))</span>
+<span class="s1">Status2 = Label(frameBtn</span><span class="s2">, </span><span class="s1">text=</span><span class="s3">&quot;&quot; </span><span class="s1">+ str(num2))</span>
+<span class="s1">Status1 = Label(frameBtn</span><span class="s2">, </span><span class="s1">text=</span><span class="s3">&quot;&quot; </span><span class="s1">+ str(num1))</span>
+<span class="s1">Status0 = Label(frameBtn</span><span class="s2">, </span><span class="s1">text=</span><span class="s3">&quot;&quot; </span><span class="s1">+ str(num0))</span>
+<span class="s4">#Click number BTN modification</span>
+<span class="s2">def </span><span class="s1">Click15():</span>
+    <span class="s2">global </span><span class="s1">Status15</span>
+    <span class="s2">global </span><span class="s1">num15</span>
+    <span class="s2">global </span><span class="s1">Btn15</span>
+    <span class="s2">if </span><span class="s1">num15 != </span><span class="s5">1</span><span class="s1">:</span>
+        <span class="s1">num15 = </span><span class="s5">1</span>
+        <span class="s1">Btn15.grid_forget()</span>
+        <span class="s1">Btn15 = Button(frameBtn</span><span class="s2">, </span><span class="s1">text=</span><span class="s3">&quot;15&quot;</span><span class="s2">, </span><span class="s1">padx=</span><span class="s5">5</span><span class="s2">, </span><span class="s1">pady=</span><span class="s5">15</span><span class="s2">, </span><span class="s1">bg=</span><span class="s3">&quot;red&quot;</span><span class="s2">, </span><span class="s1">fg=</span><span class="s3">&quot;yellow&quot;</span><span class="s2">, </span><span class="s1">command = Click15)</span>
+        <span class="s1">Btn15.grid(row=</span><span class="s5">14</span><span class="s2">, </span><span class="s1">column=</span><span class="s5">0</span><span class="s1">)</span>
+    <span class="s2">else</span><span class="s1">:</span>
+        <span class="s1">num15 = </span><span class="s5">0</span>
+        <span class="s1">Btn15.grid_forget()</span>
+        <span class="s1">Btn15 = Button(frameBtn</span><span class="s2">, </span><span class="s1">text=</span><span class="s3">&quot;15&quot;</span><span class="s2">, </span><span class="s1">padx=</span><span class="s5">5</span><span class="s2">, </span><span class="s1">pady=</span><span class="s5">16</span><span class="s2">, </span><span class="s1">bg=</span><span class="s3">&quot;blue&quot;</span><span class="s2">, </span><span class="s1">fg=</span><span class="s3">&quot;white&quot;</span><span class="s2">, </span><span class="s1">command = Click15)</span>
+        <span class="s1">Btn15.grid(row=</span><span class="s5">14</span><span class="s2">, </span><span class="s1">column=</span><span class="s5">0</span><span class="s1">)</span>
+    <span class="s1">Status15 = Label(frameBtn</span><span class="s2">, </span><span class="s1">text=</span><span class="s3">&quot;&quot; </span><span class="s1">+ str(num15))</span>
+    <span class="s1">Status15.grid(row=</span><span class="s5">15</span><span class="s2">, </span><span class="s1">column=</span><span class="s5">0</span><span class="s1">)</span>
+    <span class="s1">print(num15)</span>
+    <span class="s2">return</span>
+<span class="s2">def </span><span class="s1">Click14():</span>
+    <span class="s2">global </span><span class="s1">Status14</span>
+    <span class="s2">global </span><span class="s1">num14</span>
+    <span class="s2">global </span><span class="s1">Btn14</span>
+    <span class="s2">if </span><span class="s1">num14 != </span><span class="s5">1</span><span class="s1">:</span>
+        <span class="s1">num14 = </span><span class="s5">1</span>
+        <span class="s1">Btn14.grid_forget()</span>
+        <span class="s1">Btn14 = Button(frameBtn</span><span class="s2">, </span><span class="s1">text=</span><span class="s3">&quot;14&quot;</span><span class="s2">, </span><span class="s1">padx=</span><span class="s5">5</span><span class="s2">, </span><span class="s1">pady=</span><span class="s5">16</span><span class="s2">, </span><span class="s1">bg=</span><span class="s3">&quot;red&quot;</span><span class="s2">, </span><span class="s1">fg=</span><span class="s3">&quot;yellow&quot;</span><span class="s2">, </span><span class="s1">command = Click14)</span>
+        <span class="s1">Btn14.grid(row=</span><span class="s5">14</span><span class="s2">, </span><span class="s1">column=</span><span class="s5">1</span><span class="s1">)</span>
+    <span class="s2">else</span><span class="s1">:</span>
+        <span class="s1">num14 = </span><span class="s5">0</span>
+        <span class="s1">Btn14.grid_forget()</span>
+        <span class="s1">Btn14 = Button(frameBtn</span><span class="s2">, </span><span class="s1">text=</span><span class="s3">&quot;14&quot;</span><span class="s2">, </span><span class="s1">padx=</span><span class="s5">5</span><span class="s2">, </span><span class="s1">pady=</span><span class="s5">16</span><span class="s2">, </span><span class="s1">bg=</span><span class="s3">&quot;blue&quot;</span><span class="s2">, </span><span class="s1">fg=</span><span class="s3">&quot;white&quot;</span><span class="s2">, </span><span class="s1">command = Click14)</span>
+        <span class="s1">Btn14.grid(row=</span><span class="s5">14</span><span class="s2">, </span><span class="s1">column=</span><span class="s5">1</span><span class="s1">)</span>
+    <span class="s1">Status14 = Label(frameBtn</span><span class="s2">, </span><span class="s1">text=</span><span class="s3">&quot;&quot; </span><span class="s1">+ str(num14))</span>
+    <span class="s1">Status14.grid(row=</span><span class="s5">15</span><span class="s2">, </span><span class="s1">column=</span><span class="s5">1</span><span class="s1">)</span>
+    <span class="s1">print(num14)</span>
+    <span class="s2">return</span>
+<span class="s2">def </span><span class="s1">Click13():</span>
+    <span class="s2">global </span><span class="s1">Status13</span>
+    <span class="s2">global </span><span class="s1">num13</span>
+    <span class="s2">global </span><span class="s1">Btn13</span>
+    <span class="s2">if </span><span class="s1">num13 != </span><span class="s5">1</span><span class="s1">:</span>
+        <span class="s1">num13 = </span><span class="s5">1</span>
+        <span class="s1">Btn13.grid_forget()</span>
+        <span class="s1">Btn13 = Button(frameBtn</span><span class="s2">, </span><span class="s1">text=</span><span class="s3">&quot;13&quot;</span><span class="s2">, </span><span class="s1">padx=</span><span class="s5">5</span><span class="s2">, </span><span class="s1">pady=</span><span class="s5">16</span><span class="s2">, </span><span class="s1">bg=</span><span class="s3">&quot;red&quot;</span><span class="s2">, </span><span class="s1">fg=</span><span class="s3">&quot;yellow&quot;</span><span class="s2">, </span><span class="s1">command = Click13)</span>
+        <span class="s1">Btn13.grid(row=</span><span class="s5">14</span><span class="s2">, </span><span class="s1">column=</span><span class="s5">2</span><span class="s1">)</span>
+    <span class="s2">else</span><span class="s1">:</span>
+        <span class="s1">num13 = </span><span class="s5">0</span>
+        <span class="s1">Btn13.grid_forget()</span>
+        <span class="s1">Btn13 = Button(frameBtn</span><span class="s2">, </span><span class="s1">text=</span><span class="s3">&quot;13&quot;</span><span class="s2">, </span><span class="s1">padx=</span><span class="s5">5</span><span class="s2">, </span><span class="s1">pady=</span><span class="s5">16</span><span class="s2">, </span><span class="s1">bg=</span><span class="s3">&quot;blue&quot;</span><span class="s2">, </span><span class="s1">fg=</span><span class="s3">&quot;white&quot;</span><span class="s2">, </span><span class="s1">command = Click13)</span>
+        <span class="s1">Btn13.grid(row=</span><span class="s5">14</span><span class="s2">, </span><span class="s1">column=</span><span class="s5">2</span><span class="s1">)</span>
+    <span class="s1">Status13 = Label(frameBtn</span><span class="s2">, </span><span class="s1">text=</span><span class="s3">&quot;&quot; </span><span class="s1">+ str(num13))</span>
+    <span class="s1">Status13.grid(row=</span><span class="s5">15</span><span class="s2">, </span><span class="s1">column=</span><span class="s5">2</span><span class="s1">)</span>
+    <span class="s1">print(num13)</span>
+    <span class="s2">return</span>
+<span class="s2">def </span><span class="s1">Click12():</span>
+    <span class="s2">global </span><span class="s1">Status12</span>
+    <span class="s2">global </span><span class="s1">num12</span>
+    <span class="s2">global </span><span class="s1">Btn12</span>
+    <span class="s2">if </span><span class="s1">num12 != </span><span class="s5">1</span><span class="s1">:</span>
+        <span class="s1">num12 = </span><span class="s5">1</span>
+        <span class="s1">Btn12.grid_forget()</span>
+        <span class="s1">Btn12 = Button(frameBtn</span><span class="s2">, </span><span class="s1">text=</span><span class="s3">&quot;12&quot;</span><span class="s2">, </span><span class="s1">padx=</span><span class="s5">5</span><span class="s2">, </span><span class="s1">pady=</span><span class="s5">16</span><span class="s2">, </span><span class="s1">bg=</span><span class="s3">&quot;red&quot;</span><span class="s2">, </span><span class="s1">fg=</span><span class="s3">&quot;yellow&quot;</span><span class="s2">, </span><span class="s1">command = Click12)</span>
+        <span class="s1">Btn12.grid(row=</span><span class="s5">14</span><span class="s2">, </span><span class="s1">column=</span><span class="s5">3</span><span class="s1">)</span>
+    <span class="s2">else</span><span class="s1">:</span>
+        <span class="s1">num12 = </span><span class="s5">0</span>
+        <span class="s1">Btn12.grid_forget()</span>
+        <span class="s1">Btn12 = Button(frameBtn</span><span class="s2">, </span><span class="s1">text=</span><span class="s3">&quot;12&quot;</span><span class="s2">, </span><span class="s1">padx=</span><span class="s5">5</span><span class="s2">, </span><span class="s1">pady=</span><span class="s5">16</span><span class="s2">, </span><span class="s1">bg=</span><span class="s3">&quot;blue&quot;</span><span class="s2">, </span><span class="s1">fg=</span><span class="s3">&quot;white&quot;</span><span class="s2">, </span><span class="s1">command = Click12)</span>
+        <span class="s1">Btn12.grid(row=</span><span class="s5">14</span><span class="s2">, </span><span class="s1">column=</span><span class="s5">3</span><span class="s1">)</span>
+    <span class="s1">Status12 = Label(frameBtn</span><span class="s2">, </span><span class="s1">text=</span><span class="s3">&quot;&quot; </span><span class="s1">+ str(num12))</span>
+    <span class="s1">Status12.grid(row=</span><span class="s5">15</span><span class="s2">, </span><span class="s1">column=</span><span class="s5">3</span><span class="s1">)</span>
+    <span class="s1">print(num12)</span>
+    <span class="s2">return</span>
+<span class="s2">def </span><span class="s1">Click11():</span>
+    <span class="s2">global </span><span class="s1">Status11</span>
+    <span class="s2">global </span><span class="s1">num11</span>
+    <span class="s2">global </span><span class="s1">Btn11</span>
+    <span class="s2">if </span><span class="s1">num11 != </span><span class="s5">1</span><span class="s1">:</span>
+        <span class="s1">num11 = </span><span class="s5">1</span>
+        <span class="s1">Btn11.grid_forget()</span>
+        <span class="s1">Btn11 = Button(frameBtn</span><span class="s2">, </span><span class="s1">text=</span><span class="s3">&quot;11&quot;</span><span class="s2">, </span><span class="s1">padx=</span><span class="s5">5</span><span class="s2">, </span><span class="s1">pady=</span><span class="s5">16</span><span class="s2">, </span><span class="s1">bg=</span><span class="s3">&quot;red&quot;</span><span class="s2">, </span><span class="s1">fg=</span><span class="s3">&quot;yellow&quot;</span><span class="s2">, </span><span class="s1">command = Click11)</span>
+        <span class="s1">Btn11.grid(row=</span><span class="s5">14</span><span class="s2">, </span><span class="s1">column=</span><span class="s5">4</span><span class="s1">)</span>
+    <span class="s2">else</span><span class="s1">:</span>
+        <span class="s1">num11 = </span><span class="s5">0</span>
+        <span class="s1">Btn11.grid_forget()</span>
+        <span class="s1">Btn11 = Button(frameBtn</span><span class="s2">, </span><span class="s1">text=</span><span class="s3">&quot;11&quot;</span><span class="s2">, </span><span class="s1">padx=</span><span class="s5">5</span><span class="s2">, </span><span class="s1">pady=</span><span class="s5">16</span><span class="s2">, </span><span class="s1">bg=</span><span class="s3">&quot;blue&quot;</span><span class="s2">, </span><span class="s1">fg=</span><span class="s3">&quot;white&quot;</span><span class="s2">, </span><span class="s1">command = Click11)</span>
+        <span class="s1">Btn11.grid(row=</span><span class="s5">14</span><span class="s2">, </span><span class="s1">column=</span><span class="s5">4</span><span class="s1">)</span>
+    <span class="s1">Status11 = Label(frameBtn</span><span class="s2">, </span><span class="s1">text=</span><span class="s3">&quot;&quot; </span><span class="s1">+ str(num11))</span>
+    <span class="s1">Status11.grid(row=</span><span class="s5">15</span><span class="s2">, </span><span class="s1">column=</span><span class="s5">4</span><span class="s1">)</span>
+    <span class="s1">print(num11)</span>
+    <span class="s2">return</span>
+<span class="s2">def </span><span class="s1">Click10():</span>
+    <span class="s2">global </span><span class="s1">Status10</span>
+    <span class="s2">global </span><span class="s1">num10</span>
+    <span class="s2">global </span><span class="s1">Btn10</span>
+    <span class="s2">if </span><span class="s1">num10 != </span><span class="s5">1</span><span class="s1">:</span>
+        <span class="s1">num10 = </span><span class="s5">1</span>
+        <span class="s1">Btn10.grid_forget()</span>
+        <span class="s1">Btn10 = Button(frameBtn</span><span class="s2">, </span><span class="s1">text=</span><span class="s3">&quot;10&quot;</span><span class="s2">, </span><span class="s1">padx=</span><span class="s5">5</span><span class="s2">, </span><span class="s1">pady=</span><span class="s5">16</span><span class="s2">, </span><span class="s1">bg=</span><span class="s3">&quot;red&quot;</span><span class="s2">, </span><span class="s1">fg=</span><span class="s3">&quot;yellow&quot;</span><span class="s2">, </span><span class="s1">command = Click10)</span>
+        <span class="s1">Btn10.grid(row=</span><span class="s5">14</span><span class="s2">, </span><span class="s1">column=</span><span class="s5">5</span><span class="s1">)</span>
+    <span class="s2">else</span><span class="s1">:</span>
+        <span class="s1">num10 = </span><span class="s5">0</span>
+        <span class="s1">Btn10.grid_forget()</span>
+        <span class="s1">Btn10 = Button(frameBtn</span><span class="s2">, </span><span class="s1">text=</span><span class="s3">&quot;10&quot;</span><span class="s2">, </span><span class="s1">padx=</span><span class="s5">5</span><span class="s2">, </span><span class="s1">pady=</span><span class="s5">16</span><span class="s2">, </span><span class="s1">bg=</span><span class="s3">&quot;blue&quot;</span><span class="s2">, </span><span class="s1">fg=</span><span class="s3">&quot;white&quot;</span><span class="s2">, </span><span class="s1">command = Click10)</span>
+        <span class="s1">Btn10.grid(row=</span><span class="s5">14</span><span class="s2">, </span><span class="s1">column=</span><span class="s5">5</span><span class="s1">)</span>
+    <span class="s1">Status10 = Label(frameBtn</span><span class="s2">, </span><span class="s1">text=</span><span class="s3">&quot;&quot; </span><span class="s1">+ str(num10))</span>
+    <span class="s1">Status10.grid(row=</span><span class="s5">15</span><span class="s2">, </span><span class="s1">column=</span><span class="s5">5</span><span class="s1">)</span>
+    <span class="s1">print(num10)</span>
+    <span class="s2">return</span>
+<span class="s2">def </span><span class="s1">Click9():</span>
+    <span class="s2">global </span><span class="s1">Status9</span>
+    <span class="s2">global </span><span class="s1">num9</span>
+    <span class="s2">global </span><span class="s1">Btn9</span>
+    <span class="s2">if </span><span class="s1">num9 != </span><span class="s5">1</span><span class="s1">:</span>
+        <span class="s1">num9 = </span><span class="s5">1</span>
+        <span class="s1">Btn9.grid_forget()</span>
+        <span class="s1">Btn9 = Button(frameBtn</span><span class="s2">, </span><span class="s1">text=</span><span class="s3">&quot;9&quot;</span><span class="s2">, </span><span class="s1">padx=</span><span class="s5">5</span><span class="s2">, </span><span class="s1">pady=</span><span class="s5">16</span><span class="s2">, </span><span class="s1">bg=</span><span class="s3">&quot;red&quot;</span><span class="s2">, </span><span class="s1">fg=</span><span class="s3">&quot;yellow&quot;</span><span class="s2">, </span><span class="s1">command = Click9)</span>
+        <span class="s1">Btn9.grid(row=</span><span class="s5">14</span><span class="s2">, </span><span class="s1">column=</span><span class="s5">6</span><span class="s1">)</span>
+    <span class="s2">else</span><span class="s1">:</span>
+        <span class="s1">num9 = </span><span class="s5">0</span>
+        <span class="s1">Btn9.grid_forget()</span>
+        <span class="s1">Btn9 = Button(frameBtn</span><span class="s2">, </span><span class="s1">text=</span><span class="s3">&quot;9&quot;</span><span class="s2">, </span><span class="s1">padx=</span><span class="s5">5</span><span class="s2">, </span><span class="s1">pady=</span><span class="s5">16</span><span class="s2">, </span><span class="s1">bg=</span><span class="s3">&quot;blue&quot;</span><span class="s2">, </span><span class="s1">fg=</span><span class="s3">&quot;white&quot;</span><span class="s2">, </span><span class="s1">command = Click9)</span>
+        <span class="s1">Btn9.grid(row=</span><span class="s5">14</span><span class="s2">, </span><span class="s1">column=</span><span class="s5">6</span><span class="s1">)</span>
+    <span class="s1">Status9 = Label(frameBtn</span><span class="s2">, </span><span class="s1">text=</span><span class="s3">&quot;&quot; </span><span class="s1">+ str(num9))</span>
+    <span class="s1">Status9.grid(row=</span><span class="s5">15</span><span class="s2">, </span><span class="s1">column=</span><span class="s5">6</span><span class="s1">)</span>
+    <span class="s1">print(num9)</span>
+    <span class="s2">return</span>
+<span class="s2">def </span><span class="s1">Click8():</span>
+    <span class="s2">global </span><span class="s1">Status8</span>
+    <span class="s2">global </span><span class="s1">num8</span>
+    <span class="s2">global </span><span class="s1">Btn8</span>
+    <span class="s2">if </span><span class="s1">num8 != </span><span class="s5">1</span><span class="s1">:</span>
+        <span class="s1">num8 = </span><span class="s5">1</span>
+        <span class="s1">Btn8.grid_forget()</span>
+        <span class="s1">Btn8 = Button(frameBtn</span><span class="s2">, </span><span class="s1">text=</span><span class="s3">&quot;8&quot;</span><span class="s2">, </span><span class="s1">padx=</span><span class="s5">5</span><span class="s2">, </span><span class="s1">pady=</span><span class="s5">16</span><span class="s2">, </span><span class="s1">bg=</span><span class="s3">&quot;red&quot;</span><span class="s2">, </span><span class="s1">fg=</span><span class="s3">&quot;yellow&quot;</span><span class="s2">, </span><span class="s1">command = Click8)</span>
+        <span class="s1">Btn8.grid(row=</span><span class="s5">14</span><span class="s2">, </span><span class="s1">column=</span><span class="s5">7</span><span class="s1">)</span>
+    <span class="s2">else</span><span class="s1">:</span>
+        <span class="s1">num8 = </span><span class="s5">0</span>
+        <span class="s1">Btn8.grid_forget()</span>
+        <span class="s1">Btn8 = Button(frameBtn</span><span class="s2">, </span><span class="s1">text=</span><span class="s3">&quot;8&quot;</span><span class="s2">, </span><span class="s1">padx=</span><span class="s5">5</span><span class="s2">, </span><span class="s1">pady=</span><span class="s5">16</span><span class="s2">, </span><span class="s1">bg=</span><span class="s3">&quot;blue&quot;</span><span class="s2">, </span><span class="s1">fg=</span><span class="s3">&quot;white&quot;</span><span class="s2">, </span><span class="s1">command = Click8)</span>
+        <span class="s1">Btn8.grid(row=</span><span class="s5">14</span><span class="s2">, </span><span class="s1">column=</span><span class="s5">7</span><span class="s1">)</span>
+    <span class="s1">Status8 = Label(frameBtn</span><span class="s2">, </span><span class="s1">text=</span><span class="s3">&quot;&quot; </span><span class="s1">+ str(num8))</span>
+    <span class="s1">Status8.grid(row=</span><span class="s5">15</span><span class="s2">, </span><span class="s1">column=</span><span class="s5">7</span><span class="s1">)</span>
+    <span class="s1">print(num8)</span>
+    <span class="s2">return</span>
+<span class="s2">def </span><span class="s1">Click7():</span>
+    <span class="s2">global </span><span class="s1">Status7</span>
+    <span class="s2">global </span><span class="s1">num7</span>
+    <span class="s2">global </span><span class="s1">Btn7</span>
+    <span class="s2">if </span><span class="s1">num7 != </span><span class="s5">1</span><span class="s1">:</span>
+        <span class="s1">num7 = </span><span class="s5">1</span>
+        <span class="s1">Btn7.grid_forget()</span>
+        <span class="s1">Btn7 = Button(frameBtn</span><span class="s2">, </span><span class="s1">text=</span><span class="s3">&quot;7&quot;</span><span class="s2">, </span><span class="s1">padx=</span><span class="s5">5</span><span class="s2">, </span><span class="s1">pady=</span><span class="s5">16</span><span class="s2">, </span><span class="s1">bg=</span><span class="s3">&quot;red&quot;</span><span class="s2">, </span><span class="s1">fg=</span><span class="s3">&quot;yellow&quot;</span><span class="s2">, </span><span class="s1">command = Click7)</span>
+        <span class="s1">Btn7.grid(row=</span><span class="s5">14</span><span class="s2">, </span><span class="s1">column=</span><span class="s5">8</span><span class="s1">)</span>
+    <span class="s2">else</span><span class="s1">:</span>
+        <span class="s1">num7 = </span><span class="s5">0</span>
+        <span class="s1">Btn7.grid_forget()</span>
+        <span class="s1">Btn7 = Button(frameBtn</span><span class="s2">, </span><span class="s1">text=</span><span class="s3">&quot;7&quot;</span><span class="s2">, </span><span class="s1">padx=</span><span class="s5">5</span><span class="s2">, </span><span class="s1">pady=</span><span class="s5">16</span><span class="s2">, </span><span class="s1">bg=</span><span class="s3">&quot;blue&quot;</span><span class="s2">, </span><span class="s1">fg=</span><span class="s3">&quot;white&quot;</span><span class="s2">, </span><span class="s1">command = Click7)</span>
+        <span class="s1">Btn7.grid(row=</span><span class="s5">14</span><span class="s2">, </span><span class="s1">column=</span><span class="s5">8</span><span class="s1">)</span>
+    <span class="s1">Status7 = Label(frameBtn</span><span class="s2">, </span><span class="s1">text=</span><span class="s3">&quot;&quot; </span><span class="s1">+ str(num7))</span>
+    <span class="s1">Status7.grid(row=</span><span class="s5">15</span><span class="s2">, </span><span class="s1">column=</span><span class="s5">8</span><span class="s1">)</span>
+    <span class="s1">print(num7)</span>
+    <span class="s2">return</span>
+<span class="s2">def </span><span class="s1">Click6():</span>
+    <span class="s2">global </span><span class="s1">Status6</span>
+    <span class="s2">global </span><span class="s1">num6</span>
+    <span class="s2">global </span><span class="s1">Btn6</span>
+    <span class="s2">if </span><span class="s1">num6 != </span><span class="s5">1</span><span class="s1">:</span>
+        <span class="s1">num6 = </span><span class="s5">1</span>
+        <span class="s1">Btn6.grid_forget()</span>
+        <span class="s1">Btn6 = Button(frameBtn</span><span class="s2">, </span><span class="s1">text=</span><span class="s3">&quot;6&quot;</span><span class="s2">, </span><span class="s1">padx=</span><span class="s5">5</span><span class="s2">, </span><span class="s1">pady=</span><span class="s5">16</span><span class="s2">, </span><span class="s1">bg=</span><span class="s3">&quot;red&quot;</span><span class="s2">, </span><span class="s1">fg=</span><span class="s3">&quot;yellow&quot;</span><span class="s2">, </span><span class="s1">command = Click6)</span>
+        <span class="s1">Btn6.grid(row=</span><span class="s5">14</span><span class="s2">, </span><span class="s1">column=</span><span class="s5">9</span><span class="s1">)</span>
+    <span class="s2">else</span><span class="s1">:</span>
+        <span class="s1">num6 = </span><span class="s5">0</span>
+        <span class="s1">Btn6.grid_forget()</span>
+        <span class="s1">Btn6 = Button(frameBtn</span><span class="s2">, </span><span class="s1">text=</span><span class="s3">&quot;6&quot;</span><span class="s2">, </span><span class="s1">padx=</span><span class="s5">5</span><span class="s2">, </span><span class="s1">pady=</span><span class="s5">16</span><span class="s2">, </span><span class="s1">bg=</span><span class="s3">&quot;blue&quot;</span><span class="s2">, </span><span class="s1">fg=</span><span class="s3">&quot;white&quot;</span><span class="s2">, </span><span class="s1">command = Click6)</span>
+        <span class="s1">Btn6.grid(row=</span><span class="s5">14</span><span class="s2">, </span><span class="s1">column=</span><span class="s5">9</span><span class="s1">)</span>
+    <span class="s1">Status6 = Label(frameBtn</span><span class="s2">, </span><span class="s1">text=</span><span class="s3">&quot;&quot; </span><span class="s1">+ str(num6))</span>
+    <span class="s1">Status6.grid(row=</span><span class="s5">15</span><span class="s2">, </span><span class="s1">column=</span><span class="s5">9</span><span class="s1">)</span>
+    <span class="s1">print(num6)</span>
+    <span class="s2">return</span>
+<span class="s2">def </span><span class="s1">Click5():</span>
+    <span class="s2">global </span><span class="s1">Status5</span>
+    <span class="s2">global </span><span class="s1">num5</span>
+    <span class="s2">global </span><span class="s1">Btn5</span>
+    <span class="s2">if </span><span class="s1">num5 != </span><span class="s5">1</span><span class="s1">:</span>
+        <span class="s1">num5 = </span><span class="s5">1</span>
+        <span class="s1">Btn5.grid_forget()</span>
+        <span class="s1">Btn5 = Button(frameBtn</span><span class="s2">, </span><span class="s1">text=</span><span class="s3">&quot;5&quot;</span><span class="s2">, </span><span class="s1">padx=</span><span class="s5">5</span><span class="s2">, </span><span class="s1">pady=</span><span class="s5">16</span><span class="s2">, </span><span class="s1">bg=</span><span class="s3">&quot;red&quot;</span><span class="s2">, </span><span class="s1">fg=</span><span class="s3">&quot;yellow&quot;</span><span class="s2">, </span><span class="s1">command = Click5)</span>
+        <span class="s1">Btn5.grid(row=</span><span class="s5">14</span><span class="s2">, </span><span class="s1">column=</span><span class="s5">10</span><span class="s1">)</span>
+    <span class="s2">else</span><span class="s1">:</span>
+        <span class="s1">num5 = </span><span class="s5">0</span>
+        <span class="s1">Btn5.grid_forget()</span>
+        <span class="s1">Btn5 = Button(frameBtn</span><span class="s2">, </span><span class="s1">text=</span><span class="s3">&quot;5&quot;</span><span class="s2">, </span><span class="s1">padx=</span><span class="s5">5</span><span class="s2">, </span><span class="s1">pady=</span><span class="s5">16</span><span class="s2">, </span><span class="s1">bg=</span><span class="s3">&quot;blue&quot;</span><span class="s2">, </span><span class="s1">fg=</span><span class="s3">&quot;white&quot;</span><span class="s2">, </span><span class="s1">command = Click5)</span>
+        <span class="s1">Btn5.grid(row=</span><span class="s5">14</span><span class="s2">, </span><span class="s1">column=</span><span class="s5">10</span><span class="s1">)</span>
+    <span class="s1">Status5 = Label(frameBtn</span><span class="s2">, </span><span class="s1">text=</span><span class="s3">&quot;&quot; </span><span class="s1">+ str(num5))</span>
+    <span class="s1">Status5.grid(row=</span><span class="s5">15</span><span class="s2">, </span><span class="s1">column=</span><span class="s5">10</span><span class="s1">)</span>
+    <span class="s1">print(num5)</span>
+    <span class="s2">return</span>
+<span class="s2">def </span><span class="s1">Click4():</span>
+    <span class="s2">global </span><span class="s1">Status4</span>
+    <span class="s2">global </span><span class="s1">num4</span>
+    <span class="s2">global </span><span class="s1">Btn4</span>
+    <span class="s2">if </span><span class="s1">num4 != </span><span class="s5">1</span><span class="s1">:</span>
+        <span class="s1">num4 = </span><span class="s5">1</span>
+        <span class="s1">Btn4.grid_forget()</span>
+        <span class="s1">Btn4 = Button(frameBtn</span><span class="s2">, </span><span class="s1">text=</span><span class="s3">&quot;4&quot;</span><span class="s2">, </span><span class="s1">padx=</span><span class="s5">5</span><span class="s2">, </span><span class="s1">pady=</span><span class="s5">16</span><span class="s2">, </span><span class="s1">bg=</span><span class="s3">&quot;red&quot;</span><span class="s2">, </span><span class="s1">fg=</span><span class="s3">&quot;yellow&quot;</span><span class="s2">, </span><span class="s1">command = Click4)</span>
+        <span class="s1">Btn4.grid(row=</span><span class="s5">14</span><span class="s2">, </span><span class="s1">column=</span><span class="s5">11</span><span class="s1">)</span>
+    <span class="s2">else</span><span class="s1">:</span>
+        <span class="s1">num4 = </span><span class="s5">0</span>
+        <span class="s1">Btn4.grid_forget()</span>
+        <span class="s1">Btn4 = Button(frameBtn</span><span class="s2">, </span><span class="s1">text=</span><span class="s3">&quot;4&quot;</span><span class="s2">, </span><span class="s1">padx=</span><span class="s5">5</span><span class="s2">, </span><span class="s1">pady=</span><span class="s5">16</span><span class="s2">, </span><span class="s1">bg=</span><span class="s3">&quot;blue&quot;</span><span class="s2">, </span><span class="s1">fg=</span><span class="s3">&quot;white&quot;</span><span class="s2">, </span><span class="s1">command = Click4)</span>
+        <span class="s1">Btn4.grid(row=</span><span class="s5">14</span><span class="s2">, </span><span class="s1">column=</span><span class="s5">11</span><span class="s1">)</span>
+    <span class="s1">Status4 = Label(frameBtn</span><span class="s2">, </span><span class="s1">text=</span><span class="s3">&quot;&quot; </span><span class="s1">+ str(num4))</span>
+    <span class="s1">Status4.grid(row=</span><span class="s5">15</span><span class="s2">, </span><span class="s1">column=</span><span class="s5">11</span><span class="s1">)</span>
+    <span class="s1">print(num4)</span>
+    <span class="s2">return</span>
+<span class="s2">def </span><span class="s1">Click3():</span>
+    <span class="s2">global </span><span class="s1">Status3</span>
+    <span class="s2">global </span><span class="s1">num3</span>
+    <span class="s2">global </span><span class="s1">Btn3</span>
+    <span class="s2">if </span><span class="s1">num3 != </span><span class="s5">1</span><span class="s1">:</span>
+        <span class="s1">num3 = </span><span class="s5">1</span>
+        <span class="s1">Btn3.grid_forget()</span>
+        <span class="s1">Btn3 = Button(frameBtn</span><span class="s2">, </span><span class="s1">text=</span><span class="s3">&quot;3&quot;</span><span class="s2">, </span><span class="s1">padx=</span><span class="s5">5</span><span class="s2">, </span><span class="s1">pady=</span><span class="s5">16</span><span class="s2">, </span><span class="s1">bg=</span><span class="s3">&quot;red&quot;</span><span class="s2">, </span><span class="s1">fg=</span><span class="s3">&quot;yellow&quot;</span><span class="s2">, </span><span class="s1">command = Click3)</span>
+        <span class="s1">Btn3.grid(row=</span><span class="s5">14</span><span class="s2">, </span><span class="s1">column=</span><span class="s5">12</span><span class="s1">)</span>
+    <span class="s2">else</span><span class="s1">:</span>
+        <span class="s1">num3 = </span><span class="s5">0</span>
+        <span class="s1">Btn3.grid_forget()</span>
+        <span class="s1">Btn3 = Button(frameBtn</span><span class="s2">, </span><span class="s1">text=</span><span class="s3">&quot;3&quot;</span><span class="s2">, </span><span class="s1">padx=</span><span class="s5">5</span><span class="s2">, </span><span class="s1">pady=</span><span class="s5">16</span><span class="s2">, </span><span class="s1">bg=</span><span class="s3">&quot;blue&quot;</span><span class="s2">, </span><span class="s1">fg=</span><span class="s3">&quot;white&quot;</span><span class="s2">, </span><span class="s1">command = Click3)</span>
+        <span class="s1">Btn3.grid(row=</span><span class="s5">14</span><span class="s2">, </span><span class="s1">column=</span><span class="s5">12</span><span class="s1">)</span>
+    <span class="s1">Status3 = Label(frameBtn</span><span class="s2">, </span><span class="s1">text=</span><span class="s3">&quot;&quot; </span><span class="s1">+ str(num3))</span>
+    <span class="s1">Status3.grid(row=</span><span class="s5">15</span><span class="s2">, </span><span class="s1">column=</span><span class="s5">12</span><span class="s1">)</span>
+    <span class="s1">print(num3)</span>
+    <span class="s2">return</span>
+<span class="s2">def </span><span class="s1">Click2():</span>
+    <span class="s2">global </span><span class="s1">Status2</span>
+    <span class="s2">global </span><span class="s1">num2</span>
+    <span class="s2">global </span><span class="s1">Btn2</span>
+    <span class="s2">if </span><span class="s1">num2 != </span><span class="s5">1</span><span class="s1">:</span>
+        <span class="s1">num2 = </span><span class="s5">1</span>
+        <span class="s1">Btn2.grid_forget()</span>
+        <span class="s1">Btn2 = Button(frameBtn</span><span class="s2">, </span><span class="s1">text=</span><span class="s3">&quot;2&quot;</span><span class="s2">, </span><span class="s1">padx=</span><span class="s5">5</span><span class="s2">, </span><span class="s1">pady=</span><span class="s5">16</span><span class="s2">, </span><span class="s1">bg=</span><span class="s3">&quot;red&quot;</span><span class="s2">, </span><span class="s1">fg=</span><span class="s3">&quot;yellow&quot;</span><span class="s2">, </span><span class="s1">command = Click2)</span>
+        <span class="s1">Btn2.grid(row=</span><span class="s5">14</span><span class="s2">, </span><span class="s1">column=</span><span class="s5">13</span><span class="s1">)</span>
+    <span class="s2">else</span><span class="s1">:</span>
+        <span class="s1">num2 = </span><span class="s5">0</span>
+        <span class="s1">Btn2.grid_forget()</span>
+        <span class="s1">Btn2 = Button(frameBtn</span><span class="s2">, </span><span class="s1">text=</span><span class="s3">&quot;2&quot;</span><span class="s2">, </span><span class="s1">padx=</span><span class="s5">5</span><span class="s2">, </span><span class="s1">pady=</span><span class="s5">16</span><span class="s2">, </span><span class="s1">bg=</span><span class="s3">&quot;blue&quot;</span><span class="s2">, </span><span class="s1">fg=</span><span class="s3">&quot;white&quot;</span><span class="s2">, </span><span class="s1">command = Click2)</span>
+        <span class="s1">Btn2.grid(row=</span><span class="s5">14</span><span class="s2">, </span><span class="s1">column=</span><span class="s5">13</span><span class="s1">)</span>
+    <span class="s1">Status2 = Label(frameBtn</span><span class="s2">, </span><span class="s1">text=</span><span class="s3">&quot;&quot; </span><span class="s1">+ str(num2))</span>
+    <span class="s1">Status2.grid(row=</span><span class="s5">15</span><span class="s2">, </span><span class="s1">column=</span><span class="s5">13</span><span class="s1">)</span>
+    <span class="s1">print(num2)</span>
+    <span class="s2">return</span>
+<span class="s2">def </span><span class="s1">Click1():</span>
+    <span class="s2">global </span><span class="s1">Status1</span>
+    <span class="s2">global </span><span class="s1">num1</span>
+    <span class="s2">global </span><span class="s1">Btn1</span>
+    <span class="s2">if </span><span class="s1">num1 != </span><span class="s5">1</span><span class="s1">:</span>
+        <span class="s1">num1 = </span><span class="s5">1</span>
+        <span class="s1">Btn1.grid_forget()</span>
+        <span class="s1">Btn1 = Button(frameBtn</span><span class="s2">, </span><span class="s1">text=</span><span class="s3">&quot;1&quot;</span><span class="s2">, </span><span class="s1">padx=</span><span class="s5">5</span><span class="s2">, </span><span class="s1">pady=</span><span class="s5">16</span><span class="s2">, </span><span class="s1">bg=</span><span class="s3">&quot;red&quot;</span><span class="s2">, </span><span class="s1">fg=</span><span class="s3">&quot;yellow&quot;</span><span class="s2">, </span><span class="s1">command = Click1)</span>
+        <span class="s1">Btn1.grid(row=</span><span class="s5">14</span><span class="s2">, </span><span class="s1">column=</span><span class="s5">14</span><span class="s1">)</span>
+    <span class="s2">else</span><span class="s1">:</span>
+        <span class="s1">num1 = </span><span class="s5">0</span>
+        <span class="s1">Btn1.grid_forget()</span>
+        <span class="s1">Btn1 = Button(frameBtn</span><span class="s2">, </span><span class="s1">text=</span><span class="s3">&quot;1&quot;</span><span class="s2">, </span><span class="s1">padx=</span><span class="s5">5</span><span class="s2">, </span><span class="s1">pady=</span><span class="s5">16</span><span class="s2">, </span><span class="s1">bg=</span><span class="s3">&quot;blue&quot;</span><span class="s2">, </span><span class="s1">fg=</span><span class="s3">&quot;white&quot;</span><span class="s2">, </span><span class="s1">command = Click1)</span>
+        <span class="s1">Btn1.grid(row=</span><span class="s5">14</span><span class="s2">, </span><span class="s1">column=</span><span class="s5">14</span><span class="s1">)</span>
+    <span class="s1">Status1 = Label(frameBtn</span><span class="s2">, </span><span class="s1">text=</span><span class="s3">&quot;&quot; </span><span class="s1">+ str(num1))</span>
+    <span class="s1">Status1.grid(row=</span><span class="s5">15</span><span class="s2">, </span><span class="s1">column=</span><span class="s5">14</span><span class="s1">)</span>
+    <span class="s1">print(num1)</span>
+    <span class="s2">return</span>
+<span class="s2">def </span><span class="s1">Click0():</span>
+    <span class="s2">global </span><span class="s1">Status0</span>
+    <span class="s2">global </span><span class="s1">num0</span>
+    <span class="s2">global </span><span class="s1">Btn0</span>
+    <span class="s2">if </span><span class="s1">num0 != </span><span class="s5">1</span><span class="s1">:</span>
+        <span class="s1">num0 = </span><span class="s5">1</span>
+        <span class="s1">Btn0.grid_forget()</span>
+        <span class="s1">Btn0 = Button(frameBtn</span><span class="s2">, </span><span class="s1">text=</span><span class="s3">&quot;0&quot;</span><span class="s2">, </span><span class="s1">padx=</span><span class="s5">5</span><span class="s2">, </span><span class="s1">pady=</span><span class="s5">16</span><span class="s2">, </span><span class="s1">bg=</span><span class="s3">&quot;red&quot;</span><span class="s2">, </span><span class="s1">fg=</span><span class="s3">&quot;yellow&quot;</span><span class="s2">, </span><span class="s1">command = Click0)</span>
+        <span class="s1">Btn0.grid(row=</span><span class="s5">14</span><span class="s2">, </span><span class="s1">column=</span><span class="s5">15</span><span class="s1">)</span>
+    <span class="s2">else</span><span class="s1">:</span>
+        <span class="s1">num0 = </span><span class="s5">0</span>
+        <span class="s1">Btn0.grid_forget()</span>
+        <span class="s1">Btn0 = Button(frameBtn</span><span class="s2">, </span><span class="s1">text=</span><span class="s3">&quot;0&quot;</span><span class="s2">, </span><span class="s1">padx=</span><span class="s5">5</span><span class="s2">, </span><span class="s1">pady=</span><span class="s5">16</span><span class="s2">, </span><span class="s1">bg=</span><span class="s3">&quot;blue&quot;</span><span class="s2">, </span><span class="s1">fg=</span><span class="s3">&quot;white&quot;</span><span class="s2">, </span><span class="s1">command = Click0)</span>
+        <span class="s1">Btn0.grid(row=</span><span class="s5">14</span><span class="s2">, </span><span class="s1">column=</span><span class="s5">15</span><span class="s1">)</span>
+    <span class="s1">Status0 = Label(frameBtn</span><span class="s2">, </span><span class="s1">text=</span><span class="s3">&quot;&quot; </span><span class="s1">+ str(num0))</span>
+    <span class="s1">Status0.grid(row=</span><span class="s5">15</span><span class="s2">, </span><span class="s1">column=</span><span class="s5">15</span><span class="s1">)</span>
+    <span class="s1">print(num0)</span>
+    <span class="s2">return</span>
+
+<span class="s4">#Click LD BTN modification</span>
+<span class="s2">def </span><span class="s1">LD_GPR0():</span>
+    <span class="s2">return</span>
+<span class="s2">def </span><span class="s1">LD_GPR1():</span>
+    <span class="s2">return</span>
+<span class="s2">def </span><span class="s1">LD_GPR2():</span>
+    <span class="s2">return</span>
+<span class="s2">def </span><span class="s1">LD_GPR3():</span>
+    <span class="s2">return</span>
+<span class="s2">def </span><span class="s1">LD_IXR1():</span>
+    <span class="s2">return</span>
+<span class="s2">def </span><span class="s1">LD_IXR2():</span>
+    <span class="s2">return</span>
+<span class="s2">def </span><span class="s1">LD_IXR3():</span>
+    <span class="s2">return</span>
+<span class="s2">def </span><span class="s1">LD_PC():</span>
+    <span class="s2">return</span>
+<span class="s2">def </span><span class="s1">LD_MAR():</span>
+    <span class="s2">return</span>
+<span class="s2">def </span><span class="s1">LD_MBR():</span>
+    <span class="s2">return</span>
+
+
+<span class="s4">#Btn</span>
+    <span class="s4">#Button</span>
+<span class="s1">Btn15 = Button(frameBtn</span><span class="s2">, </span><span class="s1">text=</span><span class="s3">&quot;15&quot;</span><span class="s2">, </span><span class="s1">padx=</span><span class="s5">5</span><span class="s2">, </span><span class="s1">pady=</span><span class="s5">15</span><span class="s2">, </span><span class="s1">bg=</span><span class="s3">&quot;blue&quot;</span><span class="s2">, </span><span class="s1">fg=</span><span class="s3">&quot;white&quot;</span><span class="s2">, </span><span class="s1">command = Click15)</span>
+<span class="s1">Btn14 = Button(frameBtn</span><span class="s2">, </span><span class="s1">text=</span><span class="s3">&quot;14&quot;</span><span class="s2">, </span><span class="s1">padx=</span><span class="s5">5</span><span class="s2">, </span><span class="s1">pady=</span><span class="s5">15</span><span class="s2">, </span><span class="s1">bg=</span><span class="s3">&quot;blue&quot;</span><span class="s2">, </span><span class="s1">fg=</span><span class="s3">&quot;white&quot;</span><span class="s2">, </span><span class="s1">command = Click14)</span>
+<span class="s1">Btn13 = Button(frameBtn</span><span class="s2">, </span><span class="s1">text=</span><span class="s3">&quot;13&quot;</span><span class="s2">, </span><span class="s1">padx=</span><span class="s5">5</span><span class="s2">, </span><span class="s1">pady=</span><span class="s5">15</span><span class="s2">, </span><span class="s1">bg=</span><span class="s3">&quot;blue&quot;</span><span class="s2">, </span><span class="s1">fg=</span><span class="s3">&quot;white&quot;</span><span class="s2">, </span><span class="s1">command = Click13)</span>
+<span class="s1">Btn12 = Button(frameBtn</span><span class="s2">, </span><span class="s1">text=</span><span class="s3">&quot;12&quot;</span><span class="s2">, </span><span class="s1">padx=</span><span class="s5">5</span><span class="s2">, </span><span class="s1">pady=</span><span class="s5">15</span><span class="s2">, </span><span class="s1">bg=</span><span class="s3">&quot;blue&quot;</span><span class="s2">, </span><span class="s1">fg=</span><span class="s3">&quot;white&quot;</span><span class="s2">, </span><span class="s1">command = Click12)</span>
+<span class="s1">Btn11 = Button(frameBtn</span><span class="s2">, </span><span class="s1">text=</span><span class="s3">&quot;11&quot;</span><span class="s2">, </span><span class="s1">padx=</span><span class="s5">5</span><span class="s2">, </span><span class="s1">pady=</span><span class="s5">15</span><span class="s2">, </span><span class="s1">bg=</span><span class="s3">&quot;blue&quot;</span><span class="s2">, </span><span class="s1">fg=</span><span class="s3">&quot;white&quot;</span><span class="s2">, </span><span class="s1">command = Click11)</span>
+<span class="s1">Btn10 = Button(frameBtn</span><span class="s2">, </span><span class="s1">text=</span><span class="s3">&quot;10&quot;</span><span class="s2">, </span><span class="s1">padx=</span><span class="s5">5</span><span class="s2">, </span><span class="s1">pady=</span><span class="s5">15</span><span class="s2">, </span><span class="s1">bg=</span><span class="s3">&quot;blue&quot;</span><span class="s2">, </span><span class="s1">fg=</span><span class="s3">&quot;white&quot;</span><span class="s2">, </span><span class="s1">command = Click10)</span>
+<span class="s1">Btn9 = Button(frameBtn</span><span class="s2">, </span><span class="s1">text=</span><span class="s3">&quot;9&quot;</span><span class="s2">, </span><span class="s1">padx=</span><span class="s5">5</span><span class="s2">, </span><span class="s1">pady=</span><span class="s5">15</span><span class="s2">, </span><span class="s1">bg=</span><span class="s3">&quot;blue&quot;</span><span class="s2">, </span><span class="s1">fg=</span><span class="s3">&quot;white&quot;</span><span class="s2">, </span><span class="s1">command = Click9)</span>
+<span class="s1">Btn8 = Button(frameBtn</span><span class="s2">, </span><span class="s1">text=</span><span class="s3">&quot;8&quot;</span><span class="s2">, </span><span class="s1">padx=</span><span class="s5">5</span><span class="s2">, </span><span class="s1">pady=</span><span class="s5">15</span><span class="s2">, </span><span class="s1">bg=</span><span class="s3">&quot;blue&quot;</span><span class="s2">, </span><span class="s1">fg=</span><span class="s3">&quot;white&quot;</span><span class="s2">, </span><span class="s1">command = Click8)</span>
+<span class="s1">Btn7 = Button(frameBtn</span><span class="s2">, </span><span class="s1">text=</span><span class="s3">&quot;7&quot;</span><span class="s2">, </span><span class="s1">padx=</span><span class="s5">5</span><span class="s2">, </span><span class="s1">pady=</span><span class="s5">15</span><span class="s2">, </span><span class="s1">bg=</span><span class="s3">&quot;blue&quot;</span><span class="s2">, </span><span class="s1">fg=</span><span class="s3">&quot;white&quot;</span><span class="s2">, </span><span class="s1">command = Click7)</span>
+<span class="s1">Btn6 = Button(frameBtn</span><span class="s2">, </span><span class="s1">text=</span><span class="s3">&quot;6&quot;</span><span class="s2">, </span><span class="s1">padx=</span><span class="s5">5</span><span class="s2">, </span><span class="s1">pady=</span><span class="s5">15</span><span class="s2">, </span><span class="s1">bg=</span><span class="s3">&quot;blue&quot;</span><span class="s2">, </span><span class="s1">fg=</span><span class="s3">&quot;white&quot;</span><span class="s2">, </span><span class="s1">command = Click6)</span>
+<span class="s1">Btn5 = Button(frameBtn</span><span class="s2">, </span><span class="s1">text=</span><span class="s3">&quot;5&quot;</span><span class="s2">, </span><span class="s1">padx=</span><span class="s5">5</span><span class="s2">, </span><span class="s1">pady=</span><span class="s5">15</span><span class="s2">, </span><span class="s1">bg=</span><span class="s3">&quot;blue&quot;</span><span class="s2">, </span><span class="s1">fg=</span><span class="s3">&quot;white&quot;</span><span class="s2">, </span><span class="s1">command = Click5)</span>
+<span class="s1">Btn4 = Button(frameBtn</span><span class="s2">, </span><span class="s1">text=</span><span class="s3">&quot;4&quot;</span><span class="s2">, </span><span class="s1">padx=</span><span class="s5">5</span><span class="s2">, </span><span class="s1">pady=</span><span class="s5">15</span><span class="s2">, </span><span class="s1">bg=</span><span class="s3">&quot;blue&quot;</span><span class="s2">, </span><span class="s1">fg=</span><span class="s3">&quot;white&quot;</span><span class="s2">, </span><span class="s1">command = Click4)</span>
+<span class="s1">Btn3 = Button(frameBtn</span><span class="s2">, </span><span class="s1">text=</span><span class="s3">&quot;3&quot;</span><span class="s2">, </span><span class="s1">padx=</span><span class="s5">5</span><span class="s2">, </span><span class="s1">pady=</span><span class="s5">15</span><span class="s2">, </span><span class="s1">bg=</span><span class="s3">&quot;blue&quot;</span><span class="s2">, </span><span class="s1">fg=</span><span class="s3">&quot;white&quot;</span><span class="s2">, </span><span class="s1">command = Click3)</span>
+<span class="s1">Btn2 = Button(frameBtn</span><span class="s2">, </span><span class="s1">text=</span><span class="s3">&quot;2&quot;</span><span class="s2">, </span><span class="s1">padx=</span><span class="s5">5</span><span class="s2">, </span><span class="s1">pady=</span><span class="s5">15</span><span class="s2">, </span><span class="s1">bg=</span><span class="s3">&quot;blue&quot;</span><span class="s2">, </span><span class="s1">fg=</span><span class="s3">&quot;white&quot;</span><span class="s2">, </span><span class="s1">command = Click2)</span>
+<span class="s1">Btn1 = Button(frameBtn</span><span class="s2">, </span><span class="s1">text=</span><span class="s3">&quot;1&quot;</span><span class="s2">, </span><span class="s1">padx=</span><span class="s5">5</span><span class="s2">, </span><span class="s1">pady=</span><span class="s5">15</span><span class="s2">, </span><span class="s1">bg=</span><span class="s3">&quot;blue&quot;</span><span class="s2">, </span><span class="s1">fg=</span><span class="s3">&quot;white&quot;</span><span class="s2">, </span><span class="s1">command = Click1)</span>
+<span class="s1">Btn0 = Button(frameBtn</span><span class="s2">, </span><span class="s1">text=</span><span class="s3">&quot;0&quot;</span><span class="s2">, </span><span class="s1">padx=</span><span class="s5">5</span><span class="s2">, </span><span class="s1">pady=</span><span class="s5">15</span><span class="s2">, </span><span class="s1">bg=</span><span class="s3">&quot;blue&quot;</span><span class="s2">, </span><span class="s1">fg=</span><span class="s3">&quot;white&quot;</span><span class="s2">, </span><span class="s1">command = Click0)</span>
+    <span class="s4">#GPR Loading</span>
+<span class="s1">GPR0_LD = Button(root</span><span class="s2">,</span><span class="s1">text=</span><span class="s3">&quot;LD&quot;</span><span class="s2">,</span><span class="s1">padx=</span><span class="s5">1</span><span class="s2">, </span><span class="s1">pady=</span><span class="s5">1</span><span class="s1">)</span>
+<span class="s1">GPR1_LD = Button(root</span><span class="s2">,</span><span class="s1">text=</span><span class="s3">&quot;LD&quot;</span><span class="s2">,</span><span class="s1">padx=</span><span class="s5">1</span><span class="s2">, </span><span class="s1">pady=</span><span class="s5">1</span><span class="s1">)</span>
+<span class="s1">GPR2_LD = Button(root</span><span class="s2">,</span><span class="s1">text=</span><span class="s3">&quot;LD&quot;</span><span class="s2">,</span><span class="s1">padx=</span><span class="s5">1</span><span class="s2">, </span><span class="s1">pady=</span><span class="s5">1</span><span class="s1">)</span>
+<span class="s1">GPR3_LD = Button(root</span><span class="s2">,</span><span class="s1">text=</span><span class="s3">&quot;LD&quot;</span><span class="s2">,</span><span class="s1">padx=</span><span class="s5">1</span><span class="s2">, </span><span class="s1">pady=</span><span class="s5">1</span><span class="s1">)</span>
+    <span class="s4">#IXR Loading</span>
+<span class="s1">IXR1_LD = Button(root</span><span class="s2">,</span><span class="s1">text=</span><span class="s3">&quot;LD&quot;</span><span class="s2">,</span><span class="s1">padx=</span><span class="s5">1</span><span class="s2">, </span><span class="s1">pady=</span><span class="s5">1</span><span class="s1">)</span>
+<span class="s1">IXR2_LD = Button(root</span><span class="s2">,</span><span class="s1">text=</span><span class="s3">&quot;LD&quot;</span><span class="s2">,</span><span class="s1">padx=</span><span class="s5">1</span><span class="s2">, </span><span class="s1">pady=</span><span class="s5">1</span><span class="s1">)</span>
+<span class="s1">IXR3_LD = Button(root</span><span class="s2">,</span><span class="s1">text=</span><span class="s3">&quot;LD&quot;</span><span class="s2">,</span><span class="s1">padx=</span><span class="s5">1</span><span class="s2">, </span><span class="s1">pady=</span><span class="s5">1</span><span class="s1">)</span>
+    <span class="s4">#PC Loading</span>
+<span class="s1">PC_LD = Button(root</span><span class="s2">,</span><span class="s1">text=</span><span class="s3">&quot;LD&quot;</span><span class="s2">,</span><span class="s1">padx=</span><span class="s5">1</span><span class="s2">, </span><span class="s1">pady=</span><span class="s5">1</span><span class="s1">)</span>
+    <span class="s4">#MAR Loading</span>
+<span class="s1">MAR_LD = Button(root</span><span class="s2">,</span><span class="s1">text=</span><span class="s3">&quot;LD&quot;</span><span class="s2">,</span><span class="s1">padx=</span><span class="s5">1</span><span class="s2">, </span><span class="s1">pady=</span><span class="s5">1</span><span class="s1">)</span>
+    <span class="s4">#MBR_Loading</span>
+<span class="s1">MBR_LD = Button(root</span><span class="s2">,</span><span class="s1">text=</span><span class="s3">&quot;LD&quot;</span><span class="s2">,</span><span class="s1">padx=</span><span class="s5">1</span><span class="s2">, </span><span class="s1">pady=</span><span class="s5">1</span><span class="s1">)</span>
+    <span class="s4">#System Button</span>
+<span class="s1">Store  = Button(frameOpBtn</span><span class="s2">,</span><span class="s1">text=</span><span class="s3">&quot;Store&quot;</span><span class="s2">,</span><span class="s1">padx=</span><span class="s5">1</span><span class="s2">, </span><span class="s1">pady=</span><span class="s5">1</span><span class="s1">)</span>
+<span class="s1">StorePlus = Button(frameOpBtn</span><span class="s2">,</span><span class="s1">text=</span><span class="s3">&quot;St+&quot;</span><span class="s2">,</span><span class="s1">padx=</span><span class="s5">1</span><span class="s2">, </span><span class="s1">pady=</span><span class="s5">1</span><span class="s1">)</span>
+<span class="s1">Load = Button(frameOpBtn</span><span class="s2">,</span><span class="s1">text=</span><span class="s3">&quot;Load&quot;</span><span class="s2">,</span><span class="s1">padx=</span><span class="s5">1</span><span class="s2">, </span><span class="s1">pady=</span><span class="s5">1</span><span class="s1">)</span>
+<span class="s1">Init = Button(frameOpBtn</span><span class="s2">,</span><span class="s1">text=</span><span class="s3">&quot;Init&quot;</span><span class="s2">,</span><span class="s1">padx=</span><span class="s5">1</span><span class="s2">, </span><span class="s1">pady=</span><span class="s5">1</span><span class="s2">, </span><span class="s1">bg=</span><span class="s3">&quot;red&quot;</span><span class="s2">, </span><span class="s1">fg=</span><span class="s3">&quot;white&quot;</span><span class="s1">)</span>
+<span class="s1">SS = Button(frameSysBtn</span><span class="s2">,</span><span class="s1">text=</span><span class="s3">&quot;SS&quot;</span><span class="s2">,</span><span class="s1">padx=</span><span class="s5">10</span><span class="s2">, </span><span class="s1">pady=</span><span class="s5">15</span><span class="s1">)</span>
+<span class="s1">RunBtn = Button(frameSysBtn</span><span class="s2">,</span><span class="s1">text=</span><span class="s3">&quot;Run&quot;</span><span class="s2">,</span><span class="s1">padx=</span><span class="s5">10</span><span class="s2">, </span><span class="s1">pady=</span><span class="s5">15</span><span class="s1">)</span>
+
+<span class="s4"># #canvas size</span>
+<span class="s4"># canvas = tk.Canvas(root, width=600, height=300, bg=&quot;#20bebe&quot;)</span>
+<span class="s4"># canvas.grid(columnspan=3)</span>
+
+<span class="s4"># #logo</span>
+<span class="s4"># logo = Image.open('touxiang.jpg')</span>
+<span class="s4"># logo = ImageTk.PhotoImage(logo)</span>
+<span class="s4"># logo_label = tk.Label(image=logo)</span>
+<span class="s4"># logo_label.image = logo</span>
+<span class="s4"># logo_label.grid(column=1,row=0)</span>
+<span class="s4">#</span>
+<span class="s4"># #instructions</span>
+<span class="s4"># instructions = tk.Label(root, text=&quot;Select a PDF file&quot;, font=&quot;Raleway&quot;)</span>
+<span class="s4"># instructions.grid(columnspan=3, column=0, row=1)</span>
+<span class="s4">#</span>
+<span class="s4"># def open_file():</span>
+<span class="s4">#     browse_text.set(&quot;loading&quot;)</span>
+<span class="s4">#     file = askopenfile(parent=root, mode='rb', title=&quot;Choose a file&quot;, filetypes=[(&quot;Pdf File&quot;,&quot;*.pdf&quot;)])</span>
+<span class="s4">#     if file:</span>
+<span class="s4">#         read_pdf = PyPDF2.PdfFileReader(file)</span>
+<span class="s4">#         page = read_pdf.getPage(0)</span>
+<span class="s4">#         page_content = page.extractText()</span>
+<span class="s4">#         #text_box</span>
+<span class="s4">#         text_box = tk.Text(root, height=10, width=50, pady=15)</span>
+<span class="s4">#         text_box.insert(1.0,page_content)</span>
+<span class="s4">#         text_box.tag_configure(&quot;center&quot;, justify=&quot;center&quot;)</span>
+<span class="s4">#         text_box.tag_add(&quot;center&quot;, 1.0, &quot;end&quot;)</span>
+<span class="s4">#         text_box.grid(column=1, row=3)</span>
+<span class="s4">#</span>
+<span class="s4"># #browse_button</span>
+<span class="s4"># browse_text = tk.StringVar()</span>
+<span class="s4"># browse_btn= tk.Button(root, textvariable=browse_text, command=lambda:open_file(),font=&quot;Raleway&quot;,bg=&quot;#20bebe&quot;, fg=&quot;white&quot;, height=2, width=15)</span>
+<span class="s4"># browse_text.set(&quot;Browse&quot;)</span>
+<span class="s4"># browse_btn.grid(column=1,row=2)</span>
+<span class="s4">#</span>
+<span class="s4"># canvas = tk.Canvas(root, width=600, height=300, bg=&quot;#20bebe&quot;)</span>
+<span class="s4"># canvas.grid(columnspan=3)</span>
+<span class="s4">#</span>
+<span class="s4"># root.wm_title(&quot;6461 Team Project&quot;)</span>
+
+
+<span class="s4">#grid</span>
+
+    <span class="s4">#Label</span>
+<span class="s1">GPR0Label.grid(row=</span><span class="s5">0</span><span class="s2">,</span><span class="s1">column=</span><span class="s5">0</span><span class="s1">)</span>
+<span class="s1">GPR1Label.grid(row=</span><span class="s5">1</span><span class="s2">,</span><span class="s1">column=</span><span class="s5">0</span><span class="s1">)</span>
+<span class="s1">GPR2Label.grid(row=</span><span class="s5">2</span><span class="s2">,</span><span class="s1">column=</span><span class="s5">0</span><span class="s1">)</span>
+<span class="s1">GPR3Label.grid(row=</span><span class="s5">3</span><span class="s2">,</span><span class="s1">column=</span><span class="s5">0</span><span class="s1">)</span>
+<span class="s1">SpaceGPRIXR.grid(row=</span><span class="s5">4</span><span class="s2">,</span><span class="s1">column=</span><span class="s5">0</span><span class="s1">)</span>
+<span class="s1">IXR1Label.grid(row=</span><span class="s5">5</span><span class="s2">,</span><span class="s1">column=</span><span class="s5">0</span><span class="s1">)</span>
+<span class="s1">IXR2Label.grid(row=</span><span class="s5">6</span><span class="s2">,</span><span class="s1">column=</span><span class="s5">0</span><span class="s1">)</span>
+<span class="s1">IXR3Label.grid(row=</span><span class="s5">7</span><span class="s2">,</span><span class="s1">column=</span><span class="s5">0</span><span class="s1">)</span>
+<span class="s1">SpaceIXROperation.grid(row=</span><span class="s5">8</span><span class="s2">,</span><span class="s1">column=</span><span class="s5">0</span><span class="s1">)</span>
+
+
+
+<span class="s1">SpaceGPRPC.grid(row=</span><span class="s5">0</span><span class="s2">,</span><span class="s1">column=</span><span class="s5">4</span><span class="s1">)</span>
+<span class="s1">PCLabel.grid(row=</span><span class="s5">0</span><span class="s2">,</span><span class="s1">column=</span><span class="s5">5</span><span class="s1">)</span>
+<span class="s1">MARLabel.grid(row=</span><span class="s5">1</span><span class="s2">,</span><span class="s1">column=</span><span class="s5">5</span><span class="s1">)</span>
+<span class="s1">MBRLabel.grid(row=</span><span class="s5">2</span><span class="s2">,</span><span class="s1">column=</span><span class="s5">5</span><span class="s1">)</span>
+<span class="s1">IRLabel.grid(row=</span><span class="s5">3</span><span class="s2">,</span><span class="s1">column=</span><span class="s5">5</span><span class="s1">)</span>
+<span class="s1">MFRLabel.grid(row=</span><span class="s5">4</span><span class="s2">,</span><span class="s1">column=</span><span class="s5">5</span><span class="s1">)</span>
+<span class="s1">PrivailegedLabel.grid(row=</span><span class="s5">5</span><span class="s2">,</span><span class="s1">column=</span><span class="s5">5</span><span class="s1">)</span>
+<span class="s4">#Entry</span>
+<span class="s1">GPR0.grid(row=</span><span class="s5">0</span><span class="s2">,</span><span class="s1">column=</span><span class="s5">1</span><span class="s1">)</span>
+<span class="s1">GPR1.grid(row=</span><span class="s5">1</span><span class="s2">,</span><span class="s1">column=</span><span class="s5">1</span><span class="s1">)</span>
+<span class="s1">GPR2.grid(row=</span><span class="s5">2</span><span class="s2">,</span><span class="s1">column=</span><span class="s5">1</span><span class="s1">)</span>
+<span class="s1">GPR3.grid(row=</span><span class="s5">3</span><span class="s2">,</span><span class="s1">column=</span><span class="s5">1</span><span class="s1">)</span>
+<span class="s4"># GPR01.grid(row=0,column=1)</span>
+<span class="s4"># GPR11.grid(row=1,column=1)</span>
+<span class="s4"># GPR21.grid(row=2,column=1)</span>
+<span class="s4"># GPR31.grid(row=3,column=1)</span>
+<span class="s4"># IXR11.grid(row=5,column=1)</span>
+<span class="s4"># IXR21.grid(row=6,column=1)</span>
+<span class="s4"># IXR31.grid(row=7,column=1)</span>
+<span class="s1">IXR1.grid(row=</span><span class="s5">5</span><span class="s2">,</span><span class="s1">column=</span><span class="s5">1</span><span class="s1">)</span>
+<span class="s1">IXR2.grid(row=</span><span class="s5">6</span><span class="s2">,</span><span class="s1">column=</span><span class="s5">1</span><span class="s1">)</span>
+<span class="s1">IXR3.grid(row=</span><span class="s5">7</span><span class="s2">,</span><span class="s1">column=</span><span class="s5">1</span><span class="s1">)</span>
+
+<span class="s4">#Right panel</span>
+<span class="s1">PC.grid(row=</span><span class="s5">0</span><span class="s2">,</span><span class="s1">column=</span><span class="s5">6</span><span class="s1">)</span>
+<span class="s1">MAR.grid(row=</span><span class="s5">1</span><span class="s2">,</span><span class="s1">column=</span><span class="s5">6</span><span class="s1">)</span>
+<span class="s1">MBR.grid(row=</span><span class="s5">2</span><span class="s2">,</span><span class="s1">column=</span><span class="s5">6</span><span class="s1">)</span>
+<span class="s1">IR.grid(row=</span><span class="s5">3</span><span class="s2">,</span><span class="s1">column=</span><span class="s5">6</span><span class="s1">)</span>
+<span class="s1">MFR.grid(row=</span><span class="s5">4</span><span class="s2">,</span><span class="s1">column=</span><span class="s5">6</span><span class="s1">)</span>
+<span class="s1">Privaileged.grid(row=</span><span class="s5">5</span><span class="s2">,</span><span class="s1">column=</span><span class="s5">6</span><span class="s1">)</span>
+<span class="s1">HaltLabel.grid(row=</span><span class="s5">1</span><span class="s2">,</span><span class="s1">column=</span><span class="s5">4</span><span class="s2">,</span><span class="s1">rowspan=</span><span class="s5">5</span><span class="s1">)</span>
+<span class="s1">RunLabel.grid(row=</span><span class="s5">1</span><span class="s2">,</span><span class="s1">column=</span><span class="s5">5</span><span class="s2">,</span><span class="s1">rowspan=</span><span class="s5">5</span><span class="s1">)</span>
+<span class="s1">HaltLight.grid(row=</span><span class="s5">2</span><span class="s2">,</span><span class="s1">column=</span><span class="s5">4</span><span class="s1">)</span>
+<span class="s1">RunLight.grid(row=</span><span class="s5">2</span><span class="s2">,</span><span class="s1">column=</span><span class="s5">5</span><span class="s1">)</span>
+
+
+
+
+
+    <span class="s4">#Button</span>
+<span class="s1">Btn15.grid(row=</span><span class="s5">14</span><span class="s2">,</span><span class="s1">column=</span><span class="s5">0</span><span class="s1">)</span>
+<span class="s1">Btn14.grid(row=</span><span class="s5">14</span><span class="s2">,</span><span class="s1">column=</span><span class="s5">1</span><span class="s1">)</span>
+<span class="s1">Btn13.grid(row=</span><span class="s5">14</span><span class="s2">,</span><span class="s1">column=</span><span class="s5">2</span><span class="s1">)</span>
+<span class="s1">Btn12.grid(row=</span><span class="s5">14</span><span class="s2">,</span><span class="s1">column=</span><span class="s5">3</span><span class="s1">)</span>
+<span class="s1">Btn11.grid(row=</span><span class="s5">14</span><span class="s2">,</span><span class="s1">column=</span><span class="s5">4</span><span class="s1">)</span>
+<span class="s1">Btn10.grid(row=</span><span class="s5">14</span><span class="s2">,</span><span class="s1">column=</span><span class="s5">5</span><span class="s1">)</span>
+<span class="s1">Btn9.grid(row=</span><span class="s5">14</span><span class="s2">,</span><span class="s1">column=</span><span class="s5">6</span><span class="s1">)</span>
+<span class="s1">Btn8.grid(row=</span><span class="s5">14</span><span class="s2">,</span><span class="s1">column=</span><span class="s5">7</span><span class="s1">)</span>
+<span class="s1">Btn7.grid(row=</span><span class="s5">14</span><span class="s2">,</span><span class="s1">column=</span><span class="s5">8</span><span class="s1">)</span>
+<span class="s1">Btn6.grid(row=</span><span class="s5">14</span><span class="s2">,</span><span class="s1">column=</span><span class="s5">9</span><span class="s1">)</span>
+<span class="s1">Btn5.grid(row=</span><span class="s5">14</span><span class="s2">,</span><span class="s1">column=</span><span class="s5">10</span><span class="s1">)</span>
+<span class="s1">Btn4.grid(row=</span><span class="s5">14</span><span class="s2">,</span><span class="s1">column=</span><span class="s5">11</span><span class="s1">)</span>
+<span class="s1">Btn3.grid(row=</span><span class="s5">14</span><span class="s2">,</span><span class="s1">column=</span><span class="s5">12</span><span class="s1">)</span>
+<span class="s1">Btn2.grid(row=</span><span class="s5">14</span><span class="s2">,</span><span class="s1">column=</span><span class="s5">13</span><span class="s1">)</span>
+<span class="s1">Btn1.grid(row=</span><span class="s5">14</span><span class="s2">,</span><span class="s1">column=</span><span class="s5">14</span><span class="s1">)</span>
+<span class="s1">Btn0.grid(row=</span><span class="s5">14</span><span class="s2">,</span><span class="s1">column=</span><span class="s5">15</span><span class="s1">)</span>
+    <span class="s4"># loading button</span>
+<span class="s1">GPR0_LD.grid(row=</span><span class="s5">0</span><span class="s2">,</span><span class="s1">column=</span><span class="s5">3</span><span class="s1">)</span>
+<span class="s1">GPR1_LD.grid(row=</span><span class="s5">1</span><span class="s2">,</span><span class="s1">column=</span><span class="s5">3</span><span class="s1">)</span>
+<span class="s1">GPR2_LD.grid(row=</span><span class="s5">2</span><span class="s2">,</span><span class="s1">column=</span><span class="s5">3</span><span class="s1">)</span>
+<span class="s1">GPR3_LD.grid(row=</span><span class="s5">3</span><span class="s2">,</span><span class="s1">column=</span><span class="s5">3</span><span class="s1">)</span>
+<span class="s1">SpaceGPRIXR.grid(row=</span><span class="s5">4</span><span class="s2">,</span><span class="s1">column=</span><span class="s5">0</span><span class="s1">)</span>
+<span class="s1">IXR1_LD.grid(row=</span><span class="s5">5</span><span class="s2">,</span><span class="s1">column=</span><span class="s5">3</span><span class="s1">)</span>
+<span class="s1">IXR2_LD.grid(row=</span><span class="s5">6</span><span class="s2">,</span><span class="s1">column=</span><span class="s5">3</span><span class="s1">)</span>
+<span class="s1">IXR3_LD.grid(row=</span><span class="s5">7</span><span class="s2">,</span><span class="s1">column=</span><span class="s5">3</span><span class="s1">)</span>
+
+<span class="s1">PC_LD.grid(row=</span><span class="s5">0</span><span class="s2">,</span><span class="s1">column=</span><span class="s5">7</span><span class="s1">)</span>
+<span class="s1">MAR_LD.grid(row=</span><span class="s5">1</span><span class="s2">,</span><span class="s1">column=</span><span class="s5">7</span><span class="s1">)</span>
+<span class="s1">MBR_LD.grid(row=</span><span class="s5">2</span><span class="s2">,</span><span class="s1">column=</span><span class="s5">7</span><span class="s1">)</span>
+
+<span class="s4">#system Button grid</span>
+
+<span class="s1">Store.grid(row=</span><span class="s5">7</span><span class="s2">,</span><span class="s1">column=</span><span class="s5">7</span><span class="s1">)</span>
+<span class="s1">StorePlus.grid(row=</span><span class="s5">7</span><span class="s2">,</span><span class="s1">column=</span><span class="s5">8</span><span class="s1">)</span>
+<span class="s1">Load.grid(row=</span><span class="s5">7</span><span class="s2">,</span><span class="s1">column=</span><span class="s5">9</span><span class="s1">)</span>
+<span class="s1">Init.grid(row=</span><span class="s5">7</span><span class="s2">,</span><span class="s1">column=</span><span class="s5">10</span><span class="s1">)</span>
+<span class="s1">SS.grid(row=</span><span class="s5">1</span><span class="s2">,</span><span class="s1">column=</span><span class="s5">0</span><span class="s1">)</span>
+<span class="s1">SpaceSSRUN.grid(row=</span><span class="s5">1</span><span class="s2">,</span><span class="s1">column=</span><span class="s5">2</span><span class="s1">)</span>
+<span class="s1">RunBtn.grid(row=</span><span class="s5">1</span><span class="s2">,</span><span class="s1">column=</span><span class="s5">3</span><span class="s1">)</span>
+
+<span class="s4"># Btn10.grid(row=14,column=5)</span>
+<span class="s4"># Btn9.grid(row=14,column=6)</span>
+<span class="s4"># Btn8.grid(row=14,column=7)</span>
+<span class="s4"># Btn7.grid(row=14,column=8)</span>
+<span class="s4"># Btn6.grid(row=14,column=9)</span>
+<span class="s4"># Btn5.grid(row=14,column=10)</span>
+<span class="s4"># Btn4.grid(row=14,column=11)</span>
+<span class="s4"># Btn3.grid(row=14,column=12)</span>
+<span class="s4"># Btn2.grid(row=14,column=13)</span>
+<span class="s4"># Btn1.grid(row=14,column=14)</span>
+<span class="s4"># Btn0.grid(row=14,column=15)</span>
+
+
+    <span class="s4">#Button status</span>
+<span class="s1">Status15.grid(row=</span><span class="s5">15</span><span class="s2">,</span><span class="s1">column=</span><span class="s5">0</span><span class="s1">)</span>
+<span class="s1">Status14.grid(row=</span><span class="s5">15</span><span class="s2">,</span><span class="s1">column=</span><span class="s5">1</span><span class="s1">)</span>
+<span class="s1">Status13.grid(row=</span><span class="s5">15</span><span class="s2">,</span><span class="s1">column=</span><span class="s5">2</span><span class="s1">)</span>
+<span class="s1">Status12.grid(row=</span><span class="s5">15</span><span class="s2">,</span><span class="s1">column=</span><span class="s5">3</span><span class="s1">)</span>
+<span class="s1">Status11.grid(row=</span><span class="s5">15</span><span class="s2">,</span><span class="s1">column=</span><span class="s5">4</span><span class="s1">)</span>
+<span class="s1">Status10.grid(row=</span><span class="s5">15</span><span class="s2">,</span><span class="s1">column=</span><span class="s5">5</span><span class="s1">)</span>
+<span class="s1">Status9.grid(row=</span><span class="s5">15</span><span class="s2">,</span><span class="s1">column=</span><span class="s5">6</span><span class="s1">)</span>
+<span class="s1">Status8.grid(row=</span><span class="s5">15</span><span class="s2">,</span><span class="s1">column=</span><span class="s5">7</span><span class="s1">)</span>
+<span class="s1">Status7.grid(row=</span><span class="s5">15</span><span class="s2">,</span><span class="s1">column=</span><span class="s5">8</span><span class="s1">)</span>
+<span class="s1">Status6.grid(row=</span><span class="s5">15</span><span class="s2">,</span><span class="s1">column=</span><span class="s5">9</span><span class="s1">)</span>
+<span class="s1">Status5.grid(row=</span><span class="s5">15</span><span class="s2">,</span><span class="s1">column=</span><span class="s5">10</span><span class="s1">)</span>
+<span class="s1">Status4.grid(row=</span><span class="s5">15</span><span class="s2">,</span><span class="s1">column=</span><span class="s5">11</span><span class="s1">)</span>
+<span class="s1">Status3.grid(row=</span><span class="s5">15</span><span class="s2">,</span><span class="s1">column=</span><span class="s5">12</span><span class="s1">)</span>
+<span class="s1">Status2.grid(row=</span><span class="s5">15</span><span class="s2">,</span><span class="s1">column=</span><span class="s5">13</span><span class="s1">)</span>
+<span class="s1">Status1.grid(row=</span><span class="s5">15</span><span class="s2">,</span><span class="s1">column=</span><span class="s5">14</span><span class="s1">)</span>
+<span class="s1">Status0.grid(row=</span><span class="s5">15</span><span class="s2">,</span><span class="s1">column=</span><span class="s5">15</span><span class="s1">)</span>
+
+
+
+
+
+
+<span class="s1">root.mainloop()</span>
+</pre>
+</body>
+</html>
