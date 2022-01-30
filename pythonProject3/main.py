@@ -58,7 +58,7 @@ RunLabel =Label(frameSysBtn, text="Run")
 #     GPR0[i].insert(0, "" + str(GPR0Value[i]))
 #     GPR0[i].grid(row=0, column=i+1)
 
-GPR0 = Entry(root, width=60, borderwidth=5,)
+GPR0 = Entry(root, width=60, borderwidth=5)
 GPR1 = Entry(root, width=60, borderwidth=5)
 GPR2 = Entry(root, width=60, borderwidth=5)
 GPR3 = Entry(root, width=60, borderwidth=5)
