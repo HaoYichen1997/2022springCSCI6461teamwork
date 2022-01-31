@@ -1,13 +1,17 @@
-"""
 
-Creater:Zack
-Date:01/21/2022
-
+""" 
+ 
+Creater:Zack 
+Date:01/21/2022 
+ 
 """
 from tkinter import *
+from tkinter import filedialog
+from textwrap import wrap
 import PyPDF2
-from PIL import Image, ImageTk
-from tkinter.filedialog import askopenfile
+
+# from PIL import Image, ImageTk
+# from tkinter.filedialog import askopenfile
 
 root = Tk()
 root.title("6461 Project1")
@@ -58,7 +62,7 @@ RunLabel =Label(frameSysBtn, text="Run")
 #     GPR0[i].insert(0, "" + str(GPR0Value[i]))
 #     GPR0[i].grid(row=0, column=i+1)
 
-GPR0 = Entry(root, width=60, borderwidth=5)
+GPR0 = Entry(root, width=60, borderwidth=5,)
 GPR1 = Entry(root, width=60, borderwidth=5)
 GPR2 = Entry(root, width=60, borderwidth=5)
 GPR3 = Entry(root, width=60, borderwidth=5)
@@ -482,24 +486,78 @@ def Click0():
 
 #Click LD BTN modification
 def LD_GPR0():
+    GPR0.delete(0,END)
+    GPR0.insert(0,str(num15)+str(num14)+str(num13)+str(num12)+str(num11)+str(num10)+str(num9)+str(num8)+str(num7)+str(num6)+str(num5)+str(num4)+str(num3)+str(num2)+str(num1)+str(num0))
+    GPR0_num = GPR0.get()
+    print(GPR0_num)
     return
 def LD_GPR1():
+    GPR1.delete(0,END)
+    GPR1.insert(0,str(num15)+str(num14)+str(num13)+str(num12)+str(num11)+str(num10)+str(num9)+str(num8)+str(num7)+str(num6)+str(num5)+str(num4)+str(num3)+str(num2)+str(num1)+str(num0))
+    GPR1_num = GPR1.get()
+    print(GPR1_num)
     return
 def LD_GPR2():
+    GPR2.delete(0,END)
+    GPR2.insert(0,str(num15)+str(num14)+str(num13)+str(num12)+str(num11)+str(num10)+str(num9)+str(num8)+str(num7)+str(num6)+str(num5)+str(num4)+str(num3)+str(num2)+str(num1)+str(num0))
+    GPR2_num = GPR2.get()
+    print(GPR2_num)
     return
 def LD_GPR3():
+    GPR3.delete(0,END)
+    GPR3.insert(0,str(num15)+str(num14)+str(num13)+str(num12)+str(num11)+str(num10)+str(num9)+str(num8)+str(num7)+str(num6)+str(num5)+str(num4)+str(num3)+str(num2)+str(num1)+str(num0))
+    GPR3_num = GPR3.get()
+    print(GPR3_num)
     return
 def LD_IXR1():
+    IXR1.delete(0,END)
+    IXR1.insert(0,str(num15)+str(num14)+str(num13)+str(num12)+str(num11)+str(num10)+str(num9)+str(num8)+str(num7)+str(num6)+str(num5)+str(num4)+str(num3)+str(num2)+str(num1)+str(num0))
+    IXR1_num = IXR1.get()
+    print(IXR1_num)
     return
 def LD_IXR2():
+    IXR2.delete(0,END)
+    IXR2.insert(0,str(num15)+str(num14)+str(num13)+str(num12)+str(num11)+str(num10)+str(num9)+str(num8)+str(num7)+str(num6)+str(num5)+str(num4)+str(num3)+str(num2)+str(num1)+str(num0))
+    IXR2_num = IXR2.get()
+    print(IXR2_num)
     return
 def LD_IXR3():
+    IXR3.delete(0,END)
+    IXR3.insert(0,str(num15)+str(num14)+str(num13)+str(num12)+str(num11)+str(num10)+str(num9)+str(num8)+str(num7)+str(num6)+str(num5)+str(num4)+str(num3)+str(num2)+str(num1)+str(num0))
+    IXR3_num = IXR3.get()
+    print(IXR3_num)
     return
 def LD_PC():
+    PC.delete(0,END)
+    PC.insert(0,str(num11)+str(num10)+str(num9)+str(num8)+str(num7)+str(num6)+str(num5)+str(num4)+str(num3)+str(num2)+str(num1)+str(num0))
+    PC_num = PC.get()
+    print(PC_num)
     return
 def LD_MAR():
+    MAR.delete(0,END)
+    MAR.insert(0,str(num11)+str(num10)+str(num9)+str(num8)+str(num7)+str(num6)+str(num5)+str(num4)+str(num3)+str(num2)+str(num1)+str(num0))
+    MAR_num = MAR.get()
+    print(MAR_num)
     return
 def LD_MBR():
+    MBR.delete(0,END)
+    MBR.insert(0,str(num15)+str(num14)+str(num13)+str(num12)+str(num11)+str(num10)+str(num9)+str(num8)+str(num7)+str(num6)+str(num5)+str(num4)+str(num3)+str(num2)+str(num1)+str(num0))
+    MBR_num = MBR.get()
+    print(MBR_num)
+    return
+
+TextMem = []
+def ClickInit():
+    InitText = filedialog.askopenfilename(initialdir="", title="Select a text file", filetypes=(("Text files", "*.txt"), ("all files", "*.*")))
+    newText = open(InitText,encoding = "utf-8")
+    ClearText = str((newText.read()).replace('\n', '').replace('\r', '').replace(' ',''))
+    print(ClearText)
+    print(len(ClearText))
+    # if len(ClearText) != 0 :
+    for i in range(int(len(ClearText)/4)) :
+        TextMem.insert(i,ClearText[i*4 : ((i+1)*4)])
+    print(TextMem)
+
     return
 
 
@@ -522,25 +580,25 @@ Btn2 = Button(frameBtn, text="2", padx=5, pady=15, bg="blue", fg="white", comman
 Btn1 = Button(frameBtn, text="1", padx=5, pady=15, bg="blue", fg="white", command = Click1)
 Btn0 = Button(frameBtn, text="0", padx=5, pady=15, bg="blue", fg="white", command = Click0)
     #GPR Loading
-GPR0_LD = Button(root,text="LD",padx=1, pady=1)
-GPR1_LD = Button(root,text="LD",padx=1, pady=1)
-GPR2_LD = Button(root,text="LD",padx=1, pady=1)
-GPR3_LD = Button(root,text="LD",padx=1, pady=1)
+GPR0_LD = Button(root,text="LD",padx=1, pady=1,command = LD_GPR0)
+GPR1_LD = Button(root,text="LD",padx=1, pady=1,command = LD_GPR1)
+GPR2_LD = Button(root,text="LD",padx=1, pady=1,command = LD_GPR2)
+GPR3_LD = Button(root,text="LD",padx=1, pady=1,command = LD_GPR3)
     #IXR Loading
-IXR1_LD = Button(root,text="LD",padx=1, pady=1)
-IXR2_LD = Button(root,text="LD",padx=1, pady=1)
-IXR3_LD = Button(root,text="LD",padx=1, pady=1)
+IXR1_LD = Button(root,text="LD",padx=1, pady=1,command=LD_IXR1)
+IXR2_LD = Button(root,text="LD",padx=1, pady=1,command=LD_IXR2)
+IXR3_LD = Button(root,text="LD",padx=1, pady=1,command=LD_IXR3)
     #PC Loading
-PC_LD = Button(root,text="LD",padx=1, pady=1)
+PC_LD = Button(root,text="LD",padx=1, pady=1,command=LD_PC)
     #MAR Loading
-MAR_LD = Button(root,text="LD",padx=1, pady=1)
+MAR_LD = Button(root,text="LD",padx=1, pady=1, command=LD_MAR)
     #MBR_Loading
-MBR_LD = Button(root,text="LD",padx=1, pady=1)
+MBR_LD = Button(root,text="LD",padx=1, pady=1, command = LD_MBR)
     #System Button
 Store  = Button(frameOpBtn,text="Store",padx=1, pady=1)
 StorePlus = Button(frameOpBtn,text="St+",padx=1, pady=1)
 Load = Button(frameOpBtn,text="Load",padx=1, pady=1)
-Init = Button(frameOpBtn,text="Init",padx=1, pady=1, bg="red", fg="white")
+Init = Button(frameOpBtn,text="Init",padx=1, pady=1, bg="red", fg="white", command=ClickInit)
 SS = Button(frameSysBtn,text="SS",padx=10, pady=15)
 RunBtn = Button(frameSysBtn,text="Run",padx=10, pady=15)
 

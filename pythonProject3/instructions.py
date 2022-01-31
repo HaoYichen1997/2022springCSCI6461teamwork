@@ -125,6 +125,7 @@ def ldx041(instruction):
         ixr3.set(mbr.num)
         print(ixr3.num)  # ixr3.show_panel
 
+#def str
 instruction=[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1]
 
 cal_EA(instruction)
