@@ -9,6 +9,7 @@ from tkinter import *
 from tkinter import filedialog
 from textwrap import wrap
 import PyPDF2
+import register as reg
 
 # from PIL import Image, ImageTk
 # from tkinter.filedialog import askopenfile
@@ -80,6 +81,8 @@ Privaileged = Entry(root, width=60, borderwidth=5)
 
 RunLight = Entry(frameSysBtn, width=1, borderwidth=1)
 HaltLight = Entry(frameSysBtn, width=1, borderwidth=1)
+
+import instructions as instr
 
 # GPR1 = ['0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0']
 # GPR1Value=['0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0']
@@ -545,6 +548,21 @@ def LD_MBR():
     MBR_num = MBR.get()
     print(MBR_num)
     return
+'''
+def show_Panel(register: register, panel_textbox):
+    panel_textbox.insert(str(register.num))
+'''
+#test manual entry memory
+instr.memory[1]=[0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0]
+instr.memory[2]=[0]*13+[1]*3
+instr.pc.set([0]*15+[1])
+
+def SS():
+    print("ss")
+    instr.fetch(instr.pc.num)
+    #judge what kind of instruction
+    #test for load
+    instr.ldr001(instr.ir.num)
 
 TextMem = []
 def ClickInit():
@@ -599,7 +617,7 @@ Store  = Button(frameOpBtn,text="Store",padx=1, pady=1)
 StorePlus = Button(frameOpBtn,text="St+",padx=1, pady=1)
 Load = Button(frameOpBtn,text="Load",padx=1, pady=1)
 Init = Button(frameOpBtn,text="Init",padx=1, pady=1, bg="red", fg="white", command=ClickInit)
-SS = Button(frameSysBtn,text="SS",padx=10, pady=15)
+SS = Button(frameSysBtn,text="SS",padx=10, pady=15, command= SS())
 RunBtn = Button(frameSysBtn,text="Run",padx=10, pady=15)
 
 # #canvas size

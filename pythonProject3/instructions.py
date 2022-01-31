@@ -1,4 +1,8 @@
-from register import *
+import register as reg
+
+
+#from main import *
+
 import time
 #inital memory and registers
 memory = [0] * 2048
@@ -7,20 +11,22 @@ for address in range(2048):
 
 SIXTEENBIT = [0] * 16
 TWELVEBIT = [0] * 12
-gpr0 = Gpr(SIXTEENBIT)
-gpr1 = Gpr(SIXTEENBIT)
-gpr2 = Gpr(SIXTEENBIT)
-gpr3 = Gpr(SIXTEENBIT)
-ixr1 = Ixr(SIXTEENBIT)
-ixr2 = Ixr(SIXTEENBIT)
-ixr3 = Ixr(SIXTEENBIT)
-mbr = Mbr(SIXTEENBIT)
-mar = Mar(TWELVEBIT)
-pc = Pc(TWELVEBIT)
-ir = Ir(SIXTEENBIT)
+gpr0 = reg.Gpr(SIXTEENBIT)
+gpr1 = reg.Gpr(SIXTEENBIT)
+gpr2 = reg.Gpr(SIXTEENBIT)
+gpr3 = reg.Gpr(SIXTEENBIT)
+ixr1 = reg.Ixr(SIXTEENBIT)
+ixr2 = reg.Ixr(SIXTEENBIT)
+ixr3 = reg.Ixr(SIXTEENBIT)
+mbr = reg.Mbr(SIXTEENBIT)
+mar = reg.Mar(TWELVEBIT)
+pc = reg.Pc(TWELVEBIT)
+ir = reg.Ir(SIXTEENBIT)
+import main
+def show_Panel(register: reg.register, panel_textbox):
+    panel_textbox.insert(str(register.num))
 
-
-def read_Mem_to_Mbr (mar:Mar, mbr:Mbr):
+def read_Mem_to_Mbr (mar:reg.Mar, mbr:reg.Mbr):
     address_bin = ''.join(str(i) for i in mar.num)
     address_dec = int(address_bin, 2)
     mbr.set(memory[address_dec])
@@ -28,18 +34,23 @@ def read_Mem_to_Mbr (mar:Mar, mbr:Mbr):
 
 def fetch(pcaddress):
     mar.set(pcaddress)
-    print(f"mar is {mar.num}")#mar.showpanel
+    #print(f"mar is {mar.num}")
+    #mar.show_Panel
+    show_Panel(mar, main.MAR)
     time.sleep(1)
 
     read_Mem_to_Mbr(mar, mbr)
-    print(f"mbr is {mbr.num}")#mbr.showpanel
+    #print(f"mbr is {mbr.num}")
+    #mbr.show_Panel
+    show_Panel(mbr, main.MBR)
     time.sleep(1)
 
     # 是否只有指令才能放到ir中，那fetch(EA)之类的是不需要ir？
     ir.set(mbr.num)
-    print(f"ir is {ir.num}")#ir.showpanel
+    #print(f"ir is {ir.num}")
+    #ir.show_Panel()
+    show_Panel(ir, main.IR)
     time.sleep(1)
-
 
 def cal_EA(instruction :list[16]):
     #EA is Effective Address not a const
@@ -73,26 +84,37 @@ def cal_EA(instruction :list[16]):
 
 def ldr001(instruction):
     EA = cal_EA(instruction)
+
     address = EA[-12:]  #to 12 bits for MAR
     mar.set(address)
-    #show_panel
+    #mar.show_Panel()
+    show_Panel(mar, main.MAR)
+    time.sleep(1)
+
     read_Mem_to_Mbr(mar, mbr)
-    #mbr.show_panel
+    #mbr.show_Panel()
+    time.sleep(1)
+
     if instruction[6] == 0 and instruction[7] == 0:
         gpr0.set(mbr.num)
-        print(gpr0.num) #gpr0.show_panel
+        #print(gpr0.num)
+        #gpr0.show_Panel()
     elif instruction[6] == 0 and instruction[7] == 1:
         gpr1.set(mbr.num)
-        print(gpr1.num)  # gpr1.show_panel
+        #print(gpr1.num)
+        #gpr1.show_Panel()
     elif instruction[6] == 1 and instruction[7] == 0:
         gpr2.set(mbr.num)
-        print(gpr2.num)  # gpr2.show_panel
+        #print(gpr2.num)
+        #gpr2.show_Panel()
     elif instruction[6] == 1 and instruction[7] == 1:
         gpr3.set(mbr.num)
-        print(gpr3.num)  # gpr3.show_panel
+        #print(gpr3.num)
+        #gpr3.show_Panel()
 
 def lda003(instruction):
     EA = cal_EA(instruction)
+
     if instruction[6] == 0 and instruction[7] == 0:
         gpr0.set(EA)
         print(gpr0.num)  # gpr0.show_panel
@@ -126,6 +148,6 @@ def ldx041(instruction):
         print(ixr3.num)  # ixr3.show_panel
 
 #def str
-instruction=[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1]
+#instruction=[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1]
 
-cal_EA(instruction)
+#cal_EA(instruction)
