@@ -10,7 +10,8 @@ from tkinter import filedialog
 from textwrap import wrap
 import PyPDF2
 import register as reg
-
+import instructions as instr
+import time
 # from PIL import Image, ImageTk
 # from tkinter.filedialog import askopenfile
 
@@ -81,8 +82,6 @@ Privaileged = Entry(root, width=60, borderwidth=5)
 
 RunLight = Entry(frameSysBtn, width=1, borderwidth=1)
 HaltLight = Entry(frameSysBtn, width=1, borderwidth=1)
-
-import instructions as instr
 
 # GPR1 = ['0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0']
 # GPR1Value=['0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0']
@@ -548,21 +547,99 @@ def LD_MBR():
     MBR_num = MBR.get()
     print(MBR_num)
     return
-'''
-def show_Panel(register: register, panel_textbox):
-    panel_textbox.insert(str(register.num))
-'''
+
+def show_Reg_to_Panel(a: str, num):    #test for uniform update
+    if a == "mar":
+        MAR.delete(0, END)
+        MAR.insert(0, ''.join(str(i) for i in num))
+    elif a == "mbr":
+        MBR.delete(0, END)
+        MBR.insert(0, ''.join(str(i) for i in num))
+    elif a == "ir":
+        IR.delete(0, END)
+        IR.insert(0, ''.join(str(i) for i in num))
+    elif a == "gpr0":
+        GPR0.delete(0, END)
+        GPR0.insert(0, ''.join(str(i) for i in num))
+    elif a == "gpr1":
+        GPR1.delete(0, END)
+        GPR1.insert(0, ''.join(str(i) for i in num))
+    elif a == "gpr2":
+        GPR2.delete(0, END)
+        GPR2.insert(0, ''.join(str(i) for i in num))
+    elif a == "gpr3":
+        GPR3.delete(0, END)
+        GPR3.insert(0, ''.join(str(i) for i in num))
+    elif a == "ixr1":
+        IXR1.delete(0, END)
+        IXR1.insert(0, ''.join(str(i) for i in num))
+    elif a == "ixr2":
+        IXR2.delete(0, END)
+        IXR2.insert(0, ''.join(str(i) for i in num))
+    elif a == "ixr3":
+        IXR3.delete(0, END)
+        IXR3.insert(0, ''.join(str(i) for i in num))
+
+    else: print("incorrect name of regs")
+def show_Fetch(result):
+
+    for i in range(0, len(result), 2):
+        show_Reg_to_Panel(result[i], result[i+1])
+
+def show_Ldr001(result):
+    for i in range(0, len(result), 2):
+        show_Reg_to_Panel(result[i], result[i+1])
+
+
 #test manual entry memory
-instr.memory[1]=[0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0]
-instr.memory[2]=[0]*13+[1]*3
-instr.pc.set([0]*15+[1])
+fetch_mar = [0]*12
+fetch_mbr = [0]*16
+fetch_ir = [0]*16
+instr.ixr1.set([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1])
+instr.memory[1] = [1, 0, 1, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0]
+instr.memory[2] = [0]*13+[1]*3
+instr.memory[7] = [0]*12+[1]*4
+instr.pc.set([0]*11+[1])
+
+def run_Single_Step():
+    opcode = int("".join(str(i) for i in instr.ir.num[:6]), 2)
+    if opcode == 1:
+        ldr001_result = instr.ldr001(instr.ir.num)
+        show_Ldr001(ldr001_result)
+        print('001', ldr001_result)
+    elif opcode == 2:
+        str002_result = instr.str002(instr.ir.num)
+        print('002', str002_result)
+        show_Ldr001(str002_result)
+    elif opcode == 3:
+        lda003_result = instr.lda003(instr.ir.num)
+        print('003', lda003_result)
+        show_Ldr001(lda003_result)
+    elif opcode == 41:
+        ldx041_result = instr.ldx041(instr.ir.num)
+        print('041', ldx041_result)
+        show_Ldr001(ldx041_result)
+    elif opcode == 42:
+        stx042_result = instr.stx042(instr.ir.num)
+        print('042', stx042_result)
+        show_Ldr001(stx042_result)
+    else: print("incorrect opcode")
 
 def SS():
     print("ss")
-    instr.fetch(instr.pc.num)
-    #judge what kind of instruction
-    #test for load
-    instr.ldr001(instr.ir.num)
+    fetch_result = instr.fetch(instr.pc.num)
+    show_Fetch(fetch_result)
+    print(fetch_result)
+    #time.sleep(20)
+    run_Single_Step()
+    print(instr.memory[15])
+    '''
+    opcode = int("".join(str(i) for i in instr.ir.num[:6]), 2)
+    if opcode == 1:
+        ldr001_result=instr.ldr001(instr.ir.num)
+        show_Ldr001(ldr001_result)
+        print(ldr001_result)
+    '''
 
 TextMem = []
 def ClickInit():
@@ -617,7 +694,7 @@ Store  = Button(frameOpBtn,text="Store",padx=1, pady=1)
 StorePlus = Button(frameOpBtn,text="St+",padx=1, pady=1)
 Load = Button(frameOpBtn,text="Load",padx=1, pady=1)
 Init = Button(frameOpBtn,text="Init",padx=1, pady=1, bg="red", fg="white", command=ClickInit)
-SS = Button(frameSysBtn,text="SS",padx=10, pady=15, command= SS())
+SS = Button(frameSysBtn,text="SS",padx=10, pady=15, command=SS)
 RunBtn = Button(frameSysBtn,text="Run",padx=10, pady=15)
 
 # #canvas size
