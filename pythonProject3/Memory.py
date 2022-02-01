@@ -2,7 +2,7 @@ from collections import OrderedDict
 
 
 def main():
-    print("Hello World!")
+    print("Load the program")
     loadfile()
 
 
