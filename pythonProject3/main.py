@@ -491,6 +491,7 @@ def LD_GPR0():
     GPR0.delete(0,END)
     GPR0.insert(0,str(num15)+str(num14)+str(num13)+str(num12)+str(num11)+str(num10)+str(num9)+str(num8)+str(num7)+str(num6)+str(num5)+str(num4)+str(num3)+str(num2)+str(num1)+str(num0))
     GPR0_num = GPR0.get()
+    instr.gpr0.set(GPR0_num)
     print(GPR0_num)
     return
 def LD_GPR1():
@@ -527,6 +528,7 @@ def LD_IXR3():
     IXR3.delete(0,END)
     IXR3.insert(0,str(num15)+str(num14)+str(num13)+str(num12)+str(num11)+str(num10)+str(num9)+str(num8)+str(num7)+str(num6)+str(num5)+str(num4)+str(num3)+str(num2)+str(num1)+str(num0))
     IXR3_num = IXR3.get()
+    instr.ixr3.set(IXR3_num)
     print(IXR3_num)
     return
 def LD_PC():
@@ -596,7 +598,7 @@ fetch_mar = [0]*12
 fetch_mbr = [0]*16
 fetch_ir = [0]*16
 instr.ixr1.set([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1])
-instr.memory[1] = [1, 0, 1, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0]
+instr.memory[1] = [0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0]
 instr.memory[2] = [0]*13+[1]*3
 instr.memory[7] = [0]*12+[1]*4
 instr.pc.set([0]*11+[1])
@@ -633,13 +635,7 @@ def SS():
     #time.sleep(20)
     run_Single_Step()
     print(instr.memory[15])
-    '''
-    opcode = int("".join(str(i) for i in instr.ir.num[:6]), 2)
-    if opcode == 1:
-        ldr001_result=instr.ldr001(instr.ir.num)
-        show_Ldr001(ldr001_result)
-        print(ldr001_result)
-    '''
+
 
 TextMem = []
 def ClickInit():

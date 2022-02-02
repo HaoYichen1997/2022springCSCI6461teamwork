@@ -26,7 +26,7 @@ def loadfile():
 
     print(memory_dict)
 
-
+#memory[i] = i.value LDR 1 0 010
 if __name__ == "__main__":
     main()
 
