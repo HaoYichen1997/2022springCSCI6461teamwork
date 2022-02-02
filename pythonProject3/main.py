@@ -57,12 +57,6 @@ HaltLabel =Label(frameSysBtn, text="Halt")
 RunLabel =Label(frameSysBtn, text="Run")
 #Textbox(light)
 
-# GPR0 = ['0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0']
-# GPR0Value=['0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0']
-# for i in range(len(GPR0)) :
-#     GPR0[i] = Entry(root, width=1, borderwidth=3)
-#     GPR0[i].insert(0, "" + str(GPR0Value[i]))
-#     GPR0[i].grid(row=0, column=i+1)
 
 GPR0 = Entry(root, width=60, borderwidth=5,)
 GPR1 = Entry(root, width=60, borderwidth=5)
@@ -83,49 +77,6 @@ Privaileged = Entry(root, width=60, borderwidth=5)
 RunLight = Entry(frameSysBtn, width=1, borderwidth=1)
 HaltLight = Entry(frameSysBtn, width=1, borderwidth=1)
 
-# GPR1 = ['0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0']
-# GPR1Value=['0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0']
-# for i in range(len(GPR1)) :
-#     GPR1[i] = Entry(root, width=1, borderwidth=3)
-#     GPR1[i].insert(0, "" + str(GPR1Value[i]))
-#     GPR1[i].grid(row=1, column=i+1)
-#
-# GPR2 = ['0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0']
-# GPR2Value=['0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0','0']
-# for i in range(len(GPR2)) :
-#     GPR2[i] = Entry(root, width=1, borderwidth=3)
-#     GPR2[i].insert(0, "" + str(GPR2Value[i]))
-#     GPR2[i].grid(row=2, column=i+1)
-
-
-
-
-# GPR01 =Entry(root, width=3, borderwidth=3)
-# GPR01.insert(0,"0")
-
-# GPR11 =Entry(root, width=3, borderwidth=3)
-# GPR11.insert(0,"0")
-#
-# GPR21 =Entry(root, width=3, borderwidth=3)
-# GPR21.insert(0,"0")
-#
-# GPR31 =Entry(root, width=3, borderwidth=3)
-# GPR31.insert(0,"0")
-
-# IXR11 = Entry(root, width=3, borderwidth=3)
-# IXR11.insert(0,"0")
-#
-# IXR21 = Entry(root, width=3, borderwidth=3)
-# IXR21.insert(0,"0")
-#
-# IXR31 = Entry(root, width=3, borderwidth=3)
-# IXR31.insert(0,"0")
-
-
-#Btn Click Function
-# def Click15():
-#     Label15 = Label(root, text="15 has been clicked", bg="yellow")
-#     Label15.grid(row=15,column=0)
 #define intial value
 num15: int =0
 num14: int =0
@@ -164,16 +115,6 @@ HaltLight.insert(0,"0")
 
 
 
-# frameOperation =  LabelFrame(root, text="Operation")
-# frameOperation.grid(row=14,column=0,columnspan=1,padx=50, pady=10)
-# frameGPR =  LabelFrame(root, text="GPR")
-# frameGPR.grid(row=14,column=1,columnspan=1,padx=50, pady=10)
-# frameIXR =  LabelFrame(root, text="IXR")
-# frameIXR.grid(row=14,column=2,columnspan=1,padx=50, pady=10)
-# frameI =  LabelFrame(root, text="I")
-# frameI.grid(row=14,column=3,columnspan=1,padx=50, pady=10)
-# frameAddress =  LabelFrame(root, text="Address")
-# frameAddress.grid(row=14,column=4,columnspan=1,padx=50, pady=10)
 
 #Btn Status
 Status15 = Label(frameBtn, text="" + str(num15))
@@ -498,6 +439,7 @@ def LD_GPR1():
     GPR1.delete(0,END)
     GPR1.insert(0,str(num15)+str(num14)+str(num13)+str(num12)+str(num11)+str(num10)+str(num9)+str(num8)+str(num7)+str(num6)+str(num5)+str(num4)+str(num3)+str(num2)+str(num1)+str(num0))
     GPR1_num = GPR1.get()
+    instr.gpr1.set(GPR1_num)
     print(GPR1_num)
     return
 def LD_GPR2():
@@ -637,19 +579,19 @@ def SS():
     print(instr.memory[15])
 
 
-TextMem = []
-def ClickInit():
-    InitText = filedialog.askopenfilename(initialdir="", title="Select a text file", filetypes=(("Text files", "*.txt"), ("all files", "*.*")))
-    newText = open(InitText,encoding = "utf-8")
-    ClearText = str((newText.read()).replace('\n', '').replace('\r', '').replace(' ',''))
-    print(ClearText)
-    print(len(ClearText))
-    # if len(ClearText) != 0 :
-    for i in range(int(len(ClearText)/4)) :
-        TextMem.insert(i,ClearText[i*4 : ((i+1)*4)])
-    print(TextMem)
-
-    return
+# TextMem = []
+# def ClickInit():
+#     InitText = filedialog.askopenfilename(initialdir="", title="Select a text file", filetypes=(("Text files", "*.txt"), ("all files", "*.*")))
+#     newText = open(InitText,encoding = "utf-8")
+#     ClearText = str((newText.read()).replace('\n', '').replace('\r', '').replace(' ',''))
+#     print(ClearText)
+#     print(len(ClearText))
+#
+#     for i in range(int(len(ClearText)/4)) :
+#         TextMem.insert(i,ClearText[i*4 : ((i+1)*4)])
+#     print(TextMem)
+#
+#     return
 
 
 #Btn
@@ -693,45 +635,6 @@ Init = Button(frameOpBtn,text="Init",padx=1, pady=1, bg="red", fg="white", comma
 SS = Button(frameSysBtn,text="SS",padx=10, pady=15, command=SS)
 RunBtn = Button(frameSysBtn,text="Run",padx=10, pady=15)
 
-# #canvas size
-# canvas = tk.Canvas(root, width=600, height=300, bg="#20bebe")
-# canvas.grid(columnspan=3)
-
-# #logo
-# logo = Image.open('touxiang.jpg')
-# logo = ImageTk.PhotoImage(logo)
-# logo_label = tk.Label(image=logo)
-# logo_label.image = logo
-# logo_label.grid(column=1,row=0)
-#
-# #instructions
-# instructions = tk.Label(root, text="Select a PDF file", font="Raleway")
-# instructions.grid(columnspan=3, column=0, row=1)
-#
-# def open_file():
-#     browse_text.set("loading")
-#     file = askopenfile(parent=root, mode='rb', title="Choose a file", filetypes=[("Pdf File","*.pdf")])
-#     if file:
-#         read_pdf = PyPDF2.PdfFileReader(file)
-#         page = read_pdf.getPage(0)
-#         page_content = page.extractText()
-#         #text_box
-#         text_box = tk.Text(root, height=10, width=50, pady=15)
-#         text_box.insert(1.0,page_content)
-#         text_box.tag_configure("center", justify="center")
-#         text_box.tag_add("center", 1.0, "end")
-#         text_box.grid(column=1, row=3)
-#
-# #browse_button
-# browse_text = tk.StringVar()
-# browse_btn= tk.Button(root, textvariable=browse_text, command=lambda:open_file(),font="Raleway",bg="#20bebe", fg="white", height=2, width=15)
-# browse_text.set("Browse")
-# browse_btn.grid(column=1,row=2)
-#
-# canvas = tk.Canvas(root, width=600, height=300, bg="#20bebe")
-# canvas.grid(columnspan=3)
-#
-# root.wm_title("6461 Team Project")
 
 
 #grid
@@ -761,13 +664,7 @@ GPR0.grid(row=0,column=1)
 GPR1.grid(row=1,column=1)
 GPR2.grid(row=2,column=1)
 GPR3.grid(row=3,column=1)
-# GPR01.grid(row=0,column=1)
-# GPR11.grid(row=1,column=1)
-# GPR21.grid(row=2,column=1)
-# GPR31.grid(row=3,column=1)
-# IXR11.grid(row=5,column=1)
-# IXR21.grid(row=6,column=1)
-# IXR31.grid(row=7,column=1)
+
 IXR1.grid(row=5,column=1)
 IXR2.grid(row=6,column=1)
 IXR3.grid(row=7,column=1)
@@ -829,17 +726,6 @@ SS.grid(row=1,column=0)
 SpaceSSRUN.grid(row=1,column=2)
 RunBtn.grid(row=1,column=3)
 
-# Btn10.grid(row=14,column=5)
-# Btn9.grid(row=14,column=6)
-# Btn8.grid(row=14,column=7)
-# Btn7.grid(row=14,column=8)
-# Btn6.grid(row=14,column=9)
-# Btn5.grid(row=14,column=10)
-# Btn4.grid(row=14,column=11)
-# Btn3.grid(row=14,column=12)
-# Btn2.grid(row=14,column=13)
-# Btn1.grid(row=14,column=14)
-# Btn0.grid(row=14,column=15)
 
 
     #Button status
