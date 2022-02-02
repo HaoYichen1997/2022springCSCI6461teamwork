@@ -95,6 +95,7 @@ num2: int =0
 num1: int =0
 num0: int =0
 
+
 GPR0.insert(0,"0000000000000000")
 GPR1.insert(0,"0000000000000000")
 GPR2.insert(0,"0000000000000000")
@@ -112,6 +113,8 @@ Privaileged.insert(0,"0")
 RunLight.insert(0,"0")
 HaltLight.insert(0,"0")
 
+MAR_num = ''
+MBR_num = ''
 
 
 
@@ -446,24 +449,28 @@ def LD_GPR2():
     GPR2.delete(0,END)
     GPR2.insert(0,str(num15)+str(num14)+str(num13)+str(num12)+str(num11)+str(num10)+str(num9)+str(num8)+str(num7)+str(num6)+str(num5)+str(num4)+str(num3)+str(num2)+str(num1)+str(num0))
     GPR2_num = GPR2.get()
+    instr.gpr2.set(GPR2_num)
     print(GPR2_num)
     return
 def LD_GPR3():
     GPR3.delete(0,END)
     GPR3.insert(0,str(num15)+str(num14)+str(num13)+str(num12)+str(num11)+str(num10)+str(num9)+str(num8)+str(num7)+str(num6)+str(num5)+str(num4)+str(num3)+str(num2)+str(num1)+str(num0))
     GPR3_num = GPR3.get()
+    instr.gpr3.set(GPR3_num)
     print(GPR3_num)
     return
 def LD_IXR1():
     IXR1.delete(0,END)
     IXR1.insert(0,str(num15)+str(num14)+str(num13)+str(num12)+str(num11)+str(num10)+str(num9)+str(num8)+str(num7)+str(num6)+str(num5)+str(num4)+str(num3)+str(num2)+str(num1)+str(num0))
     IXR1_num = IXR1.get()
+    instr.ixr1.set(IXR1_num)
     print(IXR1_num)
     return
 def LD_IXR2():
     IXR2.delete(0,END)
     IXR2.insert(0,str(num15)+str(num14)+str(num13)+str(num12)+str(num11)+str(num10)+str(num9)+str(num8)+str(num7)+str(num6)+str(num5)+str(num4)+str(num3)+str(num2)+str(num1)+str(num0))
     IXR2_num = IXR2.get()
+    instr.ixr2.set(IXR2_num)
     print(IXR2_num)
     return
 def LD_IXR3():
@@ -477,18 +484,23 @@ def LD_PC():
     PC.delete(0,END)
     PC.insert(0,str(num11)+str(num10)+str(num9)+str(num8)+str(num7)+str(num6)+str(num5)+str(num4)+str(num3)+str(num2)+str(num1)+str(num0))
     PC_num = PC.get()
+    instr.pc.set(PC_num)
     print(PC_num)
     return
 def LD_MAR():
+    global MAR_num
     MAR.delete(0,END)
     MAR.insert(0,str(num11)+str(num10)+str(num9)+str(num8)+str(num7)+str(num6)+str(num5)+str(num4)+str(num3)+str(num2)+str(num1)+str(num0))
     MAR_num = MAR.get()
+    # instr.mar.set(MAR_num)
     print(MAR_num)
     return
 def LD_MBR():
+    global MBR_num
     MBR.delete(0,END)
     MBR.insert(0,str(num15)+str(num14)+str(num13)+str(num12)+str(num11)+str(num10)+str(num9)+str(num8)+str(num7)+str(num6)+str(num5)+str(num4)+str(num3)+str(num2)+str(num1)+str(num0))
     MBR_num = MBR.get()
+    instr.mbr.set(MBR_num)
     print(MBR_num)
     return
 
@@ -579,8 +591,39 @@ def SS():
     print(instr.memory[15])
 
 
+import instructions
+def Twoturn10(Str) :
+    sumTwo1 : int = 0
+    sumTwo: int = 0
+    global TurnString
+    TurnString = Str
+    if len(TurnString) == 16:
+        for i in range(len(TurnString)):
+            sumTwo1 = int(TurnString[i])*(2**(15-i))
+            sumTwo = sumTwo+sumTwo1
+    if len(TurnString) == 12:
+        for i in range(len(TurnString)):
+            sumTwo1 = int(TurnString[i])*(2**(11-i))
+            sumTwo = sumTwo+sumTwo1
+    return sumTwo
+def Store():
+    Store_MARnum = MAR_num
+    Store_MBRnum = MBR_num
+    for i in range(len(MBR_num)):
+         instructions.memory[Twoturn10(Store_MARnum)][i]=Store_MBRnum[i]
+    print(instructions.memory[Twoturn10(Store_MARnum)])
+    return
+def StorePlus():
+    Store_MARnum = MAR_num
+    Store_MBRnum = MBR_num
+    for i in range(len(MBR_num)):
+         instructions.memory[Twoturn10(Store_MARnum)][i]=Store_MBRnum[i]
+    print(instructions.memory[Twoturn10(Store_MARnum)])
+    return
+
+
 # TextMem = []
-# def ClickInit():
+def ClickInit():
 #     InitText = filedialog.askopenfilename(initialdir="", title="Select a text file", filetypes=(("Text files", "*.txt"), ("all files", "*.*")))
 #     newText = open(InitText,encoding = "utf-8")
 #     ClearText = str((newText.read()).replace('\n', '').replace('\r', '').replace(' ',''))
@@ -591,7 +634,7 @@ def SS():
 #         TextMem.insert(i,ClearText[i*4 : ((i+1)*4)])
 #     print(TextMem)
 #
-#     return
+  return
 
 
 #Btn
@@ -628,7 +671,7 @@ MAR_LD = Button(root,text="LD",padx=1, pady=1, command=LD_MAR)
     #MBR_Loading
 MBR_LD = Button(root,text="LD",padx=1, pady=1, command = LD_MBR)
     #System Button
-Store  = Button(frameOpBtn,text="Store",padx=1, pady=1)
+Store  = Button(frameOpBtn,text="Store",padx=1, pady=1,command=Store)
 StorePlus = Button(frameOpBtn,text="St+",padx=1, pady=1)
 Load = Button(frameOpBtn,text="Load",padx=1, pady=1)
 Init = Button(frameOpBtn,text="Init",padx=1, pady=1, bg="red", fg="white", command=ClickInit)

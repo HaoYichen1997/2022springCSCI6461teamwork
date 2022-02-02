@@ -254,3 +254,5 @@ def stx042(instruction):
         str_Mbr_to_Mem(mar, mbr)
 
     return stx042_result
+
+
