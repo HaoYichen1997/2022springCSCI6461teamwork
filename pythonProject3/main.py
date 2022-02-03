@@ -592,7 +592,7 @@ def SS():
 
 
 import instructions
-def Twoturn10(Str) :
+def BinaryTurnDec(Str) :
     sumTwo1 : int = 0
     sumTwo: int = 0
     global TurnString
@@ -606,19 +606,52 @@ def Twoturn10(Str) :
             sumTwo1 = int(TurnString[i])*(2**(11-i))
             sumTwo = sumTwo+sumTwo1
     return sumTwo
+
+
+def BinaryPlusOne(S1) :
+    Str = list(S1)
+    j: int = 0
+    for i in range(len(Str)):
+        # print(int(len(Str))- i)
+        if Str[int(len(Str)) - i - 1] == '0' and j == 0:
+            Str[int(len(Str)) - i - 1] = '1'
+            j = 0
+            break
+        elif Str[int(len(Str)) - i - 1] == '1':
+            Str[int(len(Str)) - i - 1] = '0'
+            j = 1
+        elif Str[int(len(Str)) - i - 1] == '0' and j == 1:
+            Str[int(len(Str)) - i - 1] = '1'
+            j = 0
+            break
+    S1 = ''.join(Str)
+    print(S1)
+    return S1
 def Store():
     Store_MARnum = MAR_num
     Store_MBRnum = MBR_num
     for i in range(len(MBR_num)):
-         instructions.memory[Twoturn10(Store_MARnum)][i]=Store_MBRnum[i]
-    print(instructions.memory[Twoturn10(Store_MARnum)])
+         instructions.memory[BinaryTurnDec(Store_MARnum)][i]=Store_MBRnum[i]
+    print(instructions.memory[BinaryTurnDec(Store_MARnum)])
     return
 def StorePlus():
-    Store_MARnum = MAR_num
-    Store_MBRnum = MBR_num
-    for i in range(len(MBR_num)):
-         instructions.memory[Twoturn10(Store_MARnum)][i]=Store_MBRnum[i]
-    print(instructions.memory[Twoturn10(Store_MARnum)])
+    global MAR_num
+    Store_MARnum = MAR.get()
+    Store_MBRnum = MBR.get()
+    if MAR.get() !='111111111111':
+        for i in range(len(MBR_num)):
+            instructions.memory[BinaryTurnDec(Store_MARnum)][i]=Store_MBRnum[i]
+        MAR.delete(0, END)
+        MAR.insert(0,BinaryPlusOne(Store_MARnum))
+        MAR_num=BinaryPlusOne(MAR_num)
+        print('MAR='+MAR_num)
+    elif MAR.get() =='111111111111':
+        for i in range(len(MBR_num)):
+            instructions.memory[BinaryTurnDec(Store_MARnum)][i]=Store_MBRnum[i]
+        MAR.delete(0, END)
+        MAR.insert(0, '000000000000')
+        MAR_num = '000000000000'
+        print('MAR=' + MAR_num+'已越界')
     return
 
 
@@ -672,7 +705,7 @@ MAR_LD = Button(root,text="LD",padx=1, pady=1, command=LD_MAR)
 MBR_LD = Button(root,text="LD",padx=1, pady=1, command = LD_MBR)
     #System Button
 Store  = Button(frameOpBtn,text="Store",padx=1, pady=1,command=Store)
-StorePlus = Button(frameOpBtn,text="St+",padx=1, pady=1)
+StorePlus = Button(frameOpBtn,text="St+",padx=1, pady=1,command=StorePlus)
 Load = Button(frameOpBtn,text="Load",padx=1, pady=1)
 Init = Button(frameOpBtn,text="Init",padx=1, pady=1, bg="red", fg="white", command=ClickInit)
 SS = Button(frameSysBtn,text="SS",padx=10, pady=15, command=SS)
