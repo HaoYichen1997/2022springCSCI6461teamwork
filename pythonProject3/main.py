@@ -592,6 +592,8 @@ def SS():
 
 
 import instructions
+
+    #Binary translate to Decimal
 def BinaryTurnDec(Str) :
     sumTwo1 : int = 0
     sumTwo: int = 0
@@ -607,7 +609,7 @@ def BinaryTurnDec(Str) :
             sumTwo = sumTwo+sumTwo1
     return sumTwo
 
-
+    #Binary plus one
 def BinaryPlusOne(S1) :
     Str = list(S1)
     j: int = 0
@@ -625,14 +627,14 @@ def BinaryPlusOne(S1) :
             j = 0
             break
     S1 = ''.join(Str)
-    print(S1)
+    print('+1后的二进制:'+S1)
     return S1
 def Store():
     Store_MARnum = MAR_num
     Store_MBRnum = MBR_num
     for i in range(len(MBR_num)):
          instructions.memory[BinaryTurnDec(Store_MARnum)][i]=Store_MBRnum[i]
-    print(instructions.memory[BinaryTurnDec(Store_MARnum)])
+    print('存储的MBR值'+instructions.memory[BinaryTurnDec(Store_MARnum)])
     return
 def StorePlus():
     global MAR_num
@@ -652,6 +654,11 @@ def StorePlus():
         MAR.insert(0, '000000000000')
         MAR_num = '000000000000'
         print('MAR=' + MAR_num+'已越界')
+    return
+def Load():
+    MBR.delete(0, END)
+    MBR.insert(0, ''.join(instr.memory[BinaryTurnDec(MAR.get())]))
+    print('Load MBR='+''.join(instr.memory[BinaryTurnDec(MAR.get())]))
     return
 
 
@@ -706,7 +713,7 @@ MBR_LD = Button(root,text="LD",padx=1, pady=1, command = LD_MBR)
     #System Button
 Store  = Button(frameOpBtn,text="Store",padx=1, pady=1,command=Store)
 StorePlus = Button(frameOpBtn,text="St+",padx=1, pady=1,command=StorePlus)
-Load = Button(frameOpBtn,text="Load",padx=1, pady=1)
+Load = Button(frameOpBtn,text="Load",padx=1, pady=1, command = Load)
 Init = Button(frameOpBtn,text="Init",padx=1, pady=1, bg="red", fg="white", command=ClickInit)
 SS = Button(frameSysBtn,text="SS",padx=10, pady=15, command=SS)
 RunBtn = Button(frameSysBtn,text="Run",padx=10, pady=15)
