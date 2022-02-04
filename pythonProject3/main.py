@@ -18,7 +18,7 @@ import time
 root = Tk()
 root.title("6461 Project1")
 root.geometry("1130x450")
-#Btn Frame
+# Btn Frame
 
 frameBtn =  LabelFrame(root, text="Num Button")
 frameBtn.grid(row=9,column=1,columnspan=5,padx=50, pady=10)
@@ -535,10 +535,13 @@ def show_Reg_to_Panel(a: str, num):    #test for uniform update
     elif a == "ixr3":
         IXR3.delete(0, END)
         IXR3.insert(0, ''.join(str(i) for i in num))
-
+    elif a == "halt":
+        HaltLight.delete(0, END)
+        HaltLight.insert(0, "1")
     else: print("incorrect name of regs")
 def show_Fetch(result):
-
+    HaltLight.delete(0, END)
+    HaltLight.insert(0, "0")
     for i in range(0, len(result), 2):
         show_Reg_to_Panel(result[i], result[i+1])
 
@@ -579,6 +582,10 @@ def run_Single_Step():
         stx042_result = instr.stx042(instr.ir.num)
         print('042', stx042_result)
         show_Ldr001(stx042_result)
+    elif opcode == 0:
+        halt000_result = instr.halt000()
+        print('halt')
+        show_Ldr001(halt000_result)
     else: print("incorrect opcode")
 
 def SS():
@@ -589,6 +596,13 @@ def SS():
     #time.sleep(20)
     run_Single_Step()
     print(instr.memory[15])
+
+def run_instructions():
+    print("run\n")
+    while True:
+        fetch_result = instr.fetch(instr.pc.num)
+        show_Fetch(fetch_result)
+        #pc=pc+1
 
 
 import instructions

@@ -8,6 +8,7 @@ import time
 memory = [0] * 2048
 for address in range(2048):
     memory[address] = [0] * 16
+
 #list[2048]
 #  mem[0]= [0,0,0,0,0,0,0,0,0,0,0]    list[16]
 SIXTEENBIT = [0] * 16
@@ -254,5 +255,10 @@ def stx042(instruction):
         str_Mbr_to_Mem(mar, mbr)
 
     return stx042_result
+
+def halt000():
+    halt000_result = list()
+    halt000_result.append("halt")
+    return halt000_result
 
 
