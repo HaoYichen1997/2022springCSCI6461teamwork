@@ -716,7 +716,7 @@ def ClickInit():
 #
     initText = filedialog.askopenfilename(initialdir="", title="Select a text file",
                                           filetypes=(("Text files", "*.txt"), ("all files", "*.*")))
-    with open(initText,encoding = "utf-8") as f:
+    with open(initText, encoding="utf-8") as f:
         lines = f.readlines()
 
     count = 0
