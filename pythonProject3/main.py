@@ -29,10 +29,10 @@ frameSysBtn.grid(row=9,column=6,columnspan=1,padx=50, pady=10)
 
 #Label of the panel made by Zihao Wen
     #GPR Label
-GPR0Label = Label(root, text="GPR 0(16bits)")
-GPR1Label = Label(root, text="GPR 1(16bits)")
-GPR2Label = Label(root, text="GPR 2(16bits)")
-GPR3Label = Label(root, text="GPR 3(16bits)")
+GPR0Label = Label(root, text="GRP 0(16bits)")
+GPR1Label = Label(root, text="GRP 1(16bits)")
+GPR2Label = Label(root, text="GRP 2(16bits)")
+GPR3Label = Label(root, text="GRP 3(16bits)")
     #Space between GPR & IXR
 SpaceGPRIXR = Label(root, text=" ")
     #IXR Label

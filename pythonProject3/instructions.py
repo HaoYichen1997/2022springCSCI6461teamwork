@@ -1,16 +1,19 @@
 import register as reg
 import copy
-
-#from main import *
-
 import time
+
+'''
+this module about the 16-bit instructions 
+and other instructions about memory
+'''
+
 #inital memory and registers
 memory = [0] * 2048
 for address in range(2048):
     memory[address] = [0] * 16
 
-#list[2048]
-#  mem[0]= [0,0,0,0,0,0,0,0,0,0,0]    list[16]
+#e.p. memory=list[2048]
+#  mem[0]= [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]    list[16]
 SIXTEENBIT = [0] * 16
 TWELVEBIT = [0] * 12
 gpr0 = reg.Gpr(SIXTEENBIT)
@@ -24,11 +27,8 @@ mbr = reg.Mbr(SIXTEENBIT)
 mar = reg.Mar(TWELVEBIT)
 pc = reg.Pc(TWELVEBIT)
 ir = reg.Ir(SIXTEENBIT)
-#import main
-'''
-def show_Panel(register: reg.register, panel_textbox):
-    panel_textbox.insert(str(register.num))
-'''
+
+
 def read_Mem_to_Mbr (mar:reg.Mar, mbr:reg.Mbr): #use mar mbr read mem
     address_bin = ''.join(str(i) for i in mar.num)
     address_dec = int(address_bin, 2)
@@ -50,7 +50,6 @@ def fetch(pcaddress): #take instruction from mem to ir
     fetch_result.append("mbr")
     fetch_result.append(mbr.num)
 
-    # 是否只有指令才能放到ir中，那fetch(EA)之类的是不需要ir？
     ir.set(mbr.num)
     fetch_result.append("ir")
     fetch_result.append(ir.num)
@@ -58,28 +57,44 @@ def fetch(pcaddress): #take instruction from mem to ir
 
 def cal_EA(instruction :list[16]):  #calculate EA
     #EA is Effective Address not a const
-    #EA应该是个12位数以放进MAR，但IXR是16位，最终得出EA也是16位
-    EA_result = list()
-    if instruction[8] == 0 and instruction[9] == 0:
+    #EA should be a 12 digit number to fit in MAR, but IXR is 16 bits, So EA is 16 bits
+    # if EA is indirect, we need update mar,mbr once time, I return these num as a list
+    EA_result = list()  # for return if needed
+    if instruction[8] == 0 and instruction[9] == 0:  #find the ixr number
         EA = [0]*11 + instruction[-5:]
     elif instruction[8] == 0 and instruction[9] == 1:
-        EA = [0]*16
         a = [0] * 11 + instruction[-5:]
         b = ixr1.num
-        for i in range(16):
-            EA[i] = a[i]+b[i]
+        #binary plus for ixr and address
+        a_bin = ''.join(str(i) for i in a)
+        a_dec = int(a_bin, 2)
+        b_bin = ''.join(str(i) for i in b)
+        b_dec = int(b_bin, 2)
+        c = a_dec+b_dec
+        data = bin(c)[2:].zfill(16)
+        EA=[int(num) for num in str(data)]
     elif instruction[8] == 1 and instruction[9] == 0:
         EA = [0]*16
         a = [0] * 11 + instruction[-5:]
         b = ixr2.num
-        for i in range(16):
-            EA[i] = a[i]+b[i]
+        a_bin = ''.join(str(i) for i in a)
+        a_dec = int(a_bin, 2)
+        b_bin = ''.join(str(i) for i in b)
+        b_dec = int(b_bin, 2)
+        c = a_dec + b_dec
+        data = bin(c)[2:].zfill(16)
+        EA = [int(num) for num in str(data)]
     elif instruction[8] == 1 and instruction[9] == 1:
         EA = [0]*16
         a = [0] * 11 + instruction[-5:]
         b = ixr3.num
-        for i in range(16):
-            EA[i] = a[i]+b[i]
+        a_bin = ''.join(str(i) for i in a)
+        a_dec = int(a_bin, 2)
+        b_bin = ''.join(str(i) for i in b)
+        b_dec = int(b_bin, 2)
+        c = a_dec + b_dec
+        data = bin(c)[2:].zfill(16)
+        EA = [int(num) for num in str(data)]
 
     if instruction[10] == 1:
         result = fetch(EA)
@@ -88,7 +103,8 @@ def cal_EA(instruction :list[16]):  #calculate EA
     EA_result.append(EA)
     return EA_result
 
-def ldr001(instruction):  #result is the list of regs num to panel
+def ldr001(instruction):  # load from mem to gpr
+    # result is the list of regs num to panel
     EA_result = cal_EA(instruction)
     EA = EA_result.pop()
     if len(EA_result) != 0: #indirect EA use fetch
@@ -122,7 +138,7 @@ def ldr001(instruction):  #result is the list of regs num to panel
         ldr001_result.append(gpr3.num)
     return  ldr001_result
 
-def lda003(instruction):
+def lda003(instruction): # load address to gpr
     EA_result = cal_EA(instruction)
     EA = EA_result.pop()
     if len(EA_result) != 0: #indirect EA use fetch
@@ -147,7 +163,7 @@ def lda003(instruction):
 
     return lda003_result
 
-def ldx041(instruction):
+def ldx041(instruction): # load from mem to ixr
     EA_result = cal_EA(instruction)
     EA = EA_result.pop()
     if len(EA_result) != 0:
@@ -183,14 +199,14 @@ def ldx041(instruction):
 
     return ldx041_result
 
-def str002(instruction):
+def str002(instruction): # store from gpr to mem
     EA_result = cal_EA(instruction)
     EA = EA_result.pop()
-    if len(EA_result) != 0:  # indirect EA use fetch
-        del EA_result[-2:]  # delete the "ir" and ir.num in fetch_result
+    if len(EA_result) != 0:
+        del EA_result[-2:]
     str002_result = copy.deepcopy(EA_result)
 
-    address = EA[-12:]  # to 12 bits for MAR
+    address = EA[-12:]
     mar.set(address)
     str002_result.append("mar")
     str002_result.append(mar.num)
@@ -219,7 +235,7 @@ def str002(instruction):
         str_Mbr_to_Mem(mar, mbr)
     return str002_result
 
-def stx042(instruction):
+def stx042(instruction):  # store from ixr to mem
     EA_result = cal_EA(instruction)
     EA = EA_result.pop()
     if len(EA_result) != 0:
@@ -256,7 +272,7 @@ def stx042(instruction):
 
     return stx042_result
 
-def halt000():
+def halt000():  #halt
     halt000_result = list()
     halt000_result.append("halt")
     halt000_result.append([0]*16)
