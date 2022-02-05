@@ -8,56 +8,54 @@ Date:01/21/2022
 from tkinter import *
 from tkinter import filedialog
 from textwrap import wrap
-import PyPDF2
 import register as reg
 import instructions as instr
 import time
 # from PIL import Image, ImageTk
 # from tkinter.filedialog import askopenfile
 
+
+#Basic interface made by Zihao Wen
 root = Tk()
 root.title("6461 Project1")
 root.geometry("1130x450")
-# Btn Frame
-
+# Btn Frame made by Zihao Wen
 frameBtn =  LabelFrame(root, text="Num Button")
 frameBtn.grid(row=9,column=1,columnspan=5,padx=50, pady=10)
-
 frameOpBtn =  LabelFrame(root, text="Op Button")
 frameOpBtn.grid(row=8,column=6,columnspan=1,padx=50, pady=10)
-
 frameSysBtn =  LabelFrame(root, text="Sys Button")
 frameSysBtn.grid(row=9,column=6,columnspan=1,padx=50, pady=10)
 
-
-#Label of the panel
+#Label of the panel made by Zihao Wen
+    #GPR Label
 GPR0Label = Label(root, text="GRP 0(16bits)")
 GPR1Label = Label(root, text="GRP 1(16bits)")
 GPR2Label = Label(root, text="GRP 2(16bits)")
 GPR3Label = Label(root, text="GRP 3(16bits)")
-
+    #Space between GPR & IXR
 SpaceGPRIXR = Label(root, text=" ")
-
+    #IXR Label
 IXR1Label = Label(root, text="IXR1(16bits)")
 IXR2Label = Label(root, text="IXR2(16bits)")
 IXR3Label = Label(root, text="IXR3(16bits)")
-
+    #Space between IXR and Num Button & GPR & PC
 SpaceIXROperation = Label(root, text=" ")
 SpaceGPRPC = Label(root, text=" ")
-
+    #Panel right Label
 PCLabel = Label(root, text="PC(12bits)")
 MARLabel = Label(root, text="MAR(12bits)")
 MBRLabel = Label(root, text="MBR(16bits)")
 IRLabel = Label(root, text="IR(16bits)")
 MFRLabel = Label(root, text="MFR(4bits)")
 PrivailegedLabel = Label(root, text="Privaileged(1bits)")
-
+    #Sys Button
 SpaceSSRUN = Label(frameSysBtn, text="          ")
 HaltLabel =Label(frameSysBtn, text="Halt")
 RunLabel =Label(frameSysBtn, text="Run")
-#Textbox(light)
 
 
+#Textbox(light) made by Zihao Wen
 GPR0 = Entry(root, width=60, borderwidth=5,)
 GPR1 = Entry(root, width=60, borderwidth=5)
 GPR2 = Entry(root, width=60, borderwidth=5)
@@ -77,7 +75,7 @@ Privaileged = Entry(root, width=60, borderwidth=5)
 RunLight = Entry(frameSysBtn, width=1, borderwidth=1)
 HaltLight = Entry(frameSysBtn, width=1, borderwidth=1)
 
-#define intial value
+#define intial value made by Zihao Wen
 num15: int =0
 num14: int =0
 num13: int =0
@@ -119,29 +117,27 @@ MBR_num = ''
 
 
 
-#Btn Status
+#Btn Status made by Zihao Wen
 Status15 = Label(frameBtn, text="" + str(num15))
 Status14 = Label(frameBtn, text="" + str(num14))
 Status13 = Label(frameBtn, text="" + str(num13))
 Status12 = Label(frameBtn, text="" + str(num12))
 Status11 = Label(frameBtn, text="" + str(num11))
 Status10 = Label(frameBtn, text="" + str(num10))
-
 Status9 = Label(frameBtn, text="" + str(num9))
 Status8 = Label(frameBtn, text="" + str(num8))
-
 Status7 = Label(frameBtn, text="" + str(num7))
 Status6 = Label(frameBtn, text="" + str(num6))
-
 Status5 = Label(frameBtn, text="" + str(num5))
-
 Status4 = Label(frameBtn, text="" + str(num4))
 Status3 = Label(frameBtn, text="" + str(num3))
 Status2 = Label(frameBtn, text="" + str(num2))
 Status1 = Label(frameBtn, text="" + str(num1))
 Status0 = Label(frameBtn, text="" + str(num0))
-#Click number BTN modification
-def Click15():
+
+#Click number BTN modification made by Zihao Wen
+#default button is Blue color and number 0, clicking it will change it to red and number 1. And Click again, it will be return to blue and number 0
+def Click15(): #Named by corresponding number button, such as click15 is Num Button 15's function.
     global Status15
     global num15
     global Btn15
@@ -430,7 +426,9 @@ def Click0():
     print(num0)
     return
 
-#Click LD BTN modification
+#Click LD BTN modification made by Zihao Wen
+    #Clicking LD button will trigger these function, it will load number data from all the Num Button(at the bottom of the panel) to Textbox
+        #For example, you click the LD button behind 'GPR0', GPR0 will be changed to the number of Num Button.
 def LD_GPR0():
     GPR0.delete(0,END)
     GPR0.insert(0,str(num15)+str(num14)+str(num13)+str(num12)+str(num11)+str(num10)+str(num9)+str(num8)+str(num7)+str(num6)+str(num5)+str(num4)+str(num3)+str(num2)+str(num1)+str(num0))
@@ -502,6 +500,8 @@ def LD_MBR():
     instr.mbr.set(string_to_numlist(MBR_num))
     print(MBR_num)
     return
+
+
 def string_to_numlist(str):
     return [int(num) for num in str]
 
@@ -631,7 +631,7 @@ def run_instructions():
         time.sleep(4)
 
 
-    #Binary translate to Decimal
+    #Binary translate to Decimal made by Zihao Wen
 def BinaryTurnDec(Str) :
     sumTwo1 : int = 0
     sumTwo: int = 0
@@ -647,7 +647,7 @@ def BinaryTurnDec(Str) :
             sumTwo = sumTwo+sumTwo1
     return sumTwo
 
-    #Binary plus one
+#Binary plus one, it can be used Binary number plus one,and return the results made by Zihao Wen
 def BinaryPlusOne(S1) :
     Str = list(S1)
     j: int = 0
@@ -667,6 +667,7 @@ def BinaryPlusOne(S1) :
     S1 = ''.join(Str)
     print('Binary Plus results:'+S1)
     return S1
+#Store button's function, it will store data from MAR&MBR BOX to Memory made by Zihao Wen
 def Store():
     Store_MARnum = MAR_num
     Store_MBRnum = MBR_num
@@ -674,6 +675,7 @@ def Store():
          instr.memory[BinaryTurnDec(Store_MARnum)][i]=int(Store_MBRnum[i])
     # print('MBR Value'+''.join(instr.memory[BinaryTurnDec(Store_MARnum)]))
     return
+#Store button's function, it will store data from MAR&MBR BOX to Memory, and MAR's binary number will plus one made by Zihao Wen
 def StorePlus():
     global MAR_num
     Store_MARnum = MAR.get()
@@ -693,6 +695,7 @@ def StorePlus():
         MAR_num = '000000000000'
         print('MAR=' + MAR_num+'is out of range')
     return
+#Load number from Memory made by Zihao Wen
 def Load():
     MBR.delete(0, END)
     temp1=[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
@@ -737,8 +740,8 @@ def ClickInit():
 
 
 
-#Btn
-    #Button
+#Btn made by Zihao Wen
+    #Num Button
 Btn15 = Button(frameBtn, text="15", padx=5, pady=15, bg="blue", fg="white", command = Click15)
 Btn14 = Button(frameBtn, text="14", padx=5, pady=15, bg="blue", fg="white", command = Click14)
 Btn13 = Button(frameBtn, text="13", padx=5, pady=15, bg="blue", fg="white", command = Click13)
@@ -755,22 +758,22 @@ Btn3 = Button(frameBtn, text="3", padx=5, pady=15, bg="blue", fg="white", comman
 Btn2 = Button(frameBtn, text="2", padx=5, pady=15, bg="blue", fg="white", command = Click2)
 Btn1 = Button(frameBtn, text="1", padx=5, pady=15, bg="blue", fg="white", command = Click1)
 Btn0 = Button(frameBtn, text="0", padx=5, pady=15, bg="blue", fg="white", command = Click0)
-    #GPR Loading
+    #GPR LD Button
 GPR0_LD = Button(root,text="LD",padx=1, pady=1,command = LD_GPR0)
 GPR1_LD = Button(root,text="LD",padx=1, pady=1,command = LD_GPR1)
 GPR2_LD = Button(root,text="LD",padx=1, pady=1,command = LD_GPR2)
 GPR3_LD = Button(root,text="LD",padx=1, pady=1,command = LD_GPR3)
-    #IXR Loading
+    #IXR LD Button
 IXR1_LD = Button(root,text="LD",padx=1, pady=1,command=LD_IXR1)
 IXR2_LD = Button(root,text="LD",padx=1, pady=1,command=LD_IXR2)
 IXR3_LD = Button(root,text="LD",padx=1, pady=1,command=LD_IXR3)
-    #PC Loading
+    #PC LD Button
 PC_LD = Button(root,text="LD",padx=1, pady=1,command=LD_PC)
-    #MAR Loading
+    #MAR LD Button
 MAR_LD = Button(root,text="LD",padx=1, pady=1, command=LD_MAR)
-    #MBR_Loading
+    #MBR_LD Button
 MBR_LD = Button(root,text="LD",padx=1, pady=1, command = LD_MBR)
-    #System Button
+    #System Button == Sys Button
 Store  = Button(frameOpBtn,text="Store",padx=1, pady=1,command=Store)
 StorePlus = Button(frameOpBtn,text="St+",padx=1, pady=1,command=StorePlus)
 Load = Button(frameOpBtn,text="Load",padx=1, pady=1, command = Load)
@@ -780,7 +783,7 @@ RunBtn = Button(frameSysBtn,text="Run",padx=10, pady=15,command=run_instructions
 
 
 
-#grid
+#grid, it is the layout of the whole panel made by Zihao Wen
 
     #Label
 GPR0Label.grid(row=0,column=0)
@@ -793,8 +796,6 @@ IXR2Label.grid(row=6,column=0)
 IXR3Label.grid(row=7,column=0)
 SpaceIXROperation.grid(row=8,column=0)
 
-
-
 SpaceGPRPC.grid(row=0,column=4)
 PCLabel.grid(row=0,column=5)
 MARLabel.grid(row=1,column=5)
@@ -802,7 +803,7 @@ MBRLabel.grid(row=2,column=5)
 IRLabel.grid(row=3,column=5)
 MFRLabel.grid(row=4,column=5)
 PrivailegedLabel.grid(row=5,column=5)
-#Entry
+    #Entry
 GPR0.grid(row=0,column=1)
 GPR1.grid(row=1,column=1)
 GPR2.grid(row=2,column=1)
@@ -812,7 +813,7 @@ IXR1.grid(row=5,column=1)
 IXR2.grid(row=6,column=1)
 IXR3.grid(row=7,column=1)
 
-#Right panel
+    #Right panel
 PC.grid(row=0,column=6)
 MAR.grid(row=1,column=6)
 MBR.grid(row=2,column=6)
@@ -823,10 +824,6 @@ HaltLabel.grid(row=1,column=4,rowspan=5)
 RunLabel.grid(row=1,column=5,rowspan=5)
 HaltLight.grid(row=2,column=4)
 RunLight.grid(row=2,column=5)
-
-
-
-
 
     #Button
 Btn15.grid(row=14,column=0)
@@ -845,7 +842,7 @@ Btn3.grid(row=14,column=12)
 Btn2.grid(row=14,column=13)
 Btn1.grid(row=14,column=14)
 Btn0.grid(row=14,column=15)
-    # loading button
+    # LD button
 GPR0_LD.grid(row=0,column=3)
 GPR1_LD.grid(row=1,column=3)
 GPR2_LD.grid(row=2,column=3)
@@ -859,8 +856,7 @@ PC_LD.grid(row=0,column=7)
 MAR_LD.grid(row=1,column=7)
 MBR_LD.grid(row=2,column=7)
 
-#system Button grid
-
+    #system Button grid
 Store.grid(row=7,column=7)
 StorePlus.grid(row=7,column=8)
 Load.grid(row=7,column=9)
@@ -868,8 +864,6 @@ Init.grid(row=7,column=10)
 SS.grid(row=1,column=0)
 SpaceSSRUN.grid(row=1,column=2)
 RunBtn.grid(row=1,column=3)
-
-
 
     #Button status
 Status15.grid(row=15,column=0)
