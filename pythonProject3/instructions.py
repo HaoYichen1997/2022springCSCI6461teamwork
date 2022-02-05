@@ -259,6 +259,7 @@ def stx042(instruction):
 def halt000():
     halt000_result = list()
     halt000_result.append("halt")
+    halt000_result.append([0]*16)
     return halt000_result
 
 
