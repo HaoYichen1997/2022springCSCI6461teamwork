@@ -699,8 +699,13 @@ def StorePlus():
     return
 def Load():
     MBR.delete(0, END)
-    MBR.insert(0, ''.join(instr.memory[BinaryTurnDec(MAR.get())]))
-    print('Load MBR='+''.join(instr.memory[BinaryTurnDec(MAR.get())]))
+    temp1=[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
+    # print(range(len(instr.memory[BinaryTurnDec(MAR.get())])))
+    for i in range(len(instr.memory[BinaryTurnDec(MAR.get())])):
+        print(temp1[i])
+        temp1[i] =  str(instr.memory[BinaryTurnDec(MAR.get())][i])
+    MBR.insert(0, ''.join(temp1))
+    # print('Load MBR='+''.join(instr.memory[BinaryTurnDec(MAR.get())]))
     return
 
 
@@ -741,7 +746,7 @@ def ClickInit():
             data_num += 1
             print(instr.memory.index(item) , content)
     print(data_num)
-  
+
 
 
 #Btn
