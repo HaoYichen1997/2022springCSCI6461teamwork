@@ -631,8 +631,6 @@ def run_instructions():
         time.sleep(4)
 
 
-import instructions
-
     #Binary translate to Decimal
 def BinaryTurnDec(Str) :
     sumTwo1 : int = 0
@@ -667,14 +665,14 @@ def BinaryPlusOne(S1) :
             j = 0
             break
     S1 = ''.join(Str)
-    print('+1后的二进制:'+S1)
+    print('Binary Plus results:'+S1)
     return S1
 def Store():
     Store_MARnum = MAR_num
     Store_MBRnum = MBR_num
     for i in range(len(MBR_num)):
-         instructions.memory[BinaryTurnDec(Store_MARnum)][i]=Store_MBRnum[i]
-    print('存储的MBR值'+instructions.memory[BinaryTurnDec(Store_MARnum)])
+         instr.memory[BinaryTurnDec(Store_MARnum)][i]=int(Store_MBRnum[i])
+    # print('MBR Value'+''.join(instr.memory[BinaryTurnDec(Store_MARnum)]))
     return
 def StorePlus():
     global MAR_num
@@ -682,38 +680,33 @@ def StorePlus():
     Store_MBRnum = MBR.get()
     if MAR.get() !='111111111111':
         for i in range(len(MBR_num)):
-            instructions.memory[BinaryTurnDec(Store_MARnum)][i]=Store_MBRnum[i]
+            instr.memory[BinaryTurnDec(Store_MARnum)][i]=int(Store_MBRnum[i])
         MAR.delete(0, END)
         MAR.insert(0,BinaryPlusOne(Store_MARnum))
         MAR_num=BinaryPlusOne(MAR_num)
         print('MAR='+MAR_num)
     elif MAR.get() =='111111111111':
         for i in range(len(MBR_num)):
-            instructions.memory[BinaryTurnDec(Store_MARnum)][i]=Store_MBRnum[i]
+            instr.memory[BinaryTurnDec(Store_MARnum)][i]=int(Store_MBRnum[i])
         MAR.delete(0, END)
         MAR.insert(0, '000000000000')
         MAR_num = '000000000000'
-        print('MAR=' + MAR_num+'已越界')
+        print('MAR=' + MAR_num+'is out of range')
     return
 def Load():
     MBR.delete(0, END)
-    MBR.insert(0, ''.join(instr.memory[BinaryTurnDec(MAR.get())]))
-    print('Load MBR='+''.join(instr.memory[BinaryTurnDec(MAR.get())]))
+    temp1=[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
+    # print(range(len(instr.memory[BinaryTurnDec(MAR.get())])))
+    for i in range(len(instr.memory[BinaryTurnDec(MAR.get())])):
+        print(temp1[i])
+        temp1[i] =  str(instr.memory[BinaryTurnDec(MAR.get())][i])
+    MBR.insert(0, ''.join(temp1))
+    # print('Load MBR='+''.join(instr.memory[BinaryTurnDec(MAR.get())]))
     return
 
 
 # TextMem = []
 def ClickInit():
-#     InitText = filedialog.askopenfilename(initialdir="", title="Select a text file", filetypes=(("Text files", "*.txt"), ("all files", "*.*")))
-#     newText = open(InitText,encoding = "utf-8")
-#     ClearText = str((newText.read()).replace('\n', '').replace('\r', '').replace(' ',''))
-#     print(ClearText)
-#     print(len(ClearText))
-#
-#     for i in range(int(len(ClearText)/4)) :
-#         TextMem.insert(i,ClearText[i*4 : ((i+1)*4)])
-#     print(TextMem)
-#
     initText = filedialog.askopenfilename(initialdir="", title="Select a text file",
                                           filetypes=(("Text files", "*.txt"), ("all files", "*.*")))
     with open(initText, encoding="utf-8") as f:
@@ -741,7 +734,7 @@ def ClickInit():
             data_num += 1
             print(instr.memory.index(item) , content)
     print(data_num)
-  
+
 
 
 #Btn
