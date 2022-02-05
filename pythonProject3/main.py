@@ -701,7 +701,6 @@ def Load():
     temp1=[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
     # print(range(len(instr.memory[BinaryTurnDec(MAR.get())])))
     for i in range(len(instr.memory[BinaryTurnDec(MAR.get())])):
-        print(temp1[i])
         temp1[i] =  str(instr.memory[BinaryTurnDec(MAR.get())][i])
     MBR.insert(0, ''.join(temp1))
     # print('Load MBR='+''.join(instr.memory[BinaryTurnDec(MAR.get())]))
