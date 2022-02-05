@@ -544,10 +544,14 @@ def show_Reg_to_Panel(a: str, num):    #test for uniform update
     elif a == "halt":
         HaltLight.delete(0, END)
         HaltLight.insert(0, "1")
+        RunLight.delete(0, END)
+        RunLight.insert(0, "0")
     else: print("incorrect name of regs")
 def show_Fetch(result):
     HaltLight.delete(0, END)
     HaltLight.insert(0, "0")
+    RunLight.delete(0, END)
+    RunLight.insert(0, "1")
     show_Reg_to_Panel('pc',instr.pc.num)
     for i in range(0, len(result), 2):
         show_Reg_to_Panel(result[i], result[i+1])
@@ -561,56 +565,44 @@ def show_general(result):
         show_Reg_to_Panel(result[i], result[i+1])
 
 
-#test manual entry memory
-'''
-fetch_mar = [0]*12
-fetch_mbr = [0]*16
-fetch_ir = [0]*16
-instr.ixr1.set([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1])
-instr.memory[1] = [0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0]
-instr.memory[2] = [0]*13+[1]*3
-instr.memory[7] = [0]*12+[1]*4
-instr.pc.set([0]*11+[1])
-'''
+
 
 def run_Single_Step():
     opcode = int("".join(str(i) for i in instr.ir.num[:6]), 2)
     if opcode == 1:
         ldr001_result = instr.ldr001(instr.ir.num)
         show_general(ldr001_result)
-        print('001', ldr001_result)
+        print('opcode is 001')
     elif opcode == 2:
         str002_result = instr.str002(instr.ir.num)
-        print('002', str002_result)
+        print('opcode is 002')
         show_general(str002_result)
     elif opcode == 3:
         lda003_result = instr.lda003(instr.ir.num)
-        print('003', lda003_result)
+        print('opcode is 003')
         show_general(lda003_result)
     elif opcode == 33:
         ldx041_result = instr.ldx041(instr.ir.num)
-        print('041', ldx041_result)
+        print('opcode is 041')
         show_general(ldx041_result)
     elif opcode == 34:
         stx042_result = instr.stx042(instr.ir.num)
-        print('042', stx042_result)
+        print('opcode is 042')
         show_general(stx042_result)
     elif opcode == 0:
         halt000_result = instr.halt000()
-        print('halt')
+        print('opcode is halt')
         show_general(halt000_result)
     else: print("incorrect opcode",opcode)
 
 def SS():
-    print("ss")
+    print("single step")
     fetch_result = instr.fetch(instr.pc.num)
     show_Fetch(fetch_result)
-    print(fetch_result)
-    #time.sleep(20)
     run_Single_Step()
 
 def run_instructions():
-    print("run\n")
+    print("run now")
     while True:
         fetch_result = instr.fetch(instr.pc.num)
         show_Fetch(fetch_result)
@@ -620,14 +612,9 @@ def run_instructions():
         pc = pc_dec+1
         data = bin(pc)[2:].zfill(16)
         instr.pc.set(string_to_numlist(str(data)))
-        #in other phase will change pc in instr
-        #put the ss() later than pc++
-        #!!!!!!!!!!!！！！！！！！！
-        #!!!!!!!!!!!!! consider later!!!!!!!!!!!!!!
-        #!!!!!!!!!!!!!!!!!！！！！
         run_Single_Step()
         if HaltLight.get() == '1':
-            print("stop")
+            print("stop now")
             break
         root.update()
         time.sleep(4)
