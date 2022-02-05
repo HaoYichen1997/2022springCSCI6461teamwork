@@ -502,10 +502,10 @@ def LD_MBR():
     instr.mbr.set(string_to_numlist(MBR_num))
     print(MBR_num)
     return
-def string_to_numlist(str):
+def string_to_numlist(str):  # turn a 16or12 bits string (in binary) to list
     return [int(num) for num in str]
 
-def show_Reg_to_Panel(a: str, num):    #test for uniform update
+def show_Reg_to_Panel(a: str, num):    #for uniform update
     if a == "mar":
         MAR.delete(0, END)
         MAR.insert(0, ''.join(str(i) for i in num))
@@ -542,15 +542,19 @@ def show_Reg_to_Panel(a: str, num):    #test for uniform update
     elif a == "halt":
         HaltLight.delete(0, END)
         HaltLight.insert(0, "1")
+        RunLight.delete(0, END)
+        RunLight.insert(0, "0")
     else: print("incorrect name of regs")
-def show_Fetch(result):
+def show_Fetch(result): #show pc,mar,mbr,ir in fetch the instruction to ir
     HaltLight.delete(0, END)
     HaltLight.insert(0, "0")
+    RunLight.delete(0, END)
+    RunLight.insert(0, "1")
     show_Reg_to_Panel('pc',instr.pc.num)
     for i in range(0, len(result), 2):
         show_Reg_to_Panel(result[i], result[i+1])
 
-def show_Ldr001(result):
+def show_Ldr001(result): #we can have speical show_panel for some instruction
     for i in range(0, len(result), 2):
         show_Reg_to_Panel(result[i], result[i+1])
 
@@ -559,56 +563,45 @@ def show_general(result):
         show_Reg_to_Panel(result[i], result[i+1])
 
 
-#test manual entry memory
-'''
-fetch_mar = [0]*12
-fetch_mbr = [0]*16
-fetch_ir = [0]*16
-instr.ixr1.set([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1])
-instr.memory[1] = [0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0]
-instr.memory[2] = [0]*13+[1]*3
-instr.memory[7] = [0]*12+[1]*4
-instr.pc.set([0]*11+[1])
-'''
 
-def run_Single_Step():
+
+def run_Single_Step(): # use opcode to select which instruction
+    # remember the opcode after instruction(in Words) are octonary
     opcode = int("".join(str(i) for i in instr.ir.num[:6]), 2)
     if opcode == 1:
         ldr001_result = instr.ldr001(instr.ir.num)
         show_general(ldr001_result)
-        print('001', ldr001_result)
+        print('instruction is 001')
     elif opcode == 2:
         str002_result = instr.str002(instr.ir.num)
-        print('002', str002_result)
+        print('instruction is 002')
         show_general(str002_result)
     elif opcode == 3:
         lda003_result = instr.lda003(instr.ir.num)
-        print('003', lda003_result)
+        print('instruction is 003')
         show_general(lda003_result)
     elif opcode == 33:
         ldx041_result = instr.ldx041(instr.ir.num)
-        print('041', ldx041_result)
+        print('instruction is 041')
         show_general(ldx041_result)
     elif opcode == 34:
         stx042_result = instr.stx042(instr.ir.num)
-        print('042', stx042_result)
+        print('instruction is 042')
         show_general(stx042_result)
     elif opcode == 0:
         halt000_result = instr.halt000()
-        print('halt')
+        print('instruction is halt')
         show_general(halt000_result)
     else: print("incorrect opcode",opcode)
 
-def SS():
-    print("ss")
+def SS(): # single step button
+    print("Single step")
     fetch_result = instr.fetch(instr.pc.num)
     show_Fetch(fetch_result)
-    print(fetch_result)
-    #time.sleep(20)
     run_Single_Step()
 
-def run_instructions():
-    print("run\n")
+def run_instructions(): # for run button
+    print("run now")
     while True:
         fetch_result = instr.fetch(instr.pc.num)
         show_Fetch(fetch_result)
@@ -616,16 +609,11 @@ def run_instructions():
         pc_bin = ''.join(str(i) for i in instr.pc.num)
         pc_dec = int(pc_bin, 2)
         pc = pc_dec+1
-        data = bin(pc)[2:].zfill(16)
+        data = bin(pc)[2:].zfill(12)
         instr.pc.set(string_to_numlist(str(data)))
-        #in other phase will change pc in instr
-        #put the ss() later than pc++
-        #!!!!!!!!!!!！！！！！！！！
-        #!!!!!!!!!!!!! consider later!!!!!!!!!!!!!!
-        #!!!!!!!!!!!!!!!!!！！！！
         run_Single_Step()
         if HaltLight.get() == '1':
-            print("stop")
+            print("stop now")
             break
         root.update()
         time.sleep(4)
