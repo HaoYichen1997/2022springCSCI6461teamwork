@@ -48,7 +48,7 @@ MARLabel = Label(root, text="MAR(12bits)")
 MBRLabel = Label(root, text="MBR(16bits)")
 IRLabel = Label(root, text="IR(16bits)")
 MFRLabel = Label(root, text="MFR(4bits)")
-PrivailegedLabel = Label(root, text="Privaileged(1bits)")
+PrivailegedLabel = Label(root, text="Privileged(1bits)")
     #Sys Button
 SpaceSSRUN = Label(frameSysBtn, text="          ")
 HaltLabel =Label(frameSysBtn, text="Halt")
