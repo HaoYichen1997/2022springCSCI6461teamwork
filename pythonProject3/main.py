@@ -502,6 +502,8 @@ def LD_MBR():
     instr.mbr.set(string_to_numlist(MBR_num))
     print(MBR_num)
     return
+
+
 def string_to_numlist(str):
     return [int(num) for num in str]
 
