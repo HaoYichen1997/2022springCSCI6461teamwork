@@ -60,7 +60,7 @@ GPR0 = Entry(root, width=60, borderwidth=5,)
 GPR1 = Entry(root, width=60, borderwidth=5)
 GPR2 = Entry(root, width=60, borderwidth=5)
 GPR3 = Entry(root, width=60, borderwidth=5)
-IXR3 = Entry(root, width=60, borderwidth=5)
+
 IXR1 = Entry(root, width=60, borderwidth=5)
 IXR2 = Entry(root, width=60, borderwidth=5)
 IXR3 = Entry(root, width=60, borderwidth=5)
@@ -694,35 +694,32 @@ def Load():
     return
 
 
-# TextMem = []
+# Init function
+# open filedialog and allow user to select a file to load into memory
 def ClickInit():
-    initText = filedialog.askopenfilename(initialdir="", title="Select a text file",
-                                          filetypes=(("Text files", "*.txt"), ("all files", "*.*")))
-    with open(initText, encoding="utf-8") as f:
-        lines = f.readlines()
-
-    count = 0
-    for line in lines:
-        count += 1
-        # delete the \n in the string
-        line = line.strip('\n')
-        # print the content in the file
-        print(f'line {count}: {line}')
-        address, data = line.split(" ")
-        # transform hex to int or binary
-        address = int(address, 16)
-        data = bin(int(data, 16))[2:].zfill(16)
-        print('address is ' + str(address) + ', data is ' + str(data))
-        # store data into memory
-        instr.memory[address] = string_to_numlist(str(data))
-    data_num = 0
-    # show the current content in memory
-    for item in instr.memory:
-        content = "".join([str(_) for _ in item])
-        if content != "0000000000000000":
-            data_num += 1
-            print(instr.memory.index(item) , content)
-    print(data_num)
+    try:
+        initText = filedialog.askopenfilename(initialdir="/pythonProject3", title="Select a text file",
+                                              filetypes=(("Text files", "*.txt"), ("all files", "*.*")))
+        with open(initText, encoding="utf-8") as f:
+            lines = f.readlines()
+        count = 0
+        for line in lines:
+            count += 1
+            line = line.strip('\n')
+            address, data = line.split(" ")
+            # transform hex to decimal or binary
+            address = int(address, 16)
+            data = bin(int(data, 16))[2:].zfill(16)
+            # store data into memory
+            instr.memory[address] = string_to_numlist(str(data))
+        print("Current contents in memory:")
+        print("Address" + "\t data")
+        for item in instr.memory:
+            content = "".join([str(_) for _ in item])
+            if content != "0000000000000000":
+                print(instr.memory.index(item), content)
+    except FileNotFoundError:
+        print('No such file or directory!')
 
 
 
