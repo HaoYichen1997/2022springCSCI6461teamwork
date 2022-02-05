@@ -39,7 +39,7 @@ SpaceGPRIXR = Label(root, text=" ")
 IXR1Label = Label(root, text="IXR1(16bits)")
 IXR2Label = Label(root, text="IXR2(16bits)")
 IXR3Label = Label(root, text="IXR3(16bits)")
-    #Space between IXR and Num Button & GPR & PC
+    #Space between IXR and Num Button & GPR & PC & etc
 SpaceIXROperation = Label(root, text=" ")
 SpaceGPRPC = Label(root, text=" ")
     #Panel right Label
