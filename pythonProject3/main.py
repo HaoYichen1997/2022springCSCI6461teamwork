@@ -714,7 +714,9 @@ def ClickInit():
 #         TextMem.insert(i,ClearText[i*4 : ((i+1)*4)])
 #     print(TextMem)
 #
-    with open('IPL.txt') as f:
+    initText = filedialog.askopenfilename(initialdir="", title="Select a text file",
+                                          filetypes=(("Text files", "*.txt"), ("all files", "*.*")))
+    with open(initText,encoding = "utf-8") as f:
         lines = f.readlines()
 
     count = 0
