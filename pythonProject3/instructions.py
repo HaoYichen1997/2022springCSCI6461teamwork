@@ -10,12 +10,12 @@ and other instructions about memory
 #inital memory and registers
 memory = [0] * 2048
 for address in range(2048):
-    memory[address] = [0] * 16
+    memory[address] = ['0'] * 16
 
 #e.p. memory=list[2048]
 #  mem[0]= [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]    list[16]
-SIXTEENBIT = [0] * 16
-TWELVEBIT = [0] * 12
+SIXTEENBIT = ['0'] * 16
+TWELVEBIT = ['0'] * 12
 gpr0 = reg.Gpr(SIXTEENBIT)
 gpr1 = reg.Gpr(SIXTEENBIT)
 gpr2 = reg.Gpr(SIXTEENBIT)
@@ -30,12 +30,12 @@ ir = reg.Ir(SIXTEENBIT)
 
 
 def read_Mem_to_Mbr (mar:reg.Mar, mbr:reg.Mbr): #use mar mbr read mem
-    address_bin = ''.join(str(i) for i in mar.num)
+    address_bin = ''.join(i for i in mar.num)
     address_dec = int(address_bin, 2)
     mbr.set(memory[address_dec])
 
-def str_Mbr_to_Mem (ar:reg.Mar, mbr:reg.Mbr): #put mbr to mem address
-    address_bin = ''.join(str(i) for i in mar.num)
+def str_Mbr_to_Mem (mar:reg.Mar, mbr:reg.Mbr): #put mbr to mem address
+    address_bin = ''.join(i for i in mar.num)
     address_dec = int(address_bin, 2)
     memory[address_dec] = mbr.num
 
@@ -60,41 +60,42 @@ def cal_EA(instruction :list[16]):  #calculate EA
     #EA should be a 12 digit number to fit in MAR, but IXR is 16 bits, So EA is 16 bits
     # if EA is indirect, we need update mar,mbr once time, I return these num as a list
     EA_result = list()  # for return if needed
-    if instruction[8] == 0 and instruction[9] == 0:  #find the ixr number
-        EA = [0]*11 + instruction[-5:]
-    elif instruction[8] == 0 and instruction[9] == 1:
-        a = [0] * 11 + instruction[-5:]
+    if instruction[8] == "0" and instruction[9] == '0':  #find the ixr number
+        EA = ['0']*11 + instruction[-5:]
+    elif instruction[8] == '0' and instruction[9] == '0':
+        a = ['0'] * 11 + instruction[-5:]
         b = ixr1.num
         #binary plus for ixr and address
-        a_bin = ''.join(str(i) for i in a)
+        a_bin = ''.join(i for i in a)
         a_dec = int(a_bin, 2)
-        b_bin = ''.join(str(i) for i in b)
+        b_bin = ''.join(i for i in b)
         b_dec = int(b_bin, 2)
         c = a_dec+b_dec
         data = bin(c)[2:].zfill(16)
-        EA=[int(num) for num in str(data)]
-    elif instruction[8] == 1 and instruction[9] == 0:
-        EA = [0]*16
-        a = [0] * 11 + instruction[-5:]
+        # ！！！！
+        EA=[num for num in str(data)]
+    elif instruction[8] == '1' and instruction[9] == '0':
+        EA = ['0']*16
+        a = ['0'] * 11 + instruction[-5:]
         b = ixr2.num
-        a_bin = ''.join(str(i) for i in a)
+        a_bin = ''.join(i for i in a)
         a_dec = int(a_bin, 2)
-        b_bin = ''.join(str(i) for i in b)
+        b_bin = ''.join(i for i in b)
         b_dec = int(b_bin, 2)
         c = a_dec + b_dec
         data = bin(c)[2:].zfill(16)
-        EA = [int(num) for num in str(data)]
-    elif instruction[8] == 1 and instruction[9] == 1:
-        EA = [0]*16
-        a = [0] * 11 + instruction[-5:]
+        EA = [num for num in str(data)]
+    elif instruction[8] == "1" and instruction[9] == "1":
+        EA = ["0"]*16
+        a = ["0"] * 11 + instruction[-5:]
         b = ixr3.num
-        a_bin = ''.join(str(i) for i in a)
+        a_bin = ''.join(i for i in a)
         a_dec = int(a_bin, 2)
-        b_bin = ''.join(str(i) for i in b)
+        b_bin = ''.join(i for i in b)
         b_dec = int(b_bin, 2)
         c = a_dec + b_dec
         data = bin(c)[2:].zfill(16)
-        EA = [int(num) for num in str(data)]
+        EA = [num for num in str(data)]
 
     if instruction[10] == 1:
         result = fetch(EA)
@@ -120,19 +121,19 @@ def ldr001(instruction):  # load from mem to gpr
     ldr001_result.append("mbr")
     ldr001_result.append(mbr.num)
 
-    if instruction[6] == 0 and instruction[7] == 0:
+    if instruction[6] == "0" and instruction[7] == "0":
         gpr0.set(mbr.num)
         ldr001_result.append("gpr0")
         ldr001_result.append(gpr0.num)
-    elif instruction[6] == 0 and instruction[7] == 1:
+    elif instruction[6] == "0" and instruction[7] == "1":
         gpr1.set(mbr.num)
         ldr001_result.append("gpr1")
         ldr001_result.append(gpr1.num)
-    elif instruction[6] == 1 and instruction[7] == 0:
+    elif instruction[6] == "1" and instruction[7] == "0":
         gpr2.set(mbr.num)
         ldr001_result.append("gpr2")
         ldr001_result.append(gpr2.num)
-    elif instruction[6] == 1 and instruction[7] == 1:
+    elif instruction[6] == "1" and instruction[7] == "1":
         gpr3.set(mbr.num)
         ldr001_result.append("gpr3")
         ldr001_result.append(gpr3.num)
@@ -144,19 +145,19 @@ def lda003(instruction): # load address to gpr
     if len(EA_result) != 0: #indirect EA use fetch
         del EA_result[-2:]  #delete the "ir" and ir.num in fetch_result
     lda003_result = copy.deepcopy(EA_result)
-    if instruction[6] == 0 and instruction[7] == 0:
+    if instruction[6] == "0" and instruction[7] == "0":
         gpr0.set(EA)
         lda003_result.append("gpr0")
         lda003_result.append(gpr0.num)
-    elif instruction[6] == 0 and instruction[7] == 1:
+    elif instruction[6] == "0" and instruction[7] == "0":
         gpr1.set(EA)
         lda003_result.append("gpr1")
         lda003_result.append(gpr1.num)
-    elif instruction[6] == 1 and instruction[7] == 0:
+    elif instruction[6] == "0" and instruction[7] == "0":
         gpr2.set(EA)
         lda003_result.append("gpr2")
         lda003_result.append(gpr2.num)
-    elif instruction[6] == 1 and instruction[7] == 1:
+    elif instruction[6] == "1" and instruction[7] == "1":
         gpr3.set(EA)
         lda003_result.append("gpr3")
         lda003_result.append(gpr3.num)
@@ -179,20 +180,20 @@ def ldx041(instruction): # load from mem to ixr
     ldx041_result.append("mbr")
     ldx041_result.append(mbr.num)
 
-    if instruction[8] == 0 and instruction[9] == 0:
+    if instruction[8] == "0" and instruction[9] == "0":
         print("IXR is 0!")
 
-    elif instruction[8] == 0 and instruction[9] == 1:
+    elif instruction[8] == "0" and instruction[9] == "1":
         ixr1.set(mbr.num)
         ldx041_result.append("ixr1")
         ldx041_result.append(ixr1.num)
 
-    elif instruction[8] == 1 and instruction[9] == 0:
+    elif instruction[8] == "1" and instruction[9] == "0":
         ixr2.set(mbr.num)
         ldx041_result.append("ixr2")
         ldx041_result.append(ixr2.num)
 
-    elif instruction[8] == 1 and instruction[9] == 1:
+    elif instruction[8] == "1" and instruction[9] == "1":
         ixr3.set(mbr.num)
         ldx041_result.append("ixr3")
         ldx041_result.append(ixr3.num)
@@ -213,22 +214,22 @@ def str002(instruction): # store from gpr to mem
 
 
 
-    if instruction[6] == 0 and instruction[7] == 0:
+    if instruction[6] == "0" and instruction[7] == "0":
         mbr.set(gpr0.num)
         str002_result.append("mbr")
         str002_result.append(mbr.num)
         str_Mbr_to_Mem(mar, mbr)
-    elif instruction[6] == 0 and instruction[7] == 1:
+    elif instruction[6] == "0" and instruction[7] == "1":
         mbr.set(gpr1.num)
         str002_result.append("mbr")
         str002_result.append(mbr.num)
         str_Mbr_to_Mem(mar, mbr)
-    elif instruction[6] == 1 and instruction[7] == 0:
+    elif instruction[6] == "1" and instruction[7] == "0":
         mbr.set(gpr2.num)
         str002_result.append("mbr")
         str002_result.append(mbr.num)
         str_Mbr_to_Mem(mar, mbr)
-    elif instruction[6] == 1 and instruction[7] == 1:
+    elif instruction[6] == "1" and instruction[7] == "1":
         mbr.set(gpr3.num)
         str002_result.append("mbr")
         str002_result.append(mbr.num)
@@ -249,22 +250,22 @@ def stx042(instruction):  # store from ixr to mem
     stx042_result.append(mar.num)
 
 
-    if instruction[8] == 0 and instruction[9] == 0:
+    if instruction[8] == "0" and instruction[9] == "0":
         print("IXR is 0!")
 
-    elif instruction[8] == 0 and instruction[9] == 1:
+    elif instruction[8] == "0" and instruction[9] == "1":
         mbr.set(ixr1.num)
         stx042_result.append("mbr")
         stx042_result.append(mbr.num)
         str_Mbr_to_Mem(mar, mbr)
 
-    elif instruction[8] == 1 and instruction[9] == 0:
+    elif instruction[8] == "1" and instruction[9] == "0":
         mbr.set(ixr2.num)
         stx042_result.append("mbr")
         stx042_result.append(mbr.num)
         str_Mbr_to_Mem(mar, mbr)
 
-    elif instruction[8] == 1 and instruction[9] == 1:
+    elif instruction[8] == "1" and instruction[9] == "1":
         mbr.set(ixr3.num)
         stx042_result.append("mbr")
         stx042_result.append(mbr.num)
@@ -275,7 +276,7 @@ def stx042(instruction):  # store from ixr to mem
 def halt000():  #halt
     halt000_result = list()
     halt000_result.append("halt")
-    halt000_result.append([0]*16)
+    halt000_result.append(["0"]*16)
     return halt000_result
 
 

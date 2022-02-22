@@ -433,63 +433,56 @@ def LD_GPR0():
     GPR0.delete(0,END)
     GPR0.insert(0,str(num15)+str(num14)+str(num13)+str(num12)+str(num11)+str(num10)+str(num9)+str(num8)+str(num7)+str(num6)+str(num5)+str(num4)+str(num3)+str(num2)+str(num1)+str(num0))
     GPR0_num = GPR0.get()
-    instr.gpr0.set(string_to_numlist(GPR0_num))
-    print(GPR0_num)
+    instr.gpr0.set(string_to_strlist(GPR0_num))
     return
 def LD_GPR1():
     GPR1.delete(0,END)
     GPR1.insert(0,str(num15)+str(num14)+str(num13)+str(num12)+str(num11)+str(num10)+str(num9)+str(num8)+str(num7)+str(num6)+str(num5)+str(num4)+str(num3)+str(num2)+str(num1)+str(num0))
     GPR1_num = GPR1.get()
-    instr.gpr1.set(string_to_numlist(GPR1_num))
-    print(GPR1_num)
+    instr.gpr1.set(string_to_strlist(GPR1_num))
     return
 def LD_GPR2():
     GPR2.delete(0,END)
     GPR2.insert(0,str(num15)+str(num14)+str(num13)+str(num12)+str(num11)+str(num10)+str(num9)+str(num8)+str(num7)+str(num6)+str(num5)+str(num4)+str(num3)+str(num2)+str(num1)+str(num0))
     GPR2_num = GPR2.get()
-    instr.gpr2.set(string_to_numlist(GPR2_num))
-    print(GPR2_num)
+    instr.gpr2.set(string_to_strlist(GPR2_num))
     return
 def LD_GPR3():
     GPR3.delete(0,END)
     GPR3.insert(0,str(num15)+str(num14)+str(num13)+str(num12)+str(num11)+str(num10)+str(num9)+str(num8)+str(num7)+str(num6)+str(num5)+str(num4)+str(num3)+str(num2)+str(num1)+str(num0))
     GPR3_num = GPR3.get()
-    instr.gpr3.set(string_to_numlist(GPR3_num))
-    print(GPR3_num)
+    instr.gpr3.set(string_to_strlist(GPR3_num))
     return
 def LD_IXR1():
     IXR1.delete(0,END)
     IXR1.insert(0,str(num15)+str(num14)+str(num13)+str(num12)+str(num11)+str(num10)+str(num9)+str(num8)+str(num7)+str(num6)+str(num5)+str(num4)+str(num3)+str(num2)+str(num1)+str(num0))
     IXR1_num = IXR1.get()
-    instr.ixr1.set(string_to_numlist(IXR1_num))
-    print(IXR1_num)
+    instr.ixr1.set(string_to_strlist(IXR1_num))
     return
 def LD_IXR2():
     IXR2.delete(0,END)
     IXR2.insert(0,str(num15)+str(num14)+str(num13)+str(num12)+str(num11)+str(num10)+str(num9)+str(num8)+str(num7)+str(num6)+str(num5)+str(num4)+str(num3)+str(num2)+str(num1)+str(num0))
     IXR2_num = IXR2.get()
-    instr.ixr2.set(string_to_numlist(IXR2_num))
-    print(IXR2_num)
+    instr.ixr2.set(string_to_strlist(IXR2_num))
     return
 def LD_IXR3():
     IXR3.delete(0,END)
     IXR3.insert(0,str(num15)+str(num14)+str(num13)+str(num12)+str(num11)+str(num10)+str(num9)+str(num8)+str(num7)+str(num6)+str(num5)+str(num4)+str(num3)+str(num2)+str(num1)+str(num0))
     IXR3_num = IXR3.get()
-    instr.ixr3.set(string_to_numlist(IXR3_num))
-    print(IXR3_num)
+    instr.ixr3.set(string_to_strlist(IXR3_num))
     return
 def LD_PC():
     PC.delete(0,END)
     PC.insert(0,str(num11)+str(num10)+str(num9)+str(num8)+str(num7)+str(num6)+str(num5)+str(num4)+str(num3)+str(num2)+str(num1)+str(num0))
     PC_num = PC.get()
-    instr.pc.set(string_to_numlist(PC_num))
+    instr.pc.set(string_to_strlist(PC_num))
     return
 def LD_MAR():
     global MAR_num
     MAR.delete(0,END)
     MAR.insert(0,str(num11)+str(num10)+str(num9)+str(num8)+str(num7)+str(num6)+str(num5)+str(num4)+str(num3)+str(num2)+str(num1)+str(num0))
     MAR_num = MAR.get()
-    instr.mar.set(string_to_numlist(MAR_num))
+    instr.mar.set(string_to_strlist(MAR_num))
     print(MAR_num)
     return
 def LD_MBR():
@@ -497,48 +490,48 @@ def LD_MBR():
     MBR.delete(0,END)
     MBR.insert(0,str(num15)+str(num14)+str(num13)+str(num12)+str(num11)+str(num10)+str(num9)+str(num8)+str(num7)+str(num6)+str(num5)+str(num4)+str(num3)+str(num2)+str(num1)+str(num0))
     MBR_num = MBR.get()
-    instr.mbr.set(string_to_numlist(MBR_num))
+    instr.mbr.set(string_to_strlist(MBR_num))
     print(MBR_num)
     return
 
 
-def string_to_numlist(str):
-    return [int(num) for num in str]
+def string_to_strlist(str):
+    return [num for num in str]
 
 def show_Reg_to_Panel(a: str, num):    #test for uniform update
     if a == "mar":
         MAR.delete(0, END)
-        MAR.insert(0, ''.join(str(i) for i in num))
+        MAR.insert(0, ''.join(i for i in num))
     elif a == "mbr":
         MBR.delete(0, END)
-        MBR.insert(0, ''.join(str(i) for i in num))
+        MBR.insert(0, ''.join(i for i in num))
     elif a == "pc":
         PC.delete(0, END)
-        PC.insert(0, ''.join(str(i) for i in num))
+        PC.insert(0, ''.join(i for i in num))
     elif a == "ir":
         IR.delete(0, END)
-        IR.insert(0, ''.join(str(i) for i in num))
+        IR.insert(0, ''.join(i for i in num))
     elif a == "gpr0":
         GPR0.delete(0, END)
-        GPR0.insert(0, ''.join(str(i) for i in num))
+        GPR0.insert(0, ''.join(i for i in num))
     elif a == "gpr1":
         GPR1.delete(0, END)
-        GPR1.insert(0, ''.join(str(i) for i in num))
+        GPR1.insert(0, ''.join(i for i in num))
     elif a == "gpr2":
         GPR2.delete(0, END)
-        GPR2.insert(0, ''.join(str(i) for i in num))
+        GPR2.insert(0, ''.join(i for i in num))
     elif a == "gpr3":
         GPR3.delete(0, END)
-        GPR3.insert(0, ''.join(str(i) for i in num))
+        GPR3.insert(0, ''.join(i for i in num))
     elif a == "ixr1":
         IXR1.delete(0, END)
-        IXR1.insert(0, ''.join(str(i) for i in num))
+        IXR1.insert(0, ''.join(i for i in num))
     elif a == "ixr2":
         IXR2.delete(0, END)
-        IXR2.insert(0, ''.join(str(i) for i in num))
+        IXR2.insert(0, ''.join(i for i in num))
     elif a == "ixr3":
         IXR3.delete(0, END)
-        IXR3.insert(0, ''.join(str(i) for i in num))
+        IXR3.insert(0, ''.join(i for i in num))
     elif a == "halt":
         HaltLight.delete(0, END)
         HaltLight.insert(0, "1")
@@ -566,7 +559,7 @@ def show_general(result):
 
 
 def run_Single_Step():
-    opcode = int("".join(str(i) for i in instr.ir.num[:6]), 2)
+    opcode = int("".join(i for i in instr.ir.num[:6]), 2)
     if opcode == 1:
         ldr001_result = instr.ldr001(instr.ir.num)
         show_general(ldr001_result)
@@ -605,12 +598,13 @@ def run_instructions():
         fetch_result = instr.fetch(instr.pc.num)
         show_Fetch(fetch_result)
         #pc=pc+1:
-        pc_bin = ''.join(str(i) for i in instr.pc.num)
+        pc_bin = ''.join(i for i in instr.pc.num)
         pc_dec = int(pc_bin, 2)
         pc = pc_dec+1
         data = bin(pc)[2:].zfill(16)
-        instr.pc.set(string_to_numlist(str(data)))
+        instr.pc.set(string_to_strlist(str(data)))
         run_Single_Step()
+        print(instr.ir.num)
         if HaltLight.get() == '1':
             print("stop now")
             break
@@ -711,7 +705,9 @@ def ClickInit():
             address = int(address, 16)
             data = bin(int(data, 16))[2:].zfill(16)
             # store data into memory
-            instr.memory[address] = string_to_numlist(str(data))
+            for i in range(16):
+                instr.memory[address][i] = data[i]
+            print(instr.memory[address])
         print("Current contents in memory:")
         print("Address" + "\t data")
         for item in instr.memory:

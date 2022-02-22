@@ -7,7 +7,7 @@ class register:
 
     def check(self, num):
         for nums in num:
-            if nums != 1 and nums != 0:
+            if nums != "1" and nums != "0":
                 return False
         return True
 
