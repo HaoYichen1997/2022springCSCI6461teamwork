@@ -653,7 +653,7 @@ def Store():
     Store_MARnum = MAR_num
     Store_MBRnum = MBR_num
     for i in range(len(MBR_num)):
-         instr.memory[BinaryTurnDec(Store_MARnum)][i]=int(Store_MBRnum[i])
+         instr.memory[BinaryTurnDec(Store_MARnum)][i]=Store_MBRnum[i]
     # print('MBR Value'+''.join(instr.memory[BinaryTurnDec(Store_MARnum)]))
     return
 #Store button's function, it will store data from MAR&MBR BOX to Memory, and MAR's binary number will plus one made by Zihao Wen
@@ -663,14 +663,14 @@ def StorePlus():
     Store_MBRnum = MBR.get()
     if MAR.get() !='111111111111':
         for i in range(len(MBR_num)):
-            instr.memory[BinaryTurnDec(Store_MARnum)][i]=int(Store_MBRnum[i])
+            instr.memory[BinaryTurnDec(Store_MARnum)][i]=Store_MBRnum[i]
         MAR.delete(0, END)
         MAR.insert(0,BinaryPlusOne(Store_MARnum))
         MAR_num=BinaryPlusOne(MAR_num)
         print('MAR='+MAR_num)
     elif MAR.get() =='111111111111':
         for i in range(len(MBR_num)):
-            instr.memory[BinaryTurnDec(Store_MARnum)][i]=int(Store_MBRnum[i])
+            instr.memory[BinaryTurnDec(Store_MARnum)][i]=Store_MBRnum[i]
         MAR.delete(0, END)
         MAR.insert(0, '000000000000')
         MAR_num = '000000000000'
@@ -679,7 +679,7 @@ def StorePlus():
 #Load number from Memory made by Zihao Wen
 def Load():
     MBR.delete(0, END)
-    temp1=[1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1]
+    temp1=["1","1","1","1","1","1","1","1","1","1","1","1","1","1","1","1"]
     # print(range(len(instr.memory[BinaryTurnDec(MAR.get())])))
     for i in range(len(instr.memory[BinaryTurnDec(MAR.get())])):
         temp1[i] =  str(instr.memory[BinaryTurnDec(MAR.get())][i])
