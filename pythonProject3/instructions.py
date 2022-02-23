@@ -1,7 +1,8 @@
 import register as reg
 import copy
 import time
-
+from tkinter import *
+# import main
 '''
 this module about the 16-bit instructions 
 and other instructions about memory
@@ -280,3 +281,17 @@ def halt000():  #halt
     return halt000_result
 
 
+# def JZ10(instruction): #Jump If Zero
+#     # result is the list of regs num to panel
+#     EA_result = cal_EA(instruction)
+#     EA = EA_result.pop()
+#     if len(EA_result) != 0:  # indirect EA use fetch
+#         del EA_result[-2:]  # delete the "ir" and ir.num in fetch_result
+#     JZ10_result = copy.deepcopy(EA_result)
+#     if instruction[8]==0 and instruction[9]==0 :
+#         main.PC.delete(0, END)
+#         main.PC.insert(0,str(JZ10_result[0]))
+#     else :
+#         main.PC.delete(0, END)
+#         main.PC.insert(main.BinaryPlusOne(main.PC.get()))
+#     return 0
