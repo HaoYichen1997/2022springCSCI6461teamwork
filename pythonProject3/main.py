@@ -547,9 +547,9 @@ def show_Fetch(result):
     for i in range(0, len(result), 2):
         show_Reg_to_Panel(result[i], result[i+1])
 
-def show_Ldr001(result):
-    for i in range(0, len(result), 2):
-        show_Reg_to_Panel(result[i], result[i+1])
+# def show_Ldr001(result):
+#     for i in range(0, len(result), 2):
+#         show_Reg_to_Panel(result[i], result[i+1])
 
 def show_general(result):
     for i in range(0, len(result), 2):
@@ -580,6 +580,10 @@ def run_Single_Step():
         stx042_result = instr.stx042(instr.ir.num)
         print('opcode is 042')
         show_general(stx042_result)
+    elif opcode == 10: #Jump if Zero
+        jp010_result = instr.JZ10(instr.ir.num)
+        print('opcode is 010')
+        show_general(jp010_result)
     elif opcode == 0:
         halt000_result = instr.halt000()
         print('opcode is halt')
