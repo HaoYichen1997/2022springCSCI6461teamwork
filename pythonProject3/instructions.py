@@ -291,7 +291,7 @@ def JZ10(instruction): #Jump If Zero
     if instruction[8]==0 and instruction[9]==0 :
         # main.PC.delete(0, END)
         # main.PC.insert(0,str(JZ10_result[0]))
-        EA_PC_dec = int(EA[0], 10)
+        EA_PC_dec = int(EA, 10)
         EA_PC_bin = bin(int(EA_PC_dec, 10))
         pc.set(EA_PC_bin.zfill(12))
         JZ10_result.append("pc")
