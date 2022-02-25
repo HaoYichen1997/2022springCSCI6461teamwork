@@ -18,17 +18,17 @@ for address in range(2048):
 #  mem[0]= [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]    list[16]
 SIXTEENBIT = ['0'] * 16
 TWELVEBIT = ['0'] * 12
-gpr0 = reg.Gpr(SIXTEENBIT)
-gpr1 = reg.Gpr(SIXTEENBIT)
-gpr2 = reg.Gpr(SIXTEENBIT)
-gpr3 = reg.Gpr(SIXTEENBIT)
-ixr1 = reg.Ixr(SIXTEENBIT)
-ixr2 = reg.Ixr(SIXTEENBIT)
-ixr3 = reg.Ixr(SIXTEENBIT)
-mbr = reg.Mbr(SIXTEENBIT)
+gpr0 = reg.Gpr(SIXTEENBIT, "gpr0")
+gpr1 = reg.Gpr(SIXTEENBIT, "gpr1")
+gpr2 = reg.Gpr(SIXTEENBIT, "gpr2")
+gpr3 = reg.Gpr(SIXTEENBIT, "gpr3")
+ixr1 = reg.Ixr(SIXTEENBIT, "ixr1")
+ixr2 = reg.Ixr(SIXTEENBIT, "ixr2")
+ixr3 = reg.Ixr(SIXTEENBIT, "ixr3")
+mbr = reg.Mbr(SIXTEENBIT, "mbr")
 mar = reg.Mar(TWELVEBIT)
 pc = reg.Pc(TWELVEBIT)
-ir = reg.Ir(SIXTEENBIT)
+ir = reg.Ir(SIXTEENBIT, "ir")
 
 
 def read_Mem_to_Mbr(mar: reg.Mar, mbr: reg.Mbr):  # use mar mbr read mem
@@ -60,7 +60,7 @@ def fetch(pcaddress):  # take instruction from mem to ir
     return fetch_result
 
 
-def cal_EA(instruction: list[16]):  # calculate EA
+def cal_EA(instruction):  # calculate EA
     # EA is Effective Address not a const
     # EA should be a 12 digit number to fit in MAR, but IXR is 16 bits, So EA is 16 bits
     # if EA is indirect, we need update mar,mbr once time, I return these num as a list
