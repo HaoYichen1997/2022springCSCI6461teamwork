@@ -2,18 +2,19 @@ import register as reg
 import copy
 import time
 from tkinter import *
+
 # import main
 '''
 this module about the 16-bit instructions 
 and other instructions about memory
 '''
 
-#inital memory and registers
+# inital memory and registers
 memory = [0] * 2048
 for address in range(2048):
     memory[address] = ['0'] * 16
 
-#e.p. memory=list[2048]
+# e.p. memory=list[2048]
 #  mem[0]= [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]    list[16]
 SIXTEENBIT = ['0'] * 16
 TWELVEBIT = ['0'] * 12
@@ -30,17 +31,19 @@ pc = reg.Pc(TWELVEBIT)
 ir = reg.Ir(SIXTEENBIT)
 
 
-def read_Mem_to_Mbr (mar:reg.Mar, mbr:reg.Mbr): #use mar mbr read mem
+def read_Mem_to_Mbr(mar: reg.Mar, mbr: reg.Mbr):  # use mar mbr read mem
     address_bin = ''.join(i for i in mar.num)
     address_dec = int(address_bin, 2)
     mbr.set(memory[address_dec])
 
-def str_Mbr_to_Mem (mar:reg.Mar, mbr:reg.Mbr): #put mbr to mem address
+
+def str_Mbr_to_Mem(mar: reg.Mar, mbr: reg.Mbr):  # put mbr to mem address
     address_bin = ''.join(i for i in mar.num)
     address_dec = int(address_bin, 2)
     memory[address_dec] = mbr.num
 
-def fetch(pcaddress): #take instruction from mem to ir
+
+def fetch(pcaddress):  # take instruction from mem to ir
     fetch_result = list()
 
     mar.set(pcaddress)
@@ -56,27 +59,28 @@ def fetch(pcaddress): #take instruction from mem to ir
     fetch_result.append(ir.num)
     return fetch_result
 
-def cal_EA(instruction :list[16]):  #calculate EA
-    #EA is Effective Address not a const
-    #EA should be a 12 digit number to fit in MAR, but IXR is 16 bits, So EA is 16 bits
+
+def cal_EA(instruction: list[16]):  # calculate EA
+    # EA is Effective Address not a const
+    # EA should be a 12 digit number to fit in MAR, but IXR is 16 bits, So EA is 16 bits
     # if EA is indirect, we need update mar,mbr once time, I return these num as a list
     EA_result = list()  # for return if needed
-    if instruction[8] == "0" and instruction[9] == '0':  #find the ixr number
-        EA = ['0']*11 + instruction[-5:]
+    if instruction[8] == "0" and instruction[9] == '0':  # find the ixr number
+        EA = ['0'] * 11 + instruction[-5:]
     elif instruction[8] == '0' and instruction[9] == '0':
         a = ['0'] * 11 + instruction[-5:]
         b = ixr1.num
-        #binary plus for ixr and address
+        # binary plus for ixr and address
         a_bin = ''.join(i for i in a)
         a_dec = int(a_bin, 2)
         b_bin = ''.join(i for i in b)
         b_dec = int(b_bin, 2)
-        c = a_dec+b_dec
+        c = a_dec + b_dec
         data = bin(c)[2:].zfill(16)
         # ！！！！
-        EA=[num for num in str(data)]
+        EA = [num for num in str(data)]
     elif instruction[8] == '1' and instruction[9] == '0':
-        EA = ['0']*16
+        EA = ['0'] * 16
         a = ['0'] * 11 + instruction[-5:]
         b = ixr2.num
         a_bin = ''.join(i for i in a)
@@ -87,7 +91,7 @@ def cal_EA(instruction :list[16]):  #calculate EA
         data = bin(c)[2:].zfill(16)
         EA = [num for num in str(data)]
     elif instruction[8] == "1" and instruction[9] == "1":
-        EA = ["0"]*16
+        EA = ["0"] * 16
         a = ["0"] * 11 + instruction[-5:]
         b = ixr3.num
         a_bin = ''.join(i for i in a)
@@ -105,15 +109,16 @@ def cal_EA(instruction :list[16]):  #calculate EA
     EA_result.append(EA)
     return EA_result
 
+
 def ldr001(instruction):  # load from mem to gpr
     # result is the list of regs num to panel
     EA_result = cal_EA(instruction)
     EA = EA_result.pop()
-    if len(EA_result) != 0: #indirect EA use fetch
-        del EA_result[-2:]  #delete the "ir" and ir.num in fetch_result
+    if len(EA_result) != 0:  # indirect EA use fetch
+        del EA_result[-2:]  # delete the "ir" and ir.num in fetch_result
     ldr001_result = copy.deepcopy(EA_result)
 
-    address = EA[-12:]  #to 12 bits for MAR
+    address = EA[-12:]  # to 12 bits for MAR
     mar.set(address)
     ldr001_result.append("mar")
     ldr001_result.append(mar.num)
@@ -138,13 +143,14 @@ def ldr001(instruction):  # load from mem to gpr
         gpr3.set(mbr.num)
         ldr001_result.append("gpr3")
         ldr001_result.append(gpr3.num)
-    return  ldr001_result
+    return ldr001_result
 
-def lda003(instruction): # load address to gpr
+
+def lda003(instruction):  # load address to gpr
     EA_result = cal_EA(instruction)
     EA = EA_result.pop()
-    if len(EA_result) != 0: #indirect EA use fetch
-        del EA_result[-2:]  #delete the "ir" and ir.num in fetch_result
+    if len(EA_result) != 0:  # indirect EA use fetch
+        del EA_result[-2:]  # delete the "ir" and ir.num in fetch_result
     lda003_result = copy.deepcopy(EA_result)
     if instruction[6] == "0" and instruction[7] == "0":
         gpr0.set(EA)
@@ -165,7 +171,8 @@ def lda003(instruction): # load address to gpr
 
     return lda003_result
 
-def ldx041(instruction): # load from mem to ixr
+
+def ldx041(instruction):  # load from mem to ixr
     EA_result = cal_EA(instruction)
     EA = EA_result.pop()
     if len(EA_result) != 0:
@@ -201,7 +208,8 @@ def ldx041(instruction): # load from mem to ixr
 
     return ldx041_result
 
-def str002(instruction): # store from gpr to mem
+
+def str002(instruction):  # store from gpr to mem
     EA_result = cal_EA(instruction)
     EA = EA_result.pop()
     if len(EA_result) != 0:
@@ -212,8 +220,6 @@ def str002(instruction): # store from gpr to mem
     mar.set(address)
     str002_result.append("mar")
     str002_result.append(mar.num)
-
-
 
     if instruction[6] == "0" and instruction[7] == "0":
         mbr.set(gpr0.num)
@@ -237,6 +243,7 @@ def str002(instruction): # store from gpr to mem
         str_Mbr_to_Mem(mar, mbr)
     return str002_result
 
+
 def stx042(instruction):  # store from ixr to mem
     EA_result = cal_EA(instruction)
     EA = EA_result.pop()
@@ -249,7 +256,6 @@ def stx042(instruction):  # store from ixr to mem
     print(address)
     stx042_result.append("mar")
     stx042_result.append(mar.num)
-
 
     if instruction[8] == "0" and instruction[9] == "0":
         print("IXR is 0!")
@@ -274,21 +280,23 @@ def stx042(instruction):  # store from ixr to mem
 
     return stx042_result
 
-def halt000():  #halt
+
+def halt000():  # halt
     halt000_result = list()
     halt000_result.append("halt")
-    halt000_result.append(["0"]*16)
+    halt000_result.append(["0"] * 16)
     return halt000_result
 
+
 # import main
-def JZ10(instruction): #Jump If Zero
+def JZ10(instruction):  # Jump If Zero
     # result is the list of regs num to panel
     EA_result = cal_EA(instruction)
     EA = EA_result.pop()
     if len(EA_result) != 0:  # indirect EA use fetch
         del EA_result[-2:]  # delete the "ir" and ir.num in fetch_result
     JZ10_result = copy.deepcopy(EA_result)
-    if instruction[8]== "0" and instruction[9]=="0" :
+    if instruction[8] == "0" and instruction[9] == "0":
         # main.PC.delete(0, END)
         # main.PC.insert(0,str(JZ10_result[0]))
         EA_PC_dec = int(EA, 10)
@@ -296,10 +304,163 @@ def JZ10(instruction): #Jump If Zero
         pc.set(EA_PC_bin.zfill(12))
         JZ10_result.append("pc")
         JZ10_result.append(pc.num)
-    else :
+    else:
         pc.set(pc.num)
         JZ10_result.append("pc")
         JZ10_result.append(pc.num)
         # main.PC.delete(0, END)
         # main.PC.insert(main.BinaryPlusOne(main.PC.get()))
     return JZ10_result
+
+
+# This function add memory to register,opcode04
+def amr(instruction):
+    amr_result = get_data_from_memory(instruction)
+    dest_reg = get_register(instruction)
+    cont_reg = string_to_int(dest_reg.num)
+    cont_EA = string_to_int(mbr.num)
+    add_result = cont_EA + cont_reg
+    if check_overflow_or_underflow(add_result):
+        return []
+    # add c(EA) AND C(r) to r
+    dest_reg.set(int_to_string(add_result))
+
+    amr_result.append(dest_reg.name)
+    amr_result.append(dest_reg.num)
+    return amr_result
+
+
+def string_to_int(content: []):
+    # if value is negative
+    if content[0] == '1':
+        return -int("".join(content[1:]), 2)
+    int_cont = int("".join(content), 2)
+    return int_cont
+
+
+def int_to_string(number: int):
+    if number < 0:
+        return ['1'] + list(str(bin(number)[3:].zfill(15)))
+    if number > 0:
+        return list(str(bin(number)[2:].zfill(16)))
+
+
+# Return the register according to instruction
+def get_register(instruction):
+    if instruction[6] == "0" and instruction[7] == "0":
+        return gpr0
+    elif instruction[6] == "0" and instruction[7] == "1":
+        return gpr1
+    elif instruction[6] == "1" and instruction[7] == "0":
+        return gpr2
+    elif instruction[6] == "1" and instruction[7] == "1":
+        return gpr3
+
+
+def get_data_from_memory(instruction):
+    # result is the list of regs num to panel
+    EA_result = cal_EA(instruction)
+    EA = EA_result.pop()
+    if len(EA_result) != 0:  # indirect EA use fetch
+        del EA_result[-2:]  # delete the "ir" and ir.num in fetch_result
+    result = copy.deepcopy(EA_result)
+
+    address = EA[-12:]
+    mar.set(address)
+    result.append("mar")
+    result.append(mar.num)
+
+    read_Mem_to_Mbr(mar, mbr)
+    result.append("mbr")
+    result.append(mbr.num)
+
+    return result
+
+
+# 05 Subtract Memory From Register
+def smr(instruction):
+    smr_result = get_data_from_memory(instruction)
+    dest_reg = get_register(instruction)
+    cont_reg = string_to_int(dest_reg.num)
+    cont_EA = string_to_int(mbr.num)
+    sub_result = cont_reg - cont_EA
+    if check_overflow_or_underflow(sub_result):
+        return []
+    dest_reg.set(int_to_string(sub_result))
+
+    smr_result.append(dest_reg.name)
+    smr_result.append(dest_reg.num)
+    return smr_result
+
+
+# 06 Add  Immediate to Register
+def air(instruction):
+    immediate = string_to_int(instruction[-5:])
+    # if Immed = 0, does nothing
+    if immediate == 0:
+        return []
+    dest_reg = get_register(instruction)
+    cont_reg = string_to_int(dest_reg.num)
+
+    # if c(r) = 0, loads r with Immed
+    if cont_reg == 0:
+        dest_reg.set(['0'] * 11 + instruction[-5:])
+
+    else:
+        add_result = cont_reg + immediate
+        if check_overflow_or_underflow(add_result):
+            return []
+        dest_reg.set(int_to_string(add_result))
+
+    air_result = [dest_reg.name, dest_reg.num]
+    return air_result
+
+
+def check_overflow_or_underflow(number):
+    if number < -32767:
+        print("Underflow!")
+        return True
+    if number > 32767:
+        print("Overflow!")
+        return True
+    return False
+
+
+# 07 Subtract  Immediate  from Register
+def sir(instruction):
+    immediate = string_to_int(instruction[-5:])
+    if immediate == 0:
+        return []
+    dest_reg = get_register(instruction)
+    cont_reg = string_to_int(dest_reg.num)
+    if cont_reg == 0:
+        dest_reg.set(int_to_string(-immediate))
+    else:
+        sub_result = cont_reg - immediate
+        if check_overflow_or_underflow(sub_result):
+            return []
+        dest_reg.num = int_to_string(sub_result)
+
+    sir_result = [dest_reg.name, dest_reg.num]
+    return sir_result
+
+
+# ******************* test for amr,smr,air ***************************
+# c[3] = 2,c[reg3] = 10
+# reg3,index0,add3
+gpr3.num = ["0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "1", "0", "1", "0"]
+memory[3] = ["0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "1", "0"]
+# add c[mem[3]] and c[reg3] to reg3, 12
+instrA = ["0", "0", "0", "1", "0", "0", "1", "1", "0", "0", "0", "0", "0", "0", "1", "1"]
+# sub c[mem[3]] from c[reg3],10
+instrS = ["0", "0", "0", "1", "0", "1", "1", "1", "0", "0", "0", "0", "0", "0", "1", "1"]
+# add immediate 3 to c[reg3]= 10,13
+instrAi = ["0", "0", "0", "1", "1", "0", "1", "1", "0", "0", "0", "0", "0", "0", "1", "1"]
+# 13-15
+instrSi = ["0", "0", "0", "1", "1", "1", "1", "1", "0", "0", "0", "0", "1", "1", "1", "1"]
+print(amr(instrA))
+print(smr(instrS))
+print(air(instrAi))
+print(sir(instrSi))
+
+# *************************************************************
