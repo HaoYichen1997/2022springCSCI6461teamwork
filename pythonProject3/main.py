@@ -11,6 +11,7 @@ from textwrap import wrap
 import register as reg
 import instructions as instr
 import time
+import CacheWindows
 # from PIL import Image, ImageTk
 # from tkinter.filedialog import askopenfile
 
@@ -56,7 +57,7 @@ RunLabel =Label(frameSysBtn, text="Run")
 
 
 #Textbox(light) made by Zihao Wen
-GPR0 = Entry(root, width=60, borderwidth=5,)
+GPR0 = Entry(root, width=60, borderwidth=5)
 GPR1 = Entry(root, width=60, borderwidth=5)
 GPR2 = Entry(root, width=60, borderwidth=5)
 GPR3 = Entry(root, width=60, borderwidth=5)
@@ -493,6 +494,9 @@ def LD_MBR():
     instr.mbr.set(string_to_strlist(MBR_num))
     print(MBR_num)
     return
+#Cache windows
+
+
 
 
 def string_to_strlist(str):
@@ -764,7 +768,7 @@ Init = Button(frameOpBtn,text="Init",padx=1, pady=1, bg="red", fg="white", comma
 SS = Button(frameSysBtn,text="SS",padx=10, pady=15, command=SS)
 RunBtn = Button(frameSysBtn,text="Run",padx=10, pady=15,command=run_instructions)
     #Cache Button
-CacheBtn = Button(root,text="Cache",padx=1, pady=1)
+CacheBtn = Button(root,text="Cache",padx=1, pady=1, command=CacheWindows.open)
 
 
 #grid, it is the layout of the whole panel made by Zihao Wen
