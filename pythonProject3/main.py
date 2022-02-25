@@ -763,7 +763,8 @@ Load = Button(frameOpBtn,text="Load",padx=1, pady=1, command = Load)
 Init = Button(frameOpBtn,text="Init",padx=1, pady=1, bg="red", fg="white", command=ClickInit)
 SS = Button(frameSysBtn,text="SS",padx=10, pady=15, command=SS)
 RunBtn = Button(frameSysBtn,text="Run",padx=10, pady=15,command=run_instructions)
-
+    #Cache Button
+CacheBtn = Button(root,text="Cache",padx=1, pady=1)
 
 
 #grid, it is the layout of the whole panel made by Zihao Wen
@@ -847,6 +848,7 @@ Init.grid(row=7,column=10)
 SS.grid(row=1,column=0)
 SpaceSSRUN.grid(row=1,column=2)
 RunBtn.grid(row=1,column=3)
+CacheBtn.grid(row=7,column=6)
 
     #Button status
 Status15.grid(row=15,column=0)

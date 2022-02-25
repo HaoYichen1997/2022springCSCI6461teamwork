@@ -288,7 +288,7 @@ def JZ10(instruction): #Jump If Zero
     if len(EA_result) != 0:  # indirect EA use fetch
         del EA_result[-2:]  # delete the "ir" and ir.num in fetch_result
     JZ10_result = copy.deepcopy(EA_result)
-    if instruction[8]==0 and instruction[9]==0 :
+    if instruction[8]== "0" and instruction[9]=="0" :
         # main.PC.delete(0, END)
         # main.PC.insert(0,str(JZ10_result[0]))
         EA_PC_dec = int(EA, 10)
