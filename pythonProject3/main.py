@@ -660,11 +660,11 @@ def run_Single_Step():
         show_general(smr_result)
     elif opcode == 6:
         air_result = instr.air(instr.ir.num)
-        print('opcode is 05')
+        print('opcode is 06')
         show_general(air_result)
     elif opcode == 7:
         sir_result = instr.sir(instr.ir.num)
-        print('opcode is 05')
+        print('opcode is 07')
         show_general(sir_result)
     else:
         print("incorrect opcode", opcode)
