@@ -285,7 +285,7 @@ def halt000():  # halt
 
 
 # import main
-def JZ10(instruction):  # Jump If Zero
+
 def jz010(instruction): #Jump If Zero
     # result is the list of regs num to panel
     EA_result = cal_EA(instruction)
@@ -297,7 +297,6 @@ def jz010(instruction): #Jump If Zero
     or (instruction[6] == "0" and instruction[7] == "1" and gpr1.num == "0000000000000000")\
     or (instruction[6] == "1" and instruction[7] == "0" and gpr2.num == "0000000000000000")\
     or (instruction[6] == "1" and instruction[7] == "1" and gpr3.num == "0000000000000000"):
-    if instruction[8] == "0" and instruction[9] == "0":
         # main.PC.delete(0, END)
         # main.PC.insert(0,str(JZ10_result[0]))
         EA_PC_dec = int(EA, 10)
