@@ -585,9 +585,25 @@ def run_Single_Step():
         print('opcode is 042')
         show_general(stx042_result)
     elif opcode == 10: #Jump if Zero
-        jp010_result = instr.JZ10(instr.ir.num)
+        jp010_result = instr.jz010(instr.ir.num)
         print('opcode is 010')
         show_general(jp010_result)
+    elif opcode == 11: #Jump if not equal
+        jne011_result = instr.jne011(instr.ir.num)
+        print('opcode is 011')
+        show_general(jne011_result)
+    elif opcode == 13: #Unconditional Jump To Address
+        jma013_result = instr.jma013(instr.ir.num)
+        print('opcode is 013')
+        show_general(jma013_result)
+    elif opcode == 16:#Subtract One and Branch. R = 0..3
+        sob016_result = instr.sob016(instr.ir.num)
+        print('opcode is 016')
+        show_general(sob016_result)
+    elif opcode == 17:  # Jump Greater Than or Equal To
+        jge017_result = instr.jge017(instr.ir.num)
+        print('opcode is 017')
+        show_general(jge017_result)
     elif opcode == 0:
         halt000_result = instr.halt000()
         print('opcode is halt')
