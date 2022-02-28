@@ -2,19 +2,18 @@ import register as reg
 import copy
 import time
 from tkinter import *
-
 # import main
 '''
 this module about the 16-bit instructions 
 and other instructions about memory
 '''
 
-# inital memory and registers
+#inital memory and registers
 memory = [0] * 2048
 for address in range(2048):
     memory[address] = ['0'] * 16
 
-# e.p. memory=list[2048]
+#e.p. memory=list[2048]
 #  mem[0]= [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]    list[16]
 SIXTEENBIT = ['0'] * 16
 TWELVEBIT = ['0'] * 12
@@ -36,14 +35,12 @@ def read_Mem_to_Mbr(mar: reg.Mar, mbr: reg.Mbr):  # use mar mbr read mem
     address_dec = int(address_bin, 2)
     mbr.set(memory[address_dec])
 
-
-def str_Mbr_to_Mem(mar: reg.Mar, mbr: reg.Mbr):  # put mbr to mem address
+def str_Mbr_to_Mem (mar:reg.Mar, mbr:reg.Mbr): #put mbr to mem address
     address_bin = ''.join(i for i in mar.num)
     address_dec = int(address_bin, 2)
     memory[address_dec] = mbr.num
 
-
-def fetch(pcaddress):  # take instruction from mem to ir
+def fetch(pcaddress): #take instruction from mem to ir
     fetch_result = list()
 
     mar.set(pcaddress)
@@ -59,18 +56,17 @@ def fetch(pcaddress):  # take instruction from mem to ir
     fetch_result.append(ir.num)
     return fetch_result
 
-
-def cal_EA(instruction):  # calculate EA
-    # EA is Effective Address not a const
-    # EA should be a 12 digit number to fit in MAR, but IXR is 16 bits, So EA is 16 bits
+def cal_EA(instruction :list[16]):  #calculate EA
+    #EA is Effective Address not a const
+    #EA should be a 12 digit number to fit in MAR, but IXR is 16 bits, So EA is 16 bits
     # if EA is indirect, we need update mar,mbr once time, I return these num as a list
     EA_result = list()  # for return if needed
-    if instruction[8] == "0" and instruction[9] == '0':  # find the ixr number
-        EA = ['0'] * 11 + instruction[-5:]
+    if instruction[8] == "0" and instruction[9] == '0':  #find the ixr number
+        EA = ['0']*11 + instruction[-5:]
     elif instruction[8] == '0' and instruction[9] == '0':
         a = ['0'] * 11 + instruction[-5:]
         b = ixr1.num
-        # binary plus for ixr and address
+        #binary plus for ixr and address
         a_bin = ''.join(i for i in a)
         a_dec = int(a_bin, 2)
         b_bin = ''.join(i for i in b)
@@ -289,14 +285,18 @@ def halt000():  # halt
 
 
 # import main
-def JZ10(instruction):  # Jump If Zero
+
+def jz010(instruction): #Jump If Zero
     # result is the list of regs num to panel
     EA_result = cal_EA(instruction)
     EA = EA_result.pop()
     if len(EA_result) != 0:  # indirect EA use fetch
         del EA_result[-2:]  # delete the "ir" and ir.num in fetch_result
     JZ10_result = copy.deepcopy(EA_result)
-    if instruction[8] == "0" and instruction[9] == "0":
+    if (instruction[6] == "0" and instruction[7] == "0" and gpr0.num == "0000000000000000")\
+    or (instruction[6] == "0" and instruction[7] == "1" and gpr1.num == "0000000000000000")\
+    or (instruction[6] == "1" and instruction[7] == "0" and gpr2.num == "0000000000000000")\
+    or (instruction[6] == "1" and instruction[7] == "1" and gpr3.num == "0000000000000000"):
         # main.PC.delete(0, END)
         # main.PC.insert(0,str(JZ10_result[0]))
         EA_PC_dec = int(EA, 10)
@@ -464,3 +464,134 @@ print(air(instrAi))
 print(sir(instrSi))
 
 # *************************************************************
+
+def jne011(instruction): #Jump If not equal
+    # result is the list of regs num to panel
+    EA_result = cal_EA(instruction)
+    EA = EA_result.pop()
+    if len(EA_result) != 0:  # indirect EA use fetch
+        del EA_result[-2:]  # delete the "ir" and ir.num in fetch_result
+    JZ11_result = copy.deepcopy(EA_result)
+    if (instruction[6] == "0" and instruction[7] == "0" and gpr0.num != "0000000000000000")\
+    or (instruction[6] == "0" and instruction[7] == "1" and gpr1.num != "0000000000000000")\
+    or (instruction[6] == "1" and instruction[7] == "0" and gpr2.num != "0000000000000000")\
+    or (instruction[6] == "1" and instruction[7] == "1" and gpr3.num != "0000000000000000"):
+        EA_PC_dec = int(EA, 10)
+        EA_PC_bin = bin(int(EA_PC_dec, 10))
+        pc.set(EA_PC_bin.zfill(12))
+        JZ11_result.append("pc")
+        JZ11_result.append(pc.num)
+    else :
+        pc.set(pc.num)
+        JZ11_result.append("pc")
+        JZ11_result.append(pc.num)
+    return JZ11_result
+
+# def jcc012(instruction): #Jump if condition code
+#     EA_result = cal_EA(instruction)
+#     EA = EA_result.pop()
+#     if len(EA_result) != 0:  # indirect EA use fetch
+#         del EA_result[-2:]
+#     jcc012_result = copy.deepcopy(EA_result)
+#     if instruction[6] == "0" and instruction[7] == "1" :
+#         EA_PC_dec = int(EA, 10)
+#         EA_PC_bin = bin(int(EA_PC_dec, 10))
+#         pc.set(EA_PC_bin.zfill(12))
+#         jcc012_result.append("pc")
+#         jcc012_result.append(pc.num)
+#     else :
+#         pc.set(pc.num)
+#         jcc012_result.append("pc")
+#         jcc012_result.append(pc.num)
+#     return jcc012_result
+
+def jma013(instruction): #Unconditional Jump To Address
+    EA_result = cal_EA(instruction)
+    EA = EA_result.pop()
+    if len(EA_result) != 0:  # indirect EA use fetch
+        del EA_result[-2:]
+    jma013_result = copy.deepcopy(EA_result)
+    EA_PC_dec = int(EA, 10)
+    EA_PC_bin = bin(int(EA_PC_dec, 10))
+    pc.set(EA_PC_bin.zfill(12))
+    jma013_result.append("pc")
+    jma013_result.append(pc.num)
+    return jma013_result
+
+#
+
+# def jsr014(instruction): #Jump if condition code
+#     EA_result = cal_EA(instruction)
+#     EA = EA_result.pop()
+#     if len(EA_result) != 0:  # indirect EA use fetch
+#         del EA_result[-2:]
+#     jsr014_result = copy.deepcopy(EA_result)
+#     EA_PC_dec = int(EA, 10)
+#     EA_PC_bin = bin(int(EA_PC_dec, 10))
+#     pc.set(EA_PC_bin.zfill(12))
+#     jsr014_result.append("pc")
+#     jsr014_result.append(pc.num)
+#     return jsr014_result
+
+
+# def rfs015(instruction): #Jump if condition code
+#     EA_result = cal_EA(instruction)
+#     EA = EA_result.pop()
+#     if len(EA_result) != 0:  # indirect EA use fetch
+#         del EA_result[-2:]
+#     rfs015_result = copy.deepcopy(EA_result)
+#     EA_PC_dec = int(EA, 10)
+#     EA_PC_bin = bin(int(EA_PC_dec, 10))
+#     PC_dec = int(pc.num, 10) + 1
+#     PC_bin = bin(int(PC_dec, 10))
+#     gpr3.set(PC_bin.zfill(16))
+#     pc.set(EA_PC_bin.zfill(12))
+#     rfs015_result.append("gpr3")
+#     rfs015_result.append(gpr3.num)
+#     rfs015_result.append("pc")
+#     rfs015_result.append(pc.num)
+#     return rfs015_result
+#
+#
+#
+def sob016(instruction): #Subtract One and Branch. R = 0..3
+    EA_result = cal_EA(instruction)
+    EA = EA_result.pop()
+    if len(EA_result) != 0:  # indirect EA use fetch
+        del EA_result[-2:]
+    sob016_result = copy.deepcopy(EA_result)
+    if (instruction[6] == "0" and instruction[7] == "0" and int(gpr0.num, 10)-1 > 0)\
+    or (instruction[6] == "0" and instruction[7] == "1" and int(gpr1.num, 10)-1 > 0)\
+    or (instruction[6] == "1" and instruction[7] == "0" and int(gpr2.num, 10)-1 > 0)\
+    or (instruction[6] == "1" and instruction[7] == "1" and int(gpr3.num, 10)-1 > 0):
+        EA_PC_dec = int(EA, 10)
+        EA_PC_bin = bin(int(EA_PC_dec, 10))
+        pc.set(EA_PC_bin.zfill(12))
+        sob016_result.append("pc")
+        sob016_result.append(pc.num)
+    else :
+        pc.set(pc.num)
+        sob016_result.append("pc")
+        sob016_result.append(pc.num)
+    return sob016_result
+
+def jge017(instruction): #Jump Greater Than or Equal To
+    EA_result = cal_EA(instruction)
+    EA = EA_result.pop()
+    if len(EA_result) != 0:  # indirect EA use fetch
+        del EA_result[-2:]
+    jge017_result = copy.deepcopy(EA_result)
+    if (instruction[6] == "0" and instruction[7] == "0" and int(gpr0.num, 10) >= 0)\
+    or (instruction[6] == "0" and instruction[7] == "1" and int(gpr1.num, 10) >= 0)\
+    or (instruction[6] == "1" and instruction[7] == "0" and int(gpr2.num, 10) >= 0)\
+    or (instruction[6] == "1" and instruction[7] == "1" and int(gpr3.num, 10) >= 0):
+        EA_PC_dec = int(EA, 10)
+        EA_PC_bin = bin(int(EA_PC_dec, 10))
+        pc.set(EA_PC_bin.zfill(12))
+        jge017_result.append("pc")
+        jge017_result.append(pc.num)
+    else :
+        pc.set(pc.num)
+        jge017_result.append("pc")
+        jge017_result.append(pc.num)
+    return jge017_result
