@@ -675,16 +675,20 @@ def jcc012(instruction): #Jump if condition code
     if len(EA_result) != 0:  # indirect EA use fetch
         del EA_result[-2:]
     jcc012_result = copy.deepcopy(EA_result)
-#     if instruction[6] == "0" and instruction[7] == "1" :
-#         EA_PC_dec = int(EA, 10)
-#         EA_PC_bin = bin(int(EA_PC_dec, 10))
-#         pc.set(EA_PC_bin.zfill(12))
-#         jcc012_result.append("pc")
-#         jcc012_result.append(pc.num)
-#     else :
-#         pc.set(pc.num)
-#         jcc012_result.append("pc")
-#         jcc012_result.append(pc.num)
+
+    if (instruction[6] == "0" and instruction[7] == "0" and cc[0] == '1') or  \
+        (instruction[6] == "0" and instruction[7] == "1" and cc[1] == '1') or \
+        (instruction[6] == "1" and instruction[7] == "1" and cc[3] == '1') or \
+        (instruction[6] == "1" and instruction[7] == "0" and cc[2] == '1'):
+        EA_PC_dec = int(EA, 10)
+        EA_PC_bin = bin(int(EA_PC_dec, 10))
+        pc.set(EA_PC_bin.zfill(12))
+        jcc012_result.append("pc")
+        jcc012_result.append(pc.num)
+    else :
+        pc.set(pc.num)
+        jcc012_result.append("pc")
+        jcc012_result.append(pc.num)
     return jcc012_result
 
 def jma013(instruction): #Unconditional Jump To Address
