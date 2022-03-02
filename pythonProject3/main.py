@@ -561,7 +561,7 @@ def show_general(result):
 
 
 
-
+#SS
 def run_Single_Step():
     opcode = int("".join(i for i in instr.ir.num[:6]), 2)
     if opcode == 1:
