@@ -614,7 +614,7 @@ def run_Single_Step():
         show_general(sob016_result)
     elif opcode == 17:  # Jump if Zero
         jge017_result = instr.jge017(instr.ir.num)
-        print('opcode is 016')
+        print('opcode is 017')
         show_general(jge017_result)
     elif opcode == 0:
         halt000_result = instr.halt000()
