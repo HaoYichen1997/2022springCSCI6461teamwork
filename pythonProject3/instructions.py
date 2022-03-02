@@ -669,12 +669,12 @@ def jne011(instruction): #Jump If not equal
         JZ11_result.append(pc.num)
     return JZ11_result
 
-# def jcc012(instruction): #Jump if condition code
-#     EA_result = cal_EA(instruction)
-#     EA = EA_result.pop()
-#     if len(EA_result) != 0:  # indirect EA use fetch
-#         del EA_result[-2:]
-#     jcc012_result = copy.deepcopy(EA_result)
+def jcc012(instruction): #Jump if condition code
+    EA_result = cal_EA(instruction)
+    EA = EA_result.pop()
+    if len(EA_result) != 0:  # indirect EA use fetch
+        del EA_result[-2:]
+    jcc012_result = copy.deepcopy(EA_result)
 #     if instruction[6] == "0" and instruction[7] == "1" :
 #         EA_PC_dec = int(EA, 10)
 #         EA_PC_bin = bin(int(EA_PC_dec, 10))
@@ -685,7 +685,7 @@ def jne011(instruction): #Jump If not equal
 #         pc.set(pc.num)
 #         jcc012_result.append("pc")
 #         jcc012_result.append(pc.num)
-#     return jcc012_result
+    return jcc012_result
 
 def jma013(instruction): #Unconditional Jump To Address
     EA_result = cal_EA(instruction)
@@ -702,26 +702,28 @@ def jma013(instruction): #Unconditional Jump To Address
 
 #
 
-# def jsr014(instruction): #Jump if condition code
-#     EA_result = cal_EA(instruction)
-#     EA = EA_result.pop()
-#     if len(EA_result) != 0:  # indirect EA use fetch
-#         del EA_result[-2:]
-#     jsr014_result = copy.deepcopy(EA_result)
+def jsr014(instruction): #Jump if condition code
+    EA_result = cal_EA(instruction)
+    EA = EA_result.pop()
+    if len(EA_result) != 0:  # indirect EA use fetch
+        del EA_result[-2:]
+    jsr014_result = copy.deepcopy(EA_result)
 #     EA_PC_dec = int(EA, 10)
 #     EA_PC_bin = bin(int(EA_PC_dec, 10))
 #     pc.set(EA_PC_bin.zfill(12))
+
+
 #     jsr014_result.append("pc")
 #     jsr014_result.append(pc.num)
-#     return jsr014_result
+    return jsr014_result
 
 
-# def rfs015(instruction): #Jump if condition code
-#     EA_result = cal_EA(instruction)
-#     EA = EA_result.pop()
-#     if len(EA_result) != 0:  # indirect EA use fetch
-#         del EA_result[-2:]
-#     rfs015_result = copy.deepcopy(EA_result)
+def rfs015(instruction): #Jump if condition code
+    EA_result = cal_EA(instruction)
+    EA = EA_result.pop()
+    if len(EA_result) != 0:  # indirect EA use fetch
+        del EA_result[-2:]
+    rfs015_result = copy.deepcopy(EA_result)
 #     EA_PC_dec = int(EA, 10)
 #     EA_PC_bin = bin(int(EA_PC_dec, 10))
 #     PC_dec = int(pc.num, 10) + 1
@@ -732,7 +734,7 @@ def jma013(instruction): #Unconditional Jump To Address
 #     rfs015_result.append(gpr3.num)
 #     rfs015_result.append("pc")
 #     rfs015_result.append(pc.num)
-#     return rfs015_result
+    return rfs015_result
 #
 #
 #
