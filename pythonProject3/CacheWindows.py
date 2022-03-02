@@ -228,7 +228,7 @@ def open():
     #             exec("Ewords" + '0' + str(i) +str(j) + '=' + "Entry(cacheW, width=20, borderwidth=4)")
     #         else :
     #             exec("Ewords" + str(i) + str(j) + '=' + "Entry(cacheW, width=20, borderwidth=4)")
-    Cache.cache[1][8] = "123"
+    # Cache.cache[1][8] = "123"
     # insert Cache data into textbox
     for i in range(16): # insert valid value
         if Cache.cache[i][0] != "0":
