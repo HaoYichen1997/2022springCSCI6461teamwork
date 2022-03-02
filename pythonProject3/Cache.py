@@ -1,5 +1,5 @@
 import instructions
-
+import copy
 # define cache
 cache = [0] * 16
 for elements in range(16):  # elements 0 == val, elements 1 == Block Num, elements 2-9 == 8 words
@@ -16,8 +16,32 @@ add_counter = 0
 for i in range(8):
     instructions.memory[i] = ["0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "1", "0"]
 
+'''
+'''
 
-def add_to_cache(address):
+def write_reg_to_c_m(address:int, contents:list): # address dec 0-2047, content:16bits
+    # write to cache
+    if check_cache_line(address):  # if already in cache, change
+        cache_line = get_cache_line(address)
+        offset = get_address_offset(address)
+        cache_line[offset+2] = copy.deepcopy(contents)
+    else:  # not in cache, add to the cache
+        cache_line = add_to_cache(address)
+        offset = get_address_offset(address)
+        cache_line[offset + 2] = copy.deepcopy(contents)
+    # write to mem
+    instructions.memory[address] = contents
+
+
+def check_cache_line(address:int):   # only check the block num
+    cache_line = get_cache_line(address)
+    if cache_line is None:
+        return False
+    else:
+        return True
+'''
+'''
+def add_to_cache(address):  # add content in cache
     global add_counter
     if add_counter < cache_length:
         cache_line = cache[add_counter]
@@ -33,10 +57,10 @@ def add_to_cache(address):
     return cache_line
 
 
-def read_cache(address: int):
+def read_cache(address: int):  # try find content in cache
     cache_line = get_cache_line(address)
     offset = get_address_offset(address)
-    if cache_line is None:
+    if cache_line is None:  # not in cache
         cache_line = add_to_cache(address)
     return get_words(offset, cache_line)
 
@@ -56,7 +80,7 @@ def is_valid(cache_line):
         return False
 
 
-def load_from_memory(address, cache_line):
+def load_from_memory(address, cache_line):  # mem to cache
     # set valid
     cache_line[0] = 1
     # set tag
@@ -72,7 +96,7 @@ def check_tag(cache_line, address):
     return False
 
 
-def get_address_tag(address: int):
+def get_address_tag(address: int):  # second element
     tag = address // line_words
     return tag
 

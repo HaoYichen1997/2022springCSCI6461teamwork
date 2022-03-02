@@ -541,6 +541,9 @@ def show_Reg_to_Panel(a: str, num):    #test for uniform update
         HaltLight.insert(0, "1")
         RunLight.delete(0, END)
         RunLight.insert(0, "0")
+    #!!!!!
+    elif a == "cc":
+        test = 0
     else: print("incorrect name of regs")
 def show_Fetch(result):
     HaltLight.delete(0, END)
@@ -558,6 +561,9 @@ def show_Fetch(result):
 def show_general(result):
     for i in range(0, len(result), 2):
         show_Reg_to_Panel(result[i], result[i+1])
+
+
+
 
 
 
@@ -584,7 +590,7 @@ def run_Single_Step():
         stx042_result = instr.stx042(instr.ir.num)
         print('opcode is 042')
         show_general(stx042_result)
-    elif opcode == 10: #Jump if Zero
+    elif opcode == 8: #Jump if Zero
         jp010_result = instr.JZ10(instr.ir.num)
         print('opcode is 010')
         show_general(jp010_result)
@@ -592,6 +598,30 @@ def run_Single_Step():
         halt000_result = instr.halt000()
         print('opcode is halt')
         show_general(halt000_result)
+    elif opcode == 16:
+        mlt020_result = instr.mlt020(instr.ir.num)
+        print('opcode is 020')
+        show_general(mlt020_result)
+    elif opcode == 17:
+        dvd021_result = instr.dvd021(instr.ir.num)
+        print('opcode is 021')
+        show_general(dvd021_result)
+    elif opcode == 18:
+        trr022_result = instr.trr022(instr.ir.num)
+        print('opcode is 022')
+        show_general(trr022_result)
+    elif opcode == 19:
+        and023_result = instr.and023(instr.ir.num)
+        print('opcode is 023')
+        show_general(and023_result)
+    elif opcode == 20:
+        orr024_result = instr.orr024(instr.ir.num)
+        print('opcode is 024')
+        show_general(orr024_result)
+    elif opcode == 21:
+        not025_result = instr.not025(instr.ir.num)
+        print('opcode is 025')
+        show_general(not025_result)
     else: print("incorrect opcode",opcode)
 
 def SS():

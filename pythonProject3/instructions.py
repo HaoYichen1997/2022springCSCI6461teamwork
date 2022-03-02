@@ -17,6 +17,7 @@ for address in range(2048):
 #  mem[0]= [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]    list[16]
 SIXTEENBIT = ['0'] * 16
 TWELVEBIT = ['0'] * 12
+FOURBIT = ['0'] * 4
 gpr0 = reg.Gpr(SIXTEENBIT, "gpr0")
 gpr1 = reg.Gpr(SIXTEENBIT, "gpr1")
 gpr2 = reg.Gpr(SIXTEENBIT, "gpr2")
@@ -28,6 +29,7 @@ mbr = reg.Mbr(SIXTEENBIT, "mbr")
 mar = reg.Mar(TWELVEBIT)
 pc = reg.Pc(TWELVEBIT)
 ir = reg.Ir(SIXTEENBIT, "ir")
+cc = reg.Cc(FOURBIT)
 
 
 def read_Mem_to_Mbr(mar: reg.Mar, mbr: reg.Mbr):  # use mar mbr read mem
@@ -282,8 +284,187 @@ def halt000():  # halt
     halt000_result.append("halt")
     halt000_result.append(["0"] * 16)
     return halt000_result
+'''
+'''
+def mlt020(instruction):
+    mlt020_result = list()
+    rx, ry = -1, -1
+    operand1 = list(); operand2 = list()
+    if instruction[6] == "0" and instruction[7] == "0":
+        rx = 0; operand1.append(gpr0.num)
+    if instruction[6] == "1" and instruction[7] == "0":
+        rx = 2; operand1.append(gpr2.num)
+    if instruction[8] == "0" and instruction[9] == "0":
+        ry = 0; operand2.append(gpr0.num)
+    if instruction[8] == "1" and instruction[9] == "0":
+        ry = 2; operand2.append(gpr2.num)
+    if rx == -1 or ry == -1:
+        print("wrong reg in mlt")
+    else:
+        a_bin = ''.join(i for i in operand1)
+        a_dec = int(a_bin, 2)
+        b_bin = ''.join(i for i in operand2)
+        b_dec = int(b_bin, 2)
+        c_dec = a_dec * b_dec
+        result = bin(c_dec)[2:].zfill(32)
+        high_bits = [num for num in str(result[:16])]
+        low_bits = [num for num in str(result[16:])]
+        if instruction[6] == "0" and instruction[7] == "0":
+            gpr0.set(high_bits)
+            mlt020_result.append("gpr0")
+            mlt020_result.append(gpr0.num)
+            gpr1.set(low_bits)
+            mlt020_result.append("gpr1")
+            mlt020_result.append(gpr1.num)
 
+        if instruction[6] == "1" and instruction[7] == "0":
+            gpr2.set(high_bits)
+            mlt020_result.append("gpr0")
+            mlt020_result.append(gpr0.num)
+            gpr3.set(low_bits)
+            mlt020_result.append("gpr1")
+            mlt020_result.append(gpr1.num)
 
+        if check_mul_overflew(c_dec):
+            cc.set_overflow("1")
+            mlt020_result.append('cc')
+            mlt020_result.append('overflow_1')
+            print("over flow in mlt020")
+
+        return mlt020_result
+
+def check_mul_overflew(num:int):  # dec multiple overflow is 2 **32
+    #overflew underflew return true
+    flag = False
+    if num > 2 ** 32:
+        print("overflew in multiple ")
+        flag = True
+    elif num < -2**32 - 1:
+        print("underflew in multiple")
+        flag = True
+    return flag
+
+def dvd021(instruction):
+    dvd021_result = list()
+    rx, ry = -1, -1
+    operand1 = list(); operand2 = list()
+    if instruction[6] == "0" and instruction[7] == "0":
+        rx = 0; operand1.append(gpr0.num)
+    if instruction[6] == "1" and instruction[7] == "0":
+        rx = 2; operand1.append(gpr2.num)
+    if instruction[8] == "0" and instruction[9] == "0":
+        ry = 0; operand2.append(gpr0.num)
+    if instruction[8] == "1" and instruction[9] == "0":
+        ry = 2; operand2.append(gpr2.num)
+    if rx == -1 or ry == -1:
+        print("wrong reg in dvd021")
+    else:
+        a_bin = ''.join(i for i in operand1)
+        a_dec = int(a_bin, 2)
+        b_bin = ''.join(i for i in operand2)
+        b_dec = int(b_bin, 2)
+        c_dec = a_dec // b_dec
+        d_dec = a_dec % b_dec
+        quotient = bin(c_dec)[2:].zfill(16)
+        remainder = bin(d_dec)[2:].zfill(16)
+        if instruction[6] == "0" and instruction[7] == "0":
+            gpr0.set(quotient)
+            dvd021_result.append("gpr0")
+            dvd021_result.append(gpr0.num)
+            gpr1.set(remainder)
+            dvd021_result.append("gpr1")
+            dvd021_result.append(gpr1.num)
+
+        if instruction[6] == "1" and instruction[7] == "0":
+            gpr2.set(quotient)
+            dvd021_result.append("gpr0")
+            dvd021_result.append(gpr0.num)
+            gpr3.set(remainder )
+            dvd021_result.append("gpr1")
+            dvd021_result.append(gpr1.num)
+
+        if b_dec == 0:
+            cc.set_div_zero("1")
+            dvd021_result.append('cc')
+            dvd021_result.append('div_zero_1')
+            print("over flow in dvd021")
+
+        return dvd021_result
+def get_gpr_in_instr(instruction, num1:int, num2: int):  # num1,2 is digit like 6 7
+    # use to find which gpr in instr's gpr area, 2 bits
+    if instruction[num1] == "0" and instruction[num2] == "0":
+        return gpr0
+    elif instruction[num1] == "0" and instruction[num2] == "1":
+        return gpr1
+    elif instruction[num1] == "1" and instruction[num2] == "0":
+        return gpr2
+    elif instruction[num1] == "1" and instruction[num2] == "1":
+        return gpr3
+
+def trr022(instruction):
+    trr022_result = list()
+    rx = get_gpr_in_instr(instruction, 6, 7)
+    ry = get_gpr_in_instr(instruction, 8, 9)
+
+    equal = True
+    for i in range(16):
+        if rx.num[i] != ry.num[i]:
+            equal = False
+
+    if equal:
+        cc.set_equal_or_not("1")
+        trr022_result.append('cc')
+        trr022_result.append('equal_or_not_1')
+    else:
+        cc.set_equal_or_not("0")
+        trr022_result.append('cc')
+        trr022_result.append('equal_or_not_0')
+
+    return trr022_result
+
+def and023(instruction):
+    and023_result = list()
+    rx = get_gpr_in_instr(instruction, 6, 7)
+    ry = get_gpr_in_instr(instruction, 8, 9)
+
+    for i in range(16):
+        if rx.num[i] == "1" and ry.num == '1':
+            rx.num[i] = "1"
+        else:
+            rx.num[i] = "0"
+
+    and023_result.append(rx.name)
+    and023_result.append(rx.num)
+    return and023_result
+
+def orr024(instruction):
+    orr024_result = list()
+    rx = get_gpr_in_instr(instruction, 6, 7)
+    ry = get_gpr_in_instr(instruction, 8, 9)
+
+    for i in range(16):
+        if rx.num[i] == "1" or ry.num == '1':
+            rx.num[i] = "1"
+        else:
+            rx.num[i] = "0"
+
+    orr024_result.append(rx.name)
+    orr024_result.append(rx.num)
+    return orr024_result
+
+def not025(instruction):
+    not025_result = list()
+    rx = get_gpr_in_instr(instruction, 6, 7)
+    for i in range(16):
+        if rx.num[i] == "1":
+            rx.num[i] = "0"
+        else:
+            rx.num[i] = "1"
+    not025_result.append(rx.name)
+    not025_result.append(rx.num)
+    return not025_result
+'''
+'''
 # import main
 
 def jz010(instruction): #Jump If Zero
@@ -458,11 +639,12 @@ instrS = ["0", "0", "0", "1", "0", "1", "1", "1", "0", "0", "0", "0", "0", "0", 
 instrAi = ["0", "0", "0", "1", "1", "0", "1", "1", "0", "0", "0", "0", "0", "0", "1", "1"]
 # 13-15
 instrSi = ["0", "0", "0", "1", "1", "1", "1", "1", "0", "0", "0", "0", "1", "1", "1", "1"]
+'''
 print(amr(instrA))
 print(smr(instrS))
 print(air(instrAi))
 print(sir(instrSi))
-
+'''
 # *************************************************************
 
 def jne011(instruction): #Jump If not equal
