@@ -25,10 +25,12 @@ def pro1():
 
     global step
     step = 0
+    global Pro1Cache
     Pro1Cache = [0] * 30
     #define Button function
     def Program1(event):
         global step
+        global Pro1Cache
         if step < 20:
             Pro1Cache[step] = InitialNumber.get()
             print(InitialNumber.get())
