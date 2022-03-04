@@ -41,6 +41,8 @@ def check_cache_line(address:int):   # only check the block num
         return True
 '''
 '''
+
+
 def add_to_cache(address):  # add content in cache
     global add_counter
     if add_counter < cache_length:

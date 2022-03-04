@@ -12,6 +12,7 @@ import register as reg
 import instructions as instr
 import time
 import CacheWindows
+import Program1
 # from PIL import Image, ImageTk
 # from tkinter.filedialog import askopenfile
 
@@ -19,14 +20,17 @@ import CacheWindows
 #Basic interface made by Zihao Wen
 root = Tk()
 root.title("6461 Project1")
-root.geometry("1130x450")
+root.geometry("1130x500")
 # Btn Frame made by Zihao Wen
 frameBtn =  LabelFrame(root, text="Num Button")
-frameBtn.grid(row=9,column=1,columnspan=5,padx=50, pady=10)
+frameBtn.grid(row=10,column=1,columnspan=5,padx=50, pady=10)
 frameOpBtn =  LabelFrame(root, text="Op Button")
-frameOpBtn.grid(row=8,column=6,columnspan=1,padx=50, pady=10)
+frameOpBtn.grid(row=9,column=6,columnspan=1,padx=50, pady=10)
 frameSysBtn =  LabelFrame(root, text="Sys Button")
-frameSysBtn.grid(row=9,column=6,columnspan=1,padx=50, pady=10)
+frameSysBtn.grid(row=10,column=6,columnspan=1,padx=50, pady=10)
+framePhaseII = LabelFrame(root, text="PhaseII")
+framePhaseII.grid(row=8,column=6,columnspan=1,padx=50, pady=10)
+
 
 #Label of the panel made by Zihao Wen
     #GPR Label
@@ -761,6 +765,11 @@ def Load():
 # Init function
 # open filedialog and allow user to select a file to load into memory
 def ClickInit():
+    instr.grp0 = "00000000000"
+    for address in range(2048):
+        instr.memory[address] = ['0'] * 16
+    # Ewords064.delete(0, END)
+    # MAR.insert(0, '000000000000')
     try:
         initText = filedialog.askopenfilename(initialdir="/pythonProject3", title="Select a text file",
                                               filetypes=(("Text files", "*.txt"), ("all files", "*.*")))
@@ -830,8 +839,9 @@ Init = Button(frameOpBtn,text="Init",padx=1, pady=1, bg="red", fg="white", comma
 SS = Button(frameSysBtn,text="SS",padx=10, pady=15, command=SS)
 RunBtn = Button(frameSysBtn,text="Run",padx=10, pady=15,command=run_instructions)
     #Cache Button
-CacheBtn = Button(root,text="Cache",padx=1, pady=1, command=CacheWindows.open)
-
+CacheBtn = Button(framePhaseII,text="Cache",padx=1, pady=1, command=CacheWindows.open)
+    #PROGRAM1 Button
+Pro1Btn = Button(framePhaseII, text="Program1", padx=1, pady=1, command=Program1.pro1)
 
 #grid, it is the layout of the whole panel made by Zihao Wen
 
@@ -915,6 +925,7 @@ SS.grid(row=1,column=0)
 SpaceSSRUN.grid(row=1,column=2)
 RunBtn.grid(row=1,column=3)
 CacheBtn.grid(row=7,column=6)
+Pro1Btn.grid(row=7, column=7)
 
     #Button status
 Status15.grid(row=15,column=0)

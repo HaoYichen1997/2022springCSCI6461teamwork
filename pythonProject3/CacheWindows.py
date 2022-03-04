@@ -444,7 +444,7 @@ def open():
     #define Button
     RefreshBtn =Button(cacheW,text="Refresh",padx=10, pady=15, command=refresh)
     ClearBtn = Button(cacheW,text="Clear",padx=10, pady=15, command=clearCache)
-    Pro1Btn = Button(cacheW, text="Program 1", padx=10, pady=15, command=Program1.pro1)
+
 
     #grid
     IdxLabel.grid(row=0, column=0)
@@ -470,7 +470,7 @@ def open():
 
     RefreshBtn.grid(row=20, column=10)
     ClearBtn.grid(row=20, column=9)
-    Pro1Btn.grid(row=20, column=8)
+
 
 
 
