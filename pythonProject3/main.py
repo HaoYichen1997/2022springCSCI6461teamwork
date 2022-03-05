@@ -599,27 +599,27 @@ def run_Single_Step():
         jne11_result = instr.jne011(instr.ir.num)
         print('opcode is 011')
         show_general(jne11_result)
-    elif opcode == 10:  # Jump if Zero
+    elif opcode == 10:
         jcc012_result = instr.jcc012(instr.ir.num)
         print('opcode is 012')
         show_general(jcc012_result)
-    elif opcode == 11:  # Jump if Zero
+    elif opcode == 11:
         jma013_result = instr.jma013(instr.ir.num)
         print('opcode is 013')
         show_general(jma013_result)
-    elif opcode == 12:  # Jump if Zero
+    elif opcode == 12:
         jsr014_result = instr.jsr014(instr.ir.num)
         print('opcode is 014')
         show_general(jsr014_result)
-    elif opcode == 13:  # Jump if Zero
+    elif opcode == 13:
         rfs015_result = instr.rfs015(instr.ir.num)
         print('opcode is 015')
         show_general(rfs015_result)
-    elif opcode == 14:  # Jump if Zero
+    elif opcode == 14:
         sob016_result = instr.sob016(instr.ir.num)
         print('opcode is 016')
         show_general(sob016_result)
-    elif opcode == 15:  # Jump if Zero
+    elif opcode == 15:
         jge017_result = instr.jge017(instr.ir.num)
         print('opcode is 017')
         show_general(jge017_result)
