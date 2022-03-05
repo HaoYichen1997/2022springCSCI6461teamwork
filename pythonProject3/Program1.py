@@ -5,6 +5,7 @@ Date:02/27/2022
 
 """
 from tkinter import *
+from tkinter import messagebox
 
 def pro1():
     # define program1 background
@@ -22,25 +23,32 @@ def pro1():
     ResultNumber = Entry(Program1W, width=40, borderwidth=4)
 
 
-
     global step
     step = 0
-    global Pro1Cache
-    Pro1Cache = ["0"] * 30
+    global Consolekey
+    Consolekey = ["0"] * 30
     #define Button function
     def Program1(event):
         global step
-        global Pro1Cache
-        if step < 20:
-            Pro1Cache[step] = InitialNumber.get()
-            print(InitialNumber.get())
-            print(Pro1Cache)
-            InitialNumber.delete(0, END)
-        else :
-            InitialNumber.delete(0, END)
-            InitialNumber.insert(0, "number has been enough")
+        global Consolekey
+        if InitialNumber.get().isdigit():
+            if step < 20:
+                Consolekey[0] = InitialNumber.get()
+                print(InitialNumber.get())
+                print(Consolekey)
+                InitialNumber.delete(0, END)
+                # instruct in and store to memory
+                # halt
+            else:
+                InitialNumber.delete(0, END)
+                InitialNumber.insert(0, "number has been enough, start calculateing!")
+                # run
+                # halt的灯 更新成为run
+        else:
+            messagebox.showerror("Error", "Your input is not a number")
+            step -= 1
+        step += 1
 
-        step+=1
 
 
     Program1W.bind('<Return>', Program1)

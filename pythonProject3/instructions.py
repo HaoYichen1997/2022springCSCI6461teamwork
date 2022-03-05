@@ -712,13 +712,16 @@ def jsr014(instruction): #Jump if condition code
     if len(EA_result) != 0:  # indirect EA use fetch
         del EA_result[-2:]
     jsr014_result = copy.deepcopy(EA_result)
-#     EA_PC_dec = int(EA, 10)
-#     EA_PC_bin = bin(int(EA_PC_dec, 10))
-#     pc.set(EA_PC_bin.zfill(12))
+    PC1_bin = bin(int(pc.num, 10)+1)
+    gpr3.set(PC1_bin.zfill(16))
+    jsr014_result.append("gpr3")
+    jsr014_result.append(gpr3.num)
 
-
-#     jsr014_result.append("pc")
-#     jsr014_result.append(pc.num)
+    EA_PC_dec = int(EA, 10)
+    EA_PC_bin = bin(int(EA_PC_dec, 10))
+    pc.set(EA_PC_bin.zfill(12))
+    jcc012_result.append("pc")
+    jcc012_result.append(pc.num)
     return jsr014_result
 
 
@@ -728,16 +731,15 @@ def rfs015(instruction): #Jump if condition code
     if len(EA_result) != 0:  # indirect EA use fetch
         del EA_result[-2:]
     rfs015_result = copy.deepcopy(EA_result)
-#     EA_PC_dec = int(EA, 10)
-#     EA_PC_bin = bin(int(EA_PC_dec, 10))
-#     PC_dec = int(pc.num, 10) + 1
-#     PC_bin = bin(int(PC_dec, 10))
-#     gpr3.set(PC_bin.zfill(16))
-#     pc.set(EA_PC_bin.zfill(12))
-#     rfs015_result.append("gpr3")
-#     rfs015_result.append(gpr3.num)
-#     rfs015_result.append("pc")
-#     rfs015_result.append(pc.num)
+    GPR3_dec = int(gpr3.num, 10)
+    GPR3_bin = bin(GPR3_dec)
+    pc.set(GPR3_bin.zfill(12))
+    rfs015_result.append("pc")
+    rfs015_result.append(pc.num)
+    immed = "".join(instruction[-5:])
+    gpr0.set(immed.zfill(12))
+    rfs015_result.append("gpr0")
+    rfs015_result.append(gpr0.num)
     return rfs015_result
 #
 #
