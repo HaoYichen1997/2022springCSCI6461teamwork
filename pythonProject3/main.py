@@ -583,6 +583,34 @@ def run_Single_Step():
         lda003_result = instr.lda003(instr.ir.num)
         print('opcode is 003')
         show_general(lda003_result)
+    elif opcode == 4:
+        amr_result = instr.amr(instr.ir.num)
+        print('opcode is 04')
+        show_general(amr_result)
+    elif opcode == 5:
+        smr_result = instr.smr(instr.ir.num)
+        print('opcode is 05')
+        show_general(smr_result)
+    elif opcode == 6:
+        air_result = instr.air(instr.ir.num)
+        print('opcode is 06')
+        show_general(air_result)
+    elif opcode == 7:
+        sir_result = instr.sir(instr.ir.num)
+        print('opcode is 07')
+        show_general(sir_result)
+    elif opcode == 25:
+        src_result = instr.src(instr.ir.num)
+        print('opcode is 31')
+        show_general(src_result)
+    elif opcode == 26:
+        rrc_result = instr.rrc(instr.ir.num)
+        print('opcode is 32')
+        show_general(rrc_result)
+    elif opcode == 50:
+        out_result = instr.out(instr.ir.num)
+        print('opcode is 62')
+        show_general(out_result)
     elif opcode == 33:
         ldx041_result = instr.ldx041(instr.ir.num)
         print('opcode is 041')
