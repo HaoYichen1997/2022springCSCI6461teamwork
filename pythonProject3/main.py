@@ -978,7 +978,7 @@ Status0.grid(row=15,column=15)
 
 
 
-#Program1 setting
+#Program1 setting 1
 InitialLabel = Label(root, text="Initial Number(20)")
 TestNumberLabel = Label(root, text="Input Test Number")
 ResultLabel = Label(root, text="Closest Number(Result)")

@@ -902,7 +902,7 @@ def out(instruction):
 
 
 
-#program 1
+#program 1.
 
 global Consolekey
 Consolekey = ["0"] * 30
