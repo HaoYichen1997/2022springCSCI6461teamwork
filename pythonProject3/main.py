@@ -20,7 +20,7 @@ import Program1
 #Basic interface made by Zihao Wen
 root = Tk()
 root.title("6461 Project1")
-root.geometry("1130x500")
+root.geometry("1220x500")
 # Btn Frame made by Zihao Wen
 frameBtn =  LabelFrame(root, text="Num Button")
 frameBtn.grid(row=10,column=1,columnspan=5,padx=50, pady=10)
@@ -944,6 +944,74 @@ Status3.grid(row=15,column=12)
 Status2.grid(row=15,column=13)
 Status1.grid(row=15,column=14)
 Status0.grid(row=15,column=15)
+
+
+
+
+
+
+#Program1 setting
+InitialLabel = Label(root, text="Initial Number(20)")
+TestNumberLabel = Label(root, text="Input Test Number")
+ResultLabel = Label(root, text="Closest Number(Result)")
+Program1Label = Label(root, text="Program1")
+Space = Label(root, text=" ")
+# define intial number textbox
+InitialNumber = Entry(root, width=20, borderwidth=4)
+TestNumber = Entry(root, width=20, borderwidth=4)
+ResultNumber = Entry(root, width=20, borderwidth=4)
+
+global step
+step = 0
+def Program1(event):
+    global step
+    global Consolekey
+    if InitialNumber.get().isdigit():
+        if step < 20:
+            Consolekey[0] = InitialNumber.get()
+            print(InitialNumber.get())
+            print(Consolekey)
+            InitialNumber.delete(0, END)
+            # instruct in and store to memory
+            # halt
+        else:
+            InitialNumber.delete(0, END)
+            InitialNumber.insert(0, "number has been enough, start calculateing!")
+            # run
+            # halt的灯 更新成为run
+    else:
+        messagebox.showerror("Error", "Your input is not a number")
+        step -= 1
+    step += 1
+
+
+root.bind('<Return>', Program1)
+
+
+# define location of elements
+Space.grid(row=0, column=9)
+Space.grid(row=1, column=9)
+Space.grid(row=2, column=9)
+Space.grid(row=3, column=9)
+Space.grid(row=4, column=9)
+Space.grid(row=5, column=9)
+Space.grid(row=6, column=9)
+Space.grid(row=7, column=9)
+
+InitialLabel.grid(row=1, column=10)
+InitialNumber.grid(row=2, column=10)
+Program1Label.grid(row=0, column=9)
+TestNumberLabel.grid(row=3, column=10)
+TestNumber.grid(row=4, column=10)
+
+ResultLabel.grid(row=5, column=10)
+ResultNumber.grid(row=6, column=10)
+
+
+
+
+
+
 
 
 

@@ -785,3 +785,13 @@ def jge017(instruction): #Jump Greater Than or Equal To
         jge017_result.append("pc")
         jge017_result.append(pc.num)
     return jge017_result
+
+
+#program 1
+
+global Consolekey
+Consolekey = ["0"] * 30
+
+
+
+
