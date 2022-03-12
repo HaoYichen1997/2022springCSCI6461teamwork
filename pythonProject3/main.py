@@ -700,7 +700,7 @@ def run_instructions():
         pc_bin = ''.join(i for i in instr.pc.num)
         pc_dec = int(pc_bin, 2)
         pc = pc_dec+1
-        data = bin(pc)[2:].zfill(16)
+        data = bin(pc)[2:].zfill(12)
         instr.pc.set(string_to_strlist(str(data)))
         run_Single_Step()
         print(instr.ir.num)
@@ -708,7 +708,7 @@ def run_instructions():
             print("stop now")
             break
         root.update()
-        time.sleep(0.4)
+        time.sleep(0.1)
 
 
     #Binary translate to Decimal made by Zihao Wen
@@ -999,10 +999,10 @@ def Program1(event):
     global step
     Consolekey = instr.Consolekey
     if InitialNumber.get().isdigit():
-        if step < 20:
+        if step <= 20:
             Consolekey[0] = InitialNumber.get()
             print(InitialNumber.get())
-            print(Consolekey)
+            #print(Consolekey)
             InitialNumber.delete(0, END)
             # instruct in and store to memory
             run_instructions()
