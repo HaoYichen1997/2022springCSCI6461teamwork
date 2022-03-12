@@ -21,7 +21,7 @@ import Program1
 #Basic interface made by Zihao Wen
 root = Tk()
 root.title("6461 Project1")
-root.geometry("1220x500")
+root.geometry("1240x500")
 # Btn Frame made by Zihao Wen
 frameBtn =  LabelFrame(root, text="Num Button")
 frameBtn.grid(row=10,column=1,columnspan=5,padx=50, pady=10)
@@ -983,14 +983,14 @@ Status0.grid(row=15,column=15)
 
 
 #Program1 setting 1
-InitialLabel = Label(root, text="Initial Number(20)")
-TestNumberLabel = Label(root, text="Input Test Number")
+InitialLabel = Label(root, text="Initial Number(20)/ Target(21)")
+TipLabel = Label(root, text="Tips")
 ResultLabel = Label(root, text="Closest Number(Result)")
 Program1Label = Label(root, text="Program1")
 Space = Label(root, text=" ")
 # define intial number textbox
 InitialNumber = Entry(root, width=20, borderwidth=4)
-TestNumber = Entry(root, width=20, borderwidth=4)
+Tip = Entry(root, width=20, borderwidth=4)
 ResultNumber = Entry(root, width=20, borderwidth=4)
 
 global step
@@ -1009,14 +1009,20 @@ def Program1(event):
             # halt
         else:
             InitialNumber.delete(0, END)
-            InitialNumber.insert(0, "number has been enough, start calculateing!")
+            Tip.insert(0, "number has been enough, start calculateing!")
             # run
             # halt的灯 更新成为run
     else:
         messagebox.showerror("Error", "Your input is not a number")
         step -= 1
     step += 1
-
+    # tips
+    if step == 20:
+        Tip.delete(0, END)
+        Tip.insert(0, "please input target")
+    else :
+        Tip.delete(0, END)
+        Tip.insert(0, "Please input No."+ str(step+1) + "Num")
 
 root.bind('<Return>', Program1)
 
@@ -1034,8 +1040,8 @@ Space.grid(row=7, column=9)
 InitialLabel.grid(row=1, column=10)
 InitialNumber.grid(row=2, column=10)
 Program1Label.grid(row=0, column=9)
-TestNumberLabel.grid(row=3, column=10)
-TestNumber.grid(row=4, column=10)
+TipLabel.grid(row=3, column=10)
+Tip.grid(row=4, column=10)
 
 ResultLabel.grid(row=5, column=10)
 ResultNumber.grid(row=6, column=10)
