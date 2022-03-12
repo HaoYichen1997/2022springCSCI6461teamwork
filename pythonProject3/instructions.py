@@ -709,10 +709,11 @@ def jne011(instruction):  # Jump If not equal
     if len(EA_result) != 0:  # indirect EA use fetch
         del EA_result[-2:]  # delete the "ir" and ir.num in fetch_result
     JZ11_result = copy.deepcopy(EA_result)
-    if (instruction[6] == "0" and instruction[7] == "0" and gpr0.num != "0000000000000000") \
-            or (instruction[6] == "0" and instruction[7] == "1" and gpr1.num != "0000000000000000") \
-            or (instruction[6] == "1" and instruction[7] == "0" and gpr2.num != "0000000000000000") \
-            or (instruction[6] == "1" and instruction[7] == "1" and gpr3.num != "0000000000000000"):
+
+    if (instruction[6] == "0" and instruction[7] == "0" and "".join(gpr0.num) != "0000000000000000") \
+            or (instruction[6] == "0" and instruction[7] == "1" and "".join(gpr1.num) != "0000000000000000") \
+            or (instruction[6] == "1" and instruction[7] == "0" and "".join(gpr2.num) != "0000000000000000") \
+            or (instruction[6] == "1" and instruction[7] == "1" and "".join(gpr3.num) != "0000000000000000"):
         EA_PC_dec = int(to_one_str(EA), 2)
         EA_PC_bin = bin(EA_PC_dec, 10)
         pc.set(EA_PC_bin[2:].zfill(12))
@@ -810,6 +811,34 @@ def sob016(instruction):  # Subtract One and Branch. R = 0..3
     if len(EA_result) != 0:  # indirect EA use fetch
         del EA_result[-2:]
     sob016_result = copy.deepcopy(EA_result)
+    if instruction[6] == "0" and instruction[7] == "0":
+        s0 = "".join(gpr0.num)
+        S0 = int(to_one_str(S0), 2) - 1
+        s0 = bin(s0, 10)
+        gpr0.set(s0.zfill(16))
+        sob016_result.append("gpr0")
+        sob016_result.append(gpr0.num)
+    elif instruction[6] == "0" and instruction[7] == "1" :
+        s0 = "".join(gpr1.num)
+        S0 = int(to_one_str(S0), 2) - 1
+        s0 = bin(s0, 10)
+        gpr1.set(s0.zfill(16))
+        sob016_result.append("gpr1")
+        sob016_result.append(gpr1.num)
+    elif instruction[6] == "1" and instruction[7] == "0" :
+        s0 = "".join(gpr2.num)
+        S0 = int(to_one_str(S0), 2) - 1
+        s0 = bin(s0, 10)
+        gpr2.set(s0.zfill(16))
+        sob016_result.append("gpr2")
+        sob016_result.append(gpr2.num)
+    elif instruction[6] == "1" and instruction[7] == "1" :
+        s0 = "".join(gpr3.num)
+        S0 = int(to_one_str(S0), 2) - 1
+        s0 = bin(s0, 10)
+        gpr3.set(s0.zfill(16))
+        sob016_result.append("gpr3")
+        sob016_result.append(gpr3.num)
     if (instruction[6] == "0" and instruction[7] == "0" and int(to_one_str(gpr0.num), 10) - 1 > 0) \
             or (instruction[6] == "0" and instruction[7] == "1" and int(to_one_str(gpr1.num), 10) - 1 > 0) \
             or (instruction[6] == "1" and instruction[7] == "0" and int(to_one_str(gpr2.num), 10) - 1 > 0) \
