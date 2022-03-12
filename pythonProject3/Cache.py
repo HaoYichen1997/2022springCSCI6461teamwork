@@ -118,4 +118,4 @@ def get_words(offset: int, cache_line):
     return word
 
 
-read_cache(0)
+# read_cache(0)
