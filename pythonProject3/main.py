@@ -872,8 +872,8 @@ SS = Button(frameSysBtn,text="SS",padx=10, pady=15, command=SS)
 RunBtn = Button(frameSysBtn,text="Run",padx=10, pady=15,command=run_instructions)
     #Cache Button
 CacheBtn = Button(framePhaseII,text="Cache",padx=1, pady=1, command=CacheWindows.open)
-    #PROGRAM1 Button
-Pro1Btn = Button(framePhaseII, text="Program1", padx=1, pady=1, command=Program1.pro1)
+#     #PROGRAM1 Button
+# Pro1Btn = Button(framePhaseII, text="Program1", padx=1, pady=1, command=Program1.pro1)
 
 #grid, it is the layout of the whole panel made by Zihao Wen
 
@@ -957,7 +957,7 @@ SS.grid(row=1,column=0)
 SpaceSSRUN.grid(row=1,column=2)
 RunBtn.grid(row=1,column=3)
 CacheBtn.grid(row=7,column=6)
-Pro1Btn.grid(row=7, column=7)
+# Pro1Btn.grid(row=7, column=7)
 
     #Button status
 Status15.grid(row=15,column=0)

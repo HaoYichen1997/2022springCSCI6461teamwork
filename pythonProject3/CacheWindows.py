@@ -9,7 +9,7 @@ def open():
     #define cache basic background
     cacheW = Toplevel()
     cacheW.title('Cache Display')
-    cacheW.geometry("1400x600")
+    cacheW.geometry("1180x515")
 
     #define Label
     IdxLabel = Label(cacheW, text="Index")

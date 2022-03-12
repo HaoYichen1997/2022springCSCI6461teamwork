@@ -525,13 +525,13 @@ def jz010(instruction):  # Jump If Zero
     EA_result = cal_EA(instruction)
     EA = EA_result.pop()
     if len(EA_result) != 0:  # indirect EA use fetch
-        del EA_result[-2:]  # delete the "ir" and ir.num in fetch_result
+        del EA_result[-2:]  # delete the "ir" and ir.num in fetch_result   1
     JZ10_result = copy.deepcopy(EA_result)
 
-    if (instruction[6] == "0" and instruction[7] == "0" and gpr0.num == "0000000000000000") \
-            or (instruction[6] == "0" and instruction[7] == "1" and gpr1.num == "0000000000000000") \
-            or (instruction[6] == "1" and instruction[7] == "0" and gpr2.num == "0000000000000000") \
-            or (instruction[6] == "1" and instruction[7] == "1" and gpr3.num == "0000000000000000"):
+    if (instruction[6] == "0" and instruction[7] == "0" and "".join(gpr0.num)  == "0000000000000000") \
+            or (instruction[6] == "0" and instruction[7] == "1" and "".join(gpr1.num)  == "0000000000000000") \
+            or (instruction[6] == "1" and instruction[7] == "0" and "".join(gpr2.num)  == "0000000000000000") \
+            or (instruction[6] == "1" and instruction[7] == "1" and "".join(gpr3.num)  == "0000000000000000"):
         # main.PC.delete(0, END)
         # main.PC.insert(0,str(JZ10_result[0]))
         EA_PC_dec = int(EA, 10)
@@ -684,16 +684,16 @@ def sir(instruction):
 # ******************* test for amr,smr,air ***************************
 # c[3] = 2,c[reg3] = 10
 # reg3,index0,add3
-gpr3.num = ["0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "1", "0", "1", "0"]
-memory[3] = ["0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "1", "0"]
-# add c[mem[3]] and c[reg3] to reg3, 12
-instrA = ["0", "0", "0", "1", "0", "0", "1", "1", "0", "0", "0", "0", "0", "0", "1", "1"]
-# sub c[mem[3]] from c[reg3],10
-instrS = ["0", "0", "0", "1", "0", "1", "1", "1", "0", "0", "0", "0", "0", "0", "1", "1"]
-# add immediate 3 to c[reg3]= 10,13
-instrAi = ["0", "0", "0", "1", "1", "0", "1", "1", "0", "0", "0", "0", "0", "0", "1", "1"]
-# 13-15
-instrSi = ["0", "0", "0", "1", "1", "1", "1", "1", "0", "0", "0", "0", "1", "1", "1", "1"]
+# gpr3.num = ["0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "1", "0", "1", "0"]
+# memory[3] = ["0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "1", "0"]
+# # add c[mem[3]] and c[reg3] to reg3, 12
+# instrA = ["0", "0", "0", "1", "0", "0", "1", "1", "0", "0", "0", "0", "0", "0", "1", "1"]
+# # sub c[mem[3]] from c[reg3],10
+# instrS = ["0", "0", "0", "1", "0", "1", "1", "1", "0", "0", "0", "0", "0", "0", "1", "1"]
+# # add immediate 3 to c[reg3]= 10,13
+# instrAi = ["0", "0", "0", "1", "1", "0", "1", "1", "0", "0", "0", "0", "0", "0", "1", "1"]
+# # 13-15
+# instrSi = ["0", "0", "0", "1", "1", "1", "1", "1", "0", "0", "0", "0", "1", "1", "1", "1"]
 '''
 print(amr(instrA))
 print(smr(instrS))
