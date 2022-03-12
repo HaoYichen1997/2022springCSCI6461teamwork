@@ -515,7 +515,7 @@ def in061(instruction):
 '''
 
 
-# import main
+
 def to_one_str(data:list):
     i = ''.join(data)
     return i
@@ -528,10 +528,10 @@ def jz010(instruction):  # Jump If Zero
         del EA_result[-2:]  # delete the "ir" and ir.num in fetch_result   1
     JZ10_result = copy.deepcopy(EA_result)
 
-    if (instruction[6] == "0" and instruction[7] == "0" and "".join(gpr0.num)  == "0000000000000000") \
-            or (instruction[6] == "0" and instruction[7] == "1" and "".join(gpr1.num)  == "0000000000000000") \
-            or (instruction[6] == "1" and instruction[7] == "0" and "".join(gpr2.num)  == "0000000000000000") \
-            or (instruction[6] == "1" and instruction[7] == "1" and "".join(gpr3.num)  == "0000000000000000"):
+    if (instruction[6] == "0" and instruction[7] == "0" and "".join(gpr0.num) == "0000000000000000") \
+            or (instruction[6] == "0" and instruction[7] == "1" and "".join(gpr1.num) == "0000000000000000") \
+            or (instruction[6] == "1" and instruction[7] == "0" and "".join(gpr2.num) == "0000000000000000") \
+            or (instruction[6] == "1" and instruction[7] == "1" and "".join(gpr3.num) == "0000000000000000"):
         # main.PC.delete(0, END)
         # main.PC.insert(0,str(JZ10_result[0]))
         EA_PC_dec = int(EA, 10)

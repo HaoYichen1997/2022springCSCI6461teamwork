@@ -18,22 +18,6 @@ def open():
     Ewordslabel = Label(cacheW, text="8 Words")
 
     #define Idx textbox number 0-16
-    # Idx0 = Entry(cacheW, width=4, borderwidth=4)
-    # Idx1 = Entry(cacheW, width=4, borderwidth=4)
-    # Idx2 = Entry(cacheW, width=4, borderwidth=4)
-    # Idx3 = Entry(cacheW, width=4, borderwidth=4)
-    # Idx4 = Entry(cacheW, width=4, borderwidth=4)
-    # Idx5 = Entry(cacheW, width=4, borderwidth=4)
-    # Idx6 = Entry(cacheW, width=4, borderwidth=4)
-    # Idx7 = Entry(cacheW, width=4, borderwidth=4)
-    # Idx8 = Entry(cacheW, width=4, borderwidth=4)
-    # Idx9 = Entry(cacheW, width=4, borderwidth=4)
-    # Idx10 = Entry(cacheW, width=4, borderwidth=4)
-    # Idx11 = Entry(cacheW, width=4, borderwidth=4)
-    # Idx12 = Entry(cacheW, width=4, borderwidth=4)
-    # Idx13 = Entry(cacheW, width=4, borderwidth=4)
-    # Idx14 = Entry(cacheW, width=4, borderwidth=4)
-    # Idx15 = Entry(cacheW, width=4, borderwidth=4)
     Idx0 = Label(cacheW, text="0")
     Idx1 = Label(cacheW, text="1")
     Idx2 = Label(cacheW, text="2")
@@ -50,9 +34,7 @@ def open():
     Idx13 = Label(cacheW, text="13")
     Idx14 = Label(cacheW, text="14")
     Idx15 = Label(cacheW, text="15")
-    # for i, j in zip(range(1, 17), range(16)):
-    #     exec("Idx" + str(j) + '=' + "Entry(cacheW, width=4, borderwidth=4)")
-    #     print("Idx"+ str(j))
+
     # define Block Number textbox number 0-16
     Blk_Num0 = Entry(cacheW, width=4, borderwidth=4)
     Blk_Num1 = Entry(cacheW, width=4, borderwidth=4)
@@ -71,8 +53,7 @@ def open():
     Blk_Num14 = Entry(cacheW, width=4, borderwidth=4)
     Blk_Num15 = Entry(cacheW, width=4, borderwidth=4)
 
-    # for i, j in zip(range(1, 17), range(16)):
-    #     exec("Blk_Num" + str(j) + '=' + "Entry(cacheW, width=8, borderwidth=4)")
+
     # define Valid textbox number 0-16
     Valid0 = Entry(cacheW, width=4, borderwidth=4)
     Valid1 = Entry(cacheW, width=4, borderwidth=4)
@@ -90,8 +71,6 @@ def open():
     Valid13 = Entry(cacheW, width=4, borderwidth=4)
     Valid14 = Entry(cacheW, width=4, borderwidth=4)
     Valid15 = Entry(cacheW, width=4, borderwidth=4)
-    # for i, j in zip(range(1, 17), range(16)):
-    #     exec("Valid" + str(j) + '=' + "Entry(cacheW, width=2, borderwidth=4)")
     # define 8 words textbox number
     # defination rule :  Ewords + row number + column number , such as Ewords061 == row No.7 & column No.2 because of number starting from 0;
     Ewords000 = Entry(cacheW, width=20, borderwidth=4)
@@ -222,13 +201,6 @@ def open():
     Ewords155 = Entry(cacheW, width=20, borderwidth=4)
     Ewords156 = Entry(cacheW, width=20, borderwidth=4)
     Ewords157 = Entry(cacheW, width=20, borderwidth=4)
-    # for i in range(16):
-    #     for j in range(8):
-    #         if i < 10:
-    #             exec("Ewords" + '0' + str(i) +str(j) + '=' + "Entry(cacheW, width=20, borderwidth=4)")
-    #         else :
-    #             exec("Ewords" + str(i) + str(j) + '=' + "Entry(cacheW, width=20, borderwidth=4)")
-    # Cache.cache[1][8] = "123"
     # insert Cache data into textbox
     for i in range(16): # insert valid value
         if Cache.cache[i][0] != "0":
@@ -254,22 +226,6 @@ def open():
         Cache.cache=["0"]*16
         for elements in range(16):
             Cache.cache[elements] = ["0"] * 10
-        # Idx0.delete(0, END)
-        # Idx1.delete(0, END)
-        # Idx2.delete(0, END)
-        # Idx3.delete(0, END)
-        # Idx4.delete(0, END)
-        # Idx5.delete(0, END)
-        # Idx6.delete(0, END)
-        # Idx7.delete(0, END)
-        # Idx8.delete(0, END)
-        # Idx9.delete(0, END)
-        # Idx10.delete(0, END)
-        # Idx11.delete(0, END)
-        # Idx12.delete(0, END)
-        # Idx13.delete(0, END)
-        # Idx14.delete(0, END)
-        # Idx15.delete(0, END)
         Blk_Num0.delete(0, END)
         Blk_Num1.delete(0, END)
         Blk_Num2.delete(0, END)
@@ -430,16 +386,6 @@ def open():
         Ewords155.delete(0, END)
         Ewords156.delete(0, END)
         Ewords157.delete(0, END)
-        #     exec("Idx" + str(i) + ".delete(0,END)")
-        #     exec("Blk_Num" + str(i) + ".delete(0,END)")
-        #     exec("Valid" + str(i) + ".delete(0,END)")
-        # for i in range(16):
-        #     for j in range(8):
-        #         if i < 10:
-        #             exec("Ewords" + '0' + str(i) + str(j) + ".delete(0,END)")
-        #         else:
-        #             exec("Ewords" + str(i) + str(j) + ".delete(0,END)")
-
 
     #define Button
     RefreshBtn =Button(cacheW,text="Refresh",padx=10, pady=15, command=refresh)

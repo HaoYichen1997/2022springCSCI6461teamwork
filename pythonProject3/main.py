@@ -14,11 +14,10 @@ import instructions as instr
 import time
 import CacheWindows
 import Program1
-# from PIL import Image, ImageTk
-# from tkinter.filedialog import askopenfile
 
 
-#Basic interface made by Zihao Wen
+
+#Basic interface made by Zihao Wen 1
 root = Tk()
 root.title("6461 Project1")
 root.geometry("1240x500")
@@ -559,9 +558,6 @@ def show_Fetch(result):
     for i in range(0, len(result), 2):
         show_Reg_to_Panel(result[i], result[i+1])
 
-# def show_Ldr001(result):
-#     for i in range(0, len(result), 2):
-#         show_Reg_to_Panel(result[i], result[i+1])
 
 def show_general(result):
     for i in range(0, len(result), 2):
@@ -749,14 +745,9 @@ def BinaryPlusOne(S1) :
     return S1
 #Store button's function, it will store data from MAR&MBR BOX to Memory made by Zihao Wen
 def Store():
-    # Store_MARnum = MAR_num
-    # Store_MBRnum = MBR_num
-    # instr.mar.set(string_to_strlist(MAR_num))
-    # instr.mbr.set(string_to_strlist(MBR_num))
+
     instr.str_Mbr_to_Mem(instr.mar, instr.mbr)
-    # for i in range(len(MBR_num)):
-    #      instr.memory[BinaryTurnDec(Store_MARnum)][i]=Store_MBRnum[i]
-    # print('MBR Value'+''.join(instr.memory[BinaryTurnDec(Store_MARnum)]))
+
     return
 #Store button's function, it will store data from MAR&MBR BOX to Memory, and MAR's binary number will plus one made by Zihao Wen
 def StorePlus():
@@ -783,14 +774,9 @@ def StorePlus():
 #Load number from Memory made by Zihao Wen
 def Load():
     MBR.delete(0, END)
-    # temp1=["1","1","1","1","1","1","1","1","1","1","1","1","1","1","1","1"]
     print(range(len(instr.memory[BinaryTurnDec(MAR.get())])))
     instr.read_Mem_to_Mbr(instr.mar, instr.mbr)
-    # MBR.insert(0, instr.mbr.num)
-    # for i in range(len(instr.memory[BinaryTurnDec(MAR.get())])):
-    #     temp1[i] =  str(instr.memory[BinaryTurnDec(MAR.get())][i])
     MBR.insert(0, ''.join(instr.mbr.num))
-    # print('Load MBR='+''.join(instr.memory[BinaryTurnDec(MAR.get())]))
     return
 
 
@@ -800,8 +786,6 @@ def ClickInit():
     instr.grp0 = "00000000000"
     for address in range(2048):
         instr.memory[address] = ['0'] * 16
-    # Ewords064.delete(0, END)
-    # MAR.insert(0, '000000000000')
     try:
         initText = filedialog.askopenfilename(initialdir="/pythonProject3", title="Select a text file",
                                               filetypes=(("Text files", "*.txt"), ("all files", "*.*")))
