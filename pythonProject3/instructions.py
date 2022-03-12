@@ -805,7 +805,7 @@ def rfs015(instruction):  # Jump if condition code
 #
 #
 #
-def sob016(instruction):  # Subtract One and Branch. R = 0..3
+def sob016(instruction):  # Subtract One and Branch. R = 0..3 update
     EA_result = cal_EA(instruction)
     EA = EA_result.pop()
     if len(EA_result) != 0:  # indirect EA use fetch
