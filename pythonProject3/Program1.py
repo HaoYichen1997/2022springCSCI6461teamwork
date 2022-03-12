@@ -7,6 +7,7 @@ Date:02/27/2022
 from tkinter import *
 from tkinter import messagebox
 
+
 def pro1():
     # define program1 background
     Program1W = Toplevel()
@@ -37,6 +38,7 @@ def pro1():
                 print(InitialNumber.get())
                 print(Consolekey)
                 InitialNumber.delete(0, END)
+                #run()
                 # instruct in and store to memory
                 # halt
             else:

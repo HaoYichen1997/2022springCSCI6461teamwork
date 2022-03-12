@@ -29,6 +29,7 @@ def write_reg_to_c_m(address:int, contents:list): # address dec 0-2047, content:
         cache_line = add_to_cache(address)
         offset = get_address_offset(address)
         cache_line[offset + 2] = copy.deepcopy(contents)
+    add_counter += 1
     # write to mem
     instructions.memory[address] = contents
 

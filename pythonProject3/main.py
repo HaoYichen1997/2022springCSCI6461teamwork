@@ -7,6 +7,7 @@ Date:01/21/2022
 """
 from tkinter import *
 from tkinter import filedialog
+from tkinter import messagebox
 from textwrap import wrap
 import register as reg
 import instructions as instr
@@ -679,6 +680,9 @@ def run_Single_Step():
         not025_result = instr.not025(instr.ir.num)
         print('opcode is 025')
         show_general(not025_result)
+    elif opcode == 49:
+        in061_result = instr.in061(instr.ir.num)
+        print('opcode is 061')
     else: print("incorrect opcode",opcode)
 
 def SS():
@@ -704,7 +708,7 @@ def run_instructions():
             print("stop now")
             break
         root.update()
-        time.sleep(4)
+        time.sleep(0.4)
 
 
     #Binary translate to Decimal made by Zihao Wen
@@ -993,7 +997,7 @@ global step
 step = 0
 def Program1(event):
     global step
-    global Consolekey
+    Consolekey = instr.Consolekey
     if InitialNumber.get().isdigit():
         if step < 20:
             Consolekey[0] = InitialNumber.get()
@@ -1001,6 +1005,7 @@ def Program1(event):
             print(Consolekey)
             InitialNumber.delete(0, END)
             # instruct in and store to memory
+            run_instructions()
             # halt
         else:
             InitialNumber.delete(0, END)
