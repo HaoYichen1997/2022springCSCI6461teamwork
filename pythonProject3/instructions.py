@@ -537,7 +537,7 @@ def jz010(instruction):  # Jump If Zero
         # main.PC.insert(0,str(JZ10_result[0]))
         EA_PC_dec = int(EA, 10)
         EA_PC_bin = bin(int(EA_PC_dec, 10))
-        pc.set(EA_PC_bin.zfill(12))
+        pc.set(EA_PC_bin[2:].zfill(12))
         JZ10_result.append("pc")
         JZ10_result.append(pc.num)
     else:
@@ -815,28 +815,28 @@ def sob016(instruction):  # Subtract One and Branch. R = 0..3
         s0 = "".join(gpr0.num)
         S0 = int(to_one_str(S0), 2) - 1
         s0 = bin(s0, 10)
-        gpr0.set(s0.zfill(16))
+        gpr0.set(s0[2:].zfill(16))
         sob016_result.append("gpr0")
         sob016_result.append(gpr0.num)
     elif instruction[6] == "0" and instruction[7] == "1" :
         s0 = "".join(gpr1.num)
         S0 = int(to_one_str(S0), 2) - 1
         s0 = bin(s0, 10)
-        gpr1.set(s0.zfill(16))
+        gpr1.set(s0[2:].zfill(16))
         sob016_result.append("gpr1")
         sob016_result.append(gpr1.num)
     elif instruction[6] == "1" and instruction[7] == "0" :
         s0 = "".join(gpr2.num)
         S0 = int(to_one_str(S0), 2) - 1
         s0 = bin(s0, 10)
-        gpr2.set(s0.zfill(16))
+        gpr2.set(s0[2:].zfill(16))
         sob016_result.append("gpr2")
         sob016_result.append(gpr2.num)
     elif instruction[6] == "1" and instruction[7] == "1" :
         s0 = "".join(gpr3.num)
         S0 = int(to_one_str(S0), 2) - 1
         s0 = bin(s0, 10)
-        gpr3.set(s0.zfill(16))
+        gpr3.set(s0[2:].zfill(16))
         sob016_result.append("gpr3")
         sob016_result.append(gpr3.num)
     if (instruction[6] == "0" and instruction[7] == "0" and int(to_one_str(gpr0.num), 10) - 1 > 0) \
