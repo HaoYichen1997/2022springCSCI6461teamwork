@@ -1012,7 +1012,7 @@ def Program1(event):
 
 root.bind('<Return>', Program1)
 
-
+#beiju
 # define location of elements
 Space.grid(row=0, column=9)
 Space.grid(row=1, column=9)
