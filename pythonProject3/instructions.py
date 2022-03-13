@@ -509,7 +509,11 @@ def in061(instruction):
         result = bin(int(num))[2:].zfill(16)
         data = [num for num in str(result)]
         r.set(data)
-
+    in061_result = list()
+    in061_result.append(f"{r.name}")
+    r_data = ''.join(i for i in r.num)
+    in061_result.append(r_data)
+    return in061_result
 
 '''
 '''
@@ -535,7 +539,7 @@ def jz010(instruction):  # Jump If Zero
         # main.PC.delete(0, END)
         # main.PC.insert(0,str(JZ10_result[0]))
         EA_PC_dec = int(EA, 10)
-        EA_PC_bin = bin(int(EA_PC_dec, 10))
+        EA_PC_bin = bin(int(EA_PC_dec, 2))
         pc.set(EA_PC_bin[2:].zfill(12))
         JZ10_result.append("pc")
         JZ10_result.append(pc.num)
@@ -621,7 +625,7 @@ def smr(instruction):
     sub_result = cont_reg - cont_EA
     if check_overflow_or_underflow(sub_result):
         return []
-    print("subre:",sub_result,"int_to:",int_to_string(sub_result))
+    print("subre:",sub_result,"cont_reg:",cont_reg, "cont_EA", cont_EA)
     dest_reg.set(int_to_string(sub_result))
 
     smr_result.append(dest_reg.name)
@@ -862,10 +866,10 @@ def jge017(instruction):  # Jump Greater Than or Equal To
     if len(EA_result) != 0:  # indirect EA use fetch
         del EA_result[-2:]
     jge017_result = copy.deepcopy(EA_result)
-    if (instruction[6] == "0" and instruction[7] == "0" and int(to_one_str(gpr0.num), 2) >= 0) \
-            or (instruction[6] == "0" and instruction[7] == "1" and int(to_one_str(gpr1.num), 2) >= 0) \
-            or (instruction[6] == "1" and instruction[7] == "0" and int(to_one_str(gpr2.num), 2) >= 0) \
-            or (instruction[6] == "1" and instruction[7] == "1" and int(to_one_str(gpr3.num), 2) >= 0):
+    if (instruction[6] == "0" and instruction[7] == "0" and string_to_int(to_one_str(gpr0.num)) >= 0) \
+            or (instruction[6] == "0" and instruction[7] == "1" and string_to_int(to_one_str(gpr1.num)) >= 0) \
+            or (instruction[6] == "1" and instruction[7] == "0" and string_to_int(to_one_str(gpr2.num)) >= 0) \
+            or (instruction[6] == "1" and instruction[7] == "1" and string_to_int(to_one_str(gpr3.num)) >= 0):
         EA_PC_dec = int(to_one_str(EA), 2)
         EA_PC_bin = bin(EA_PC_dec)
         pc.set(EA_PC_bin[2:].zfill(12))

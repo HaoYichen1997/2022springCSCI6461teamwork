@@ -683,6 +683,7 @@ def run_Single_Step():
     elif opcode == 49:
         in061_result = instr.in061(instr.ir.num)
         print('opcode is 061')
+        show_general(in061_result)
     else: print("incorrect opcode",opcode)
 
 def SS():
@@ -702,8 +703,9 @@ def run_instructions():
         pc = pc_dec+1
         data = bin(pc)[2:].zfill(12)
         instr.pc.set(string_to_strlist(str(data)))
-        run_Single_Step()
         print(instr.ir.num)
+        run_Single_Step()
+
         if HaltLight.get() == '1':
             print("stop now")
             break
