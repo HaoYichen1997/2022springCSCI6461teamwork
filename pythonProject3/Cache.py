@@ -118,4 +118,6 @@ def get_words(offset: int, cache_line):
     return word
 
 
-# read_cache(0)
+def set_count():
+    global add_counter
+    add_counter = 0

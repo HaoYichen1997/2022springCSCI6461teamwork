@@ -3,6 +3,8 @@ import copy
 import time
 from tkinter import *
 import Program1 as pg1
+import Cache
+
 # import main
 '''
 this module about the 16-bit instructions 
@@ -13,15 +15,14 @@ and other instructions about memory
 memory = [0] * 2048
 for address in range(2048):
     memory[address] = ['0'] * 16
-#ZERO_16 = ["0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0"]
+# ZERO_16 = ["0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0"]
 '''
 buffers of IN instruction
 '''
 console_keyboard_buffer = list()
 
-
-#[[0],[1]]
-#e.p. memory=list[2048]
+# [[0],[1]]
+# e.p. memory=list[2048]
 #  mem[0]= ['0','0','0','0','0','0','0','0','0','0','0','0','0','0','0']    list[16]
 SIXTEENBIT = ['0'] * 16
 TWELVEBIT = ['0'] * 12
@@ -43,13 +44,15 @@ cc = reg.Cc(FOURBIT)
 def read_Mem_to_Mbr(mar: reg.Mar, mbr: reg.Mbr):  # use mar mbr read mem
     address_bin = ''.join(i for i in mar.num)
     address_dec = int(address_bin, 2)
-    mbr.set(memory[address_dec])
+    mbr.set(Cache.read_cache(address_dec))
+    # mbr.set(memory[address_dec])
 
 
-def str_Mbr_to_Mem (mar:reg.Mar, mbr:reg.Mbr): #put mbr to mem address
+def str_Mbr_to_Mem(mar: reg.Mar, mbr: reg.Mbr):  # put mbr to mem address
     address_bin = ''.join(i for i in mar.num)
     address_dec = int(address_bin, 2)
-    memory[address_dec] = mbr.num
+    Cache.write_reg_to_c_m(address_dec, mbr.num)
+    # memory[address_dec] = mbr.num
 
 
 def fetch(pcaddress):  # take instruction from mem to ir
@@ -303,19 +306,19 @@ def halt000():  # halt
 def mlt020(instruction):
     mlt020_result = list()
     rx, ry = -1, -1
-    operand1 = list();
+    operand1 = list()
     operand2 = list()
     if instruction[6] == "0" and instruction[7] == "0":
-        rx = 0;
+        rx = 0
         operand1.append(gpr0.num)
     if instruction[6] == "1" and instruction[7] == "0":
-        rx = 2;
+        rx = 2
         operand1.append(gpr2.num)
     if instruction[8] == "0" and instruction[9] == "0":
-        ry = 0;
+        ry = 0
         operand2.append(gpr0.num)
     if instruction[8] == "1" and instruction[9] == "0":
-        ry = 2;
+        ry = 2
         operand2.append(gpr2.num)
     if rx == -1 or ry == -1:
         print("wrong reg in mlt")
@@ -368,19 +371,19 @@ def check_mul_overflew(num: int):  # dec multiple overflow is 2 **32
 def dvd021(instruction):
     dvd021_result = list()
     rx, ry = -1, -1
-    operand1 = list();
+    operand1 = list()
     operand2 = list()
     if instruction[6] == "0" and instruction[7] == "0":
-        rx = 0;
+        rx = 0
         operand1.append(gpr0.num)
     if instruction[6] == "1" and instruction[7] == "0":
-        rx = 2;
+        rx = 2
         operand1.append(gpr2.num)
     if instruction[8] == "0" and instruction[9] == "0":
-        ry = 0;
+        ry = 0
         operand2.append(gpr0.num)
     if instruction[8] == "1" and instruction[9] == "0":
-        ry = 2;
+        ry = 2
         operand2.append(gpr2.num)
     if rx == -1 or ry == -1:
         print("wrong reg in dvd021")
@@ -496,6 +499,7 @@ def not025(instruction):
     not025_result.append(rx.num)
     return not025_result
 
+
 def in061(instruction):
     global Consolekey
     r = get_gpr_in_instr(instruction, 6, 7)
@@ -503,7 +507,7 @@ def in061(instruction):
     a_bin = ''.join(i for i in devid)
     devid_dec = int(a_bin, 2)
     if devid_dec == 0:
-        #in program 1 assume the input is a positive int
+        # in program 1 assume the input is a positive int
         # not overflow everything ok after check
         num = Consolekey.pop(0)
         result = bin(int(num))[2:].zfill(16)
@@ -515,14 +519,15 @@ def in061(instruction):
     in061_result.append(r_data)
     return in061_result
 
+
 '''
 '''
 
 
-
-def to_one_str(data:list):
+def to_one_str(data: list):
     i = ''.join(data)
     return i
+
 
 def jz010(instruction):  # Jump If Zero
     # result is the list of regs num to panel
@@ -625,7 +630,7 @@ def smr(instruction):
     sub_result = cont_reg - cont_EA
     if check_overflow_or_underflow(sub_result):
         return []
-    print("subre:",sub_result,"cont_reg:",cont_reg, "cont_EA", cont_EA)
+    print("subre:", sub_result, "cont_reg:", cont_reg, "cont_EA", cont_EA)
     dest_reg.set(int_to_string(sub_result))
 
     smr_result.append(dest_reg.name)
@@ -685,27 +690,7 @@ def sir(instruction):
     return sir_result
 
 
-# ******************* test for amr,smr,air ***************************
-# c[3] = 2,c[reg3] = 10
-# reg3,index0,add3
-# gpr3.num = ["0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "1", "0", "1", "0"]
-# memory[3] = ["0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "1", "0"]
-# # add c[mem[3]] and c[reg3] to reg3, 12
-# instrA = ["0", "0", "0", "1", "0", "0", "1", "1", "0", "0", "0", "0", "0", "0", "1", "1"]
-# # sub c[mem[3]] from c[reg3],10
-# instrS = ["0", "0", "0", "1", "0", "1", "1", "1", "0", "0", "0", "0", "0", "0", "1", "1"]
-# # add immediate 3 to c[reg3]= 10,13
-# instrAi = ["0", "0", "0", "1", "1", "0", "1", "1", "0", "0", "0", "0", "0", "0", "1", "1"]
-# # 13-15
-# instrSi = ["0", "0", "0", "1", "1", "1", "1", "1", "0", "0", "0", "0", "1", "1", "1", "1"]
-'''
-print(amr(instrA))
-print(smr(instrS))
-print(air(instrAi))
-print(sir(instrSi))
-'''
-# *************************************************************
-#ZERO_16 = ["0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0"]
+# ZERO_16 = ["0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0"]
 def jne011(instruction):  # Jump If not equal
     # result is the list of regs num to panel
     EA_result = cal_EA(instruction)
@@ -767,8 +752,6 @@ def jma013(instruction):  # Unconditional Jump To Address
     return jma013_result
 
 
-#
-
 def jsr014(instruction):  # Jump if condition code
     EA_result = cal_EA(instruction)
     EA = EA_result.pop()
@@ -822,21 +805,21 @@ def sob016(instruction):  # Subtract One and Branch. R = 0..3 update
         gpr0.set(s0[2:].zfill(16))
         sob016_result.append("gpr0")
         sob016_result.append(gpr0.num)
-    elif instruction[6] == "0" and instruction[7] == "1" :
+    elif instruction[6] == "0" and instruction[7] == "1":
         s0 = "".join(gpr1.num)
         s0 = int(to_one_str(s0), 2) - 1
         s0 = bin(s0)
         gpr1.set(s0[2:].zfill(16))
         sob016_result.append("gpr1")
         sob016_result.append(gpr1.num)
-    elif instruction[6] == "1" and instruction[7] == "0" :
+    elif instruction[6] == "1" and instruction[7] == "0":
         s0 = "".join(gpr2.num)
         s0 = int(to_one_str(s0), 2) - 1
         s0 = bin(s0)
         gpr2.set(s0[2:].zfill(16))
         sob016_result.append("gpr2")
         sob016_result.append(gpr2.num)
-    elif instruction[6] == "1" and instruction[7] == "1" :
+    elif instruction[6] == "1" and instruction[7] == "1":
         s0 = "".join(gpr3.num)
         s0 = int(to_one_str(s0), 2) - 1
         s0 = bin(s0)
@@ -856,7 +839,7 @@ def sob016(instruction):  # Subtract One and Branch. R = 0..3 update
         pc.set(pc.num)
         sob016_result.append("pc")
         sob016_result.append(pc.num)
-    print("gpr3sob:",int(to_one_str(gpr3.num),2))
+    print("gpr3sob:", int(to_one_str(gpr3.num), 2))
     return sob016_result
 
 
@@ -958,16 +941,12 @@ def out(instruction):
     # Get the ASCII code for the character
     value_int = string_to_int(value)
     output = chr(value_int)
-    return [deviceId, output]
+    return ['out', output]
 
 
-
-
-#program 1.
+# program 1.
 
 global Consolekey
 Consolekey = ["0"] * 30
-
-
 
 # beiju
