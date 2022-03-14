@@ -21,6 +21,7 @@ add_counter = 0
 
 def write_reg_to_c_m(address:int, contents:list): # address dec 0-2047, content:16bits
     # write to cache
+    global add_counter
     if check_cache_line(address):  # if already in cache, change
         cache_line = get_cache_line(address)
         offset = get_address_offset(address)
@@ -49,12 +50,12 @@ def add_to_cache(address):  # add content in cache
     if add_counter < cache_length:
         cache_line = cache[add_counter]
         load_from_memory(address, cache_line)
-        print(cache[add_counter])
+        print("cache[add_C]:",cache[add_counter])
 
     else:
         cache_line = cache[add_counter % 16]
         load_from_memory(address, cache_line)
-        print(cache[add_counter])
+        print("cache[add_C]:",cache[add_counter])
 
     add_counter += 1
     return cache_line

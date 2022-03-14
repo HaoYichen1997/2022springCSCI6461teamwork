@@ -44,15 +44,15 @@ cc = reg.Cc(FOURBIT)
 def read_Mem_to_Mbr(mar: reg.Mar, mbr: reg.Mbr):  # use mar mbr read mem
     address_bin = ''.join(i for i in mar.num)
     address_dec = int(address_bin, 2)
-    mbr.set(Cache.read_cache(address_dec))
-    # mbr.set(memory[address_dec])
+    # mbr.set(Cache.read_cache(address_dec))
+    mbr.set(memory[address_dec])
 
 
 def str_Mbr_to_Mem(mar: reg.Mar, mbr: reg.Mbr):  # put mbr to mem address
     address_bin = ''.join(i for i in mar.num)
     address_dec = int(address_bin, 2)
-    Cache.write_reg_to_c_m(address_dec, mbr.num)
-    # memory[address_dec] = mbr.num
+    # Cache.write_reg_to_c_m(address_dec, mbr.num)
+    memory[address_dec] = mbr.num
 
 
 def fetch(pcaddress):  # take instruction from mem to ir
@@ -158,20 +158,17 @@ def ldr001(instruction):  # load from mem to gpr
 
 
 def lda003(instruction):  # load address to gpr
-    EA_result = cal_EA(instruction)
-    EA = EA_result.pop()
-    if len(EA_result) != 0:  # indirect EA use fetch
-        del EA_result[-2:]  # delete the "ir" and ir.num in fetch_result
-    lda003_result = copy.deepcopy(EA_result)
+    EA = ['0'] * 11 + instruction[-5:]
+    lda003_result = list()
     if instruction[6] == "0" and instruction[7] == "0":
         gpr0.set(EA)
         lda003_result.append("gpr0")
         lda003_result.append(gpr0.num)
-    elif instruction[6] == "0" and instruction[7] == "0":
+    elif instruction[6] == "0" and instruction[7] == "1":
         gpr1.set(EA)
         lda003_result.append("gpr1")
         lda003_result.append(gpr1.num)
-    elif instruction[6] == "0" and instruction[7] == "0":
+    elif instruction[6] == "1" and instruction[7] == "0":
         gpr2.set(EA)
         lda003_result.append("gpr2")
         lda003_result.append(gpr2.num)
@@ -179,7 +176,6 @@ def lda003(instruction):  # load address to gpr
         gpr3.set(EA)
         lda003_result.append("gpr3")
         lda003_result.append(gpr3.num)
-
     return lda003_result
 
 
@@ -323,9 +319,9 @@ def mlt020(instruction):
     if rx == -1 or ry == -1:
         print("wrong reg in mlt")
     else:
-        a_bin = ''.join(i for i in operand1)
+        a_bin = ''.join(i for i in operand1[0])
         a_dec = int(a_bin, 2)
-        b_bin = ''.join(i for i in operand2)
+        b_bin = ''.join(i for i in operand2[0])
         b_dec = int(b_bin, 2)
         c_dec = a_dec * b_dec
         result = bin(c_dec)[2:].zfill(32)
@@ -385,30 +381,40 @@ def dvd021(instruction):
     if instruction[8] == "1" and instruction[9] == "0":
         ry = 2
         operand2.append(gpr2.num)
+        print(gpr2.num)
     if rx == -1 or ry == -1:
         print("wrong reg in dvd021")
     else:
-        a_bin = ''.join(i for i in operand1)
+        a_bin = ''.join(i for i in operand1[0])
         a_dec = int(a_bin, 2)
-        b_bin = ''.join(i for i in operand2)
+        b_bin = ''.join(i for i in operand2[0])
         b_dec = int(b_bin, 2)
+        print("a_dec:",a_dec,"b_dec",b_dec)
         c_dec = a_dec // b_dec
         d_dec = a_dec % b_dec
         quotient = bin(c_dec)[2:].zfill(16)
         remainder = bin(d_dec)[2:].zfill(16)
+
+        quotient_list = list()
+        remainder_list = list()
+        for i in quotient:
+            quotient_list.append(i)
+        for i in remainder:
+            remainder_list.append(i)
+        print("quotientl:", quotient_list, "remaninl", remainder_list)
         if instruction[6] == "0" and instruction[7] == "0":
-            gpr0.set(quotient)
+            gpr0.set(quotient_list)
             dvd021_result.append("gpr0")
             dvd021_result.append(gpr0.num)
-            gpr1.set(remainder)
+            gpr1.set(remainder_list)
             dvd021_result.append("gpr1")
             dvd021_result.append(gpr1.num)
 
         if instruction[6] == "1" and instruction[7] == "0":
-            gpr2.set(quotient)
+            gpr2.set(quotient_list)
             dvd021_result.append("gpr0")
             dvd021_result.append(gpr0.num)
-            gpr3.set(remainder)
+            gpr3.set(remainder_list)
             dvd021_result.append("gpr1")
             dvd021_result.append(gpr1.num)
 
@@ -543,8 +549,8 @@ def jz010(instruction):  # Jump If Zero
             or (instruction[6] == "1" and instruction[7] == "1" and "".join(gpr3.num) == "0000000000000000"):
         # main.PC.delete(0, END)
         # main.PC.insert(0,str(JZ10_result[0]))
-        EA_PC_dec = int(EA, 10)
-        EA_PC_bin = bin(int(EA_PC_dec, 2))
+        EA_PC_dec = int(to_one_str(EA), 2)
+        EA_PC_bin = bin(EA_PC_dec)
         pc.set(EA_PC_bin[2:].zfill(12))
         JZ10_result.append("pc")
         JZ10_result.append(pc.num)
@@ -640,7 +646,7 @@ def smr(instruction):
 
 # 06 Add  Immediate to Register
 def air(instruction):
-    immediate = string_to_int(instruction[-5:])
+    immediate = int("".join(instruction[-5:]),2)
     # if Immed = 0, does nothing
     if immediate == 0:
         return []
@@ -673,7 +679,7 @@ def check_overflow_or_underflow(number):
 
 # 07 Subtract  Immediate  from Register
 def sir(instruction):
-    immediate = string_to_int(instruction[-5:])
+    immediate = int("".join(instruction[-5:]),2)
     if immediate == 0:
         return []
     dest_reg = get_register(instruction)
@@ -940,7 +946,9 @@ def out(instruction):
     value = get_register(instruction).num
     # Get the ASCII code for the character
     value_int = string_to_int(value)
+    print("value_int:", value_int)
     output = chr(value_int)
+    print("out:",output)
     return ['out', output]
 
 
@@ -948,5 +956,5 @@ def out(instruction):
 
 global Consolekey
 Consolekey = ["0"] * 30
-
+Consolekey_out = list()
 # beiju

@@ -1,8 +1,8 @@
 """
- 
-Creater:Zack 
-Date:01/21/2022 
- 
+
+Creater:Zack
+Date:01/21/2022
+
 """
 from tkinter import *
 from tkinter import filedialog
@@ -622,7 +622,17 @@ def show_general(result):
     for i in range(0, len(result), 2):
         show_Reg_to_Panel(result[i], result[i + 1])
 
-
+def show_out(result):
+    if result[0] == "out":
+        instr.Consolekey_out.append(result[1])
+    elif result[0] == "halt":
+        if instr.Consolekey_out:
+            ResultNumber.delete(0, END)
+            reverse_out = instr.Consolekey_out[::-1]
+            str1 = ''.join(reverse_out)
+            i = int(str1)
+            ResultNumber.insert(0, str(i))
+            instr.Consolekey_out.clear()
 # SS
 def run_Single_Step():
     opcode = int("".join(i for i in instr.ir.num[:6]), 2)
@@ -665,7 +675,7 @@ def run_Single_Step():
     elif opcode == 50:
         out_result = instr.out(instr.ir.num)
         print('opcode is 62')
-        show_general(out_result)
+        show_out(out_result)
     elif opcode == 33:
         ldx041_result = instr.ldx041(instr.ir.num)
         print('opcode is 041')
@@ -709,6 +719,7 @@ def run_Single_Step():
     elif opcode == 0:
         halt000_result = instr.halt000()
         print('opcode is halt')
+        show_out(["halt"])
         show_general(halt000_result)
     elif opcode == 16:
         mlt020_result = instr.mlt020(instr.ir.num)
@@ -767,7 +778,7 @@ def run_instructions():
             print("stop now")
             break
         root.update()
-        time.sleep(0.1)
+        time.sleep(0.05)
 
     # Binary translate to Decimal made by Zihao Wen
 
