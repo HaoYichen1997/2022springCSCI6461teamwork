@@ -554,6 +554,7 @@ def jz010(instruction):  # Jump If Zero
         pc.set(EA_PC_bin[2:].zfill(12))
         JZ10_result.append("pc")
         JZ10_result.append(pc.num)
+        print("JZ!PC:",EA_PC_bin[2:].zfill(12))
     else:
         pc.set(pc.num)
         JZ10_result.append("pc")

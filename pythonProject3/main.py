@@ -18,7 +18,7 @@ import Program1
 # Basic interface made by Zihao Wen 1
 root = Tk()
 root.title("6461 Project1")
-root.geometry("1240x500")
+root.geometry("1440x600")
 # Btn Frame made by Zihao Wen
 frameBtn = LabelFrame(root, text="Num Button")
 frameBtn.grid(row=10, column=1, columnspan=5, padx=50, pady=10)
@@ -1125,10 +1125,14 @@ def Program1(event):
     # tips
     if step == 20:
         Tip.delete(0, END)
-        Tip.insert(0, "please input target")
+        Tip.insert(0, "please input target,wait")
     else:
         Tip.delete(0, END)
         Tip.insert(0, "Please input No." + str(step + 1) + "Num")
+    if step == 21:
+        Tip.delete(0, END)
+        Tip.insert(0, "the closest num below")
+        Tip.update()
 
 
 root.bind('<Return>', Program1)
