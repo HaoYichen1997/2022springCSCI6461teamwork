@@ -929,6 +929,8 @@ def clearAll():
     Privaileged.insert(0, "0")
     RunLight.insert(0, "0")
     HaltLight.insert(0, "0")
+    ResultNumber.delete(0, END)
+    Tip.delete(0, END)
     devices = [instr.gpr0, instr.gpr1, instr.gpr2, instr.gpr3, instr.ixr1, instr.ixr2, instr.ixr3, instr.pc, instr.mar,
                instr.mbr, instr.ir]
     for device in devices:
