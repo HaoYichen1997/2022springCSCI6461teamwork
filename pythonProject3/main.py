@@ -778,7 +778,7 @@ def run_instructions():
             print("stop now")
             break
         root.update()
-        time.sleep(0.05)
+        # time.sleep(0.05)
 
     # Binary translate to Decimal made by Zihao Wen
 
