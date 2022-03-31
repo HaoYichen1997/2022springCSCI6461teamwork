@@ -26,7 +26,7 @@ frameOpBtn = LabelFrame(root, text="Op Button")
 frameOpBtn.grid(row=9, column=6, columnspan=1, padx=50, pady=10)
 frameSysBtn = LabelFrame(root, text="Sys Button")
 frameSysBtn.grid(row=10, column=6, columnspan=1, padx=50, pady=10)
-framePhaseII = LabelFrame(root, text="PhaseII")
+framePhaseII = LabelFrame(root, text="PhaseII & III")
 framePhaseII.grid(row=8, column=6, columnspan=1, padx=50, pady=10)
 
 # Label of the panel made by Zihao Wen
@@ -1101,45 +1101,149 @@ ResultNumber = Entry(root, width=20, borderwidth=4)
 
 global step
 step = 0
+#
+#
+# def Program1(event):
+#     global step
+#     Consolekey = instr.Consolekey
+#     if InitialNumber.get().isdigit():
+#         if step <= 20:
+#             Consolekey[0] = InitialNumber.get()
+#             print(InitialNumber.get())
+#             # print(Consolekey)
+#             InitialNumber.delete(0, END)
+#             # instruct in and store to memory
+#             run_instructions()
+#             # halt
+#         else:
+#             InitialNumber.delete(0, END)
+#             Tip.insert(0, "number has been enough, start calculateing!")
+#             # run
+#             # halt的灯 更新成为run
+#     else:
+#         messagebox.showerror("Error", "Your input is not a number")
+#         step -= 1
+#     step += 1
+#     # tips
+#     if step == 20:
+#         Tip.delete(0, END)
+#         Tip.insert(0, "please input target,wait")
+#     else:
+#         Tip.delete(0, END)
+#         Tip.insert(0, "Please input No." + str(step + 1) + "Num")
+#     if step == 21:
+#         Tip.delete(0, END)
+#         Tip.insert(0, "the closest num below")
+#         Tip.update()
+#
+#
+# root.bind('<Return>', Program1)
 
 
-def Program1(event):
-    global step
+
+#Program 2 setting
+def ClickInit2():
+    try:
+        initText = filedialog.askopenfilename(initialdir="/pythonProject3", title="Select a text file",
+                                              filetypes=(("Text files", "*.txt"), ("all files", "*.*")))
+        with open(initText, encoding="utf-8") as f:
+            lines = f.readlines()
+        # print(lines)
+        count = 0
+        countS = 0
+        for line in lines:
+            countS += 1    # count the number of sentence whether it is enough
+            line = line.strip('\n')
+            # print(line)
+            line = list(line)
+            # for j in range(6):
+            for i in range(len(line)):
+                if line[i] == ' ' or line[i] == ',':
+                    line[i]='-'
+                elif line[i] == '.' or line[i] == '!' or line[i] == '?':
+                    line[i] = '+'
+            for i in range(len(line)-1):
+                if line[i] == '-' and line[i+1] == '-':
+                    del(line[i])
+            for i in range(len(line)):
+                line[i] = str(ord(line[i]))
+            print(line)
+            for i in range((1000+count*150), (len(line)+150*count+1000)):
+                for j in range(len(line[i - (1000+count*150)])):
+                    instr.memory[i][j] = line[i - (1000+count*150)][j]
+                print(instr.memory[i])
+            # print(instr.memory[(1000+count*150)])
+            # print(instr.memory[(len(line)+150*count+1000)-1])
+            # if count == 0:
+            #     for i in range(1000, len(line)+1000):
+            #         for j in range(len(line[i-1000])):
+            #             instr.memory[i][j] = line[i-1000][j]
+            # elif count == 1:
+            #     for i in range(1150, len(line)+1150):
+            #         for j in range(len(line[i-1150])):
+            #             instr.memory[i][j] = line[i-1150][j]
+            # print(instr.memory[(1000+count*150)])
+
+            # elif count == 2:
+            #     for i in range(1300, len(line)+1300):
+            #         for j in range(len(line[i-1300])):
+            #             instr.memory[i][j] = line[i-1300][j]
+            count += 1
+        if countS != 6:  # if number of sentence is not 6
+            messagebox.showerror("Error", "Your number of Sentence is error")
+            for address in range(1000, 1950):
+                instr.memory[address] = ['0'] * 16
+
+
+        #     address, data = line.split(" ")
+        #     # transform hex to decimal or binary
+        #     address = int(address, 16)
+        #     data = bin(int(data, 16))[2:].zfill(16)
+        #     # store data into memory
+        #     for i in range(16):
+        #         instr.memory[address][i] = data[i]
+        #     print(instr.memory[address])
+        # print("Current contents in memory:")
+        # print("Address" + "\t data")
+        # for item in instr.memory:
+        #     content = "".join([str(_) for _ in item])
+        #     if content != "0000000000000000":
+        #         print(instr.memory.index(item), content)
+    except FileNotFoundError:
+        print('No such file or directory!')
+
+
+
+Program2Label = Label(root, text="Program2")
+Target2Label = Label(root, text="Target Word")
+Program2ResultLabel = Label(root, text="Result")
+TargetWord2 = Entry(root, width=30, borderwidth=4)
+Program2Result = Entry(root, width=30, borderwidth=4)
+InitSen = Button(framePhaseII, text="InSen", padx=1, pady=1, bg="red", fg="white", command=ClickInit2)
+
+def Program2(event):
     Consolekey = instr.Consolekey
-    if InitialNumber.get().isdigit():
-        if step <= 20:
-            Consolekey[0] = InitialNumber.get()
-            print(InitialNumber.get())
-            # print(Consolekey)
-            InitialNumber.delete(0, END)
-            # instruct in and store to memory
-            run_instructions()
-            # halt
-        else:
-            InitialNumber.delete(0, END)
-            Tip.insert(0, "number has been enough, start calculateing!")
-            # run
-            # halt的灯 更新成为run
+    if TargetWord2.get().isdigit():
+        messagebox.showerror("Error", "Your input is not a word")
     else:
-        messagebox.showerror("Error", "Your input is not a number")
-        step -= 1
-    step += 1
-    # tips
-    if step == 20:
-        Tip.delete(0, END)
-        Tip.insert(0, "please input target,wait")
-    else:
-        Tip.delete(0, END)
-        Tip.insert(0, "Please input No." + str(step + 1) + "Num")
-    if step == 21:
-        Tip.delete(0, END)
-        Tip.insert(0, "the closest num below")
-        Tip.update()
+        for i in range(0, len(TargetWord2.get())):
+            Consolekey[i] = TargetWord2.get()[i]
+        print(Consolekey)
+        TargetWord2.delete(0, END)
+        # instruct in and store to memory
+        run_instructions()
+        # halt
+        TargetWord2.delete(0, END)
+        TargetWord2.insert(0, "start matching!")
+        # run
+        # halt的灯 更新成为run
 
 
-root.bind('<Return>', Program1)
 
-# beiju
+
+root.bind('<Return>', Program2)
+
+
 # define location of elements
 Space.grid(row=0, column=9)
 Space.grid(row=1, column=9)
@@ -1150,13 +1254,21 @@ Space.grid(row=5, column=9)
 Space.grid(row=6, column=9)
 Space.grid(row=7, column=9)
 
-InitialLabel.grid(row=1, column=10)
-InitialNumber.grid(row=2, column=10)
-Program1Label.grid(row=0, column=9)
-TipLabel.grid(row=3, column=10)
-Tip.grid(row=4, column=10)
+# InitialLabel.grid(row=1, column=10)
+# InitialNumber.grid(row=2, column=10)
+# Program1Label.grid(row=0, column=9)
+# TipLabel.grid(row=3, column=10)
+# Tip.grid(row=4, column=10)
+#
+# ResultLabel.grid(row=5, column=10)
+# ResultNumber.grid(row=6, column=10)
 
-ResultLabel.grid(row=5, column=10)
-ResultNumber.grid(row=6, column=10)
+#program 2 grid
+Program2Label.grid(row=0, column=9)
+Target2Label.grid(row=2, column=9)
+TargetWord2.grid(row=2, column=10)
+Program2ResultLabel.grid(row=3, column=9)
+Program2Result.grid(row=3, column=10)
+InitSen.grid(row=7, column=7)
 
 root.mainloop()
