@@ -1168,26 +1168,13 @@ def ClickInit2():
             for i in range(len(line)):
                 line[i] = str(ord(line[i]))
             print(line)
+            for i in range(len(line)):
+                line[i] = str(bin(int(line[i])))[2:].zfill(16)
+            print(line)
             for i in range((1000+count*150), (len(line)+150*count+1000)):
                 for j in range(len(line[i - (1000+count*150)])):
                     instr.memory[i][j] = line[i - (1000+count*150)][j]
                 print(instr.memory[i])
-            # print(instr.memory[(1000+count*150)])
-            # print(instr.memory[(len(line)+150*count+1000)-1])
-            # if count == 0:
-            #     for i in range(1000, len(line)+1000):
-            #         for j in range(len(line[i-1000])):
-            #             instr.memory[i][j] = line[i-1000][j]
-            # elif count == 1:
-            #     for i in range(1150, len(line)+1150):
-            #         for j in range(len(line[i-1150])):
-            #             instr.memory[i][j] = line[i-1150][j]
-            # print(instr.memory[(1000+count*150)])
-
-            # elif count == 2:
-            #     for i in range(1300, len(line)+1300):
-            #         for j in range(len(line[i-1300])):
-            #             instr.memory[i][j] = line[i-1300][j]
             count += 1
         if countS != 6:  # if number of sentence is not 6
             messagebox.showerror("Error", "Your number of Sentence is error")
