@@ -71,6 +71,17 @@ def fetch(pcaddress):  # take instruction from mem to ir
     fetch_result.append(ir.num)
     return fetch_result
 
+def cal_ldx_EA(instruction: []):
+    # in ldx EA do not count number already in ixr
+    EA_result = list()  # for return if needed
+    EA = ['0'] * 11 + instruction[-5:]
+
+    if instruction[10] == "1":
+        result = fetch(EA)
+        EA_result = copy.deepcopy(result)
+        EA = copy.deepcopy(mbr.num)
+    EA_result.append(EA)
+    return EA_result
 
 def cal_EA(instruction: []):  # calculate EA
     # EA is Effective Address not a const
@@ -79,7 +90,7 @@ def cal_EA(instruction: []):  # calculate EA
     EA_result = list()  # for return if needed
     if instruction[8] == "0" and instruction[9] == '0':  # find the ixr number
         EA = ['0'] * 11 + instruction[-5:]
-    elif instruction[8] == '0' and instruction[9] == '0':
+    elif instruction[8] == '0' and instruction[9] == '1':
         a = ['0'] * 11 + instruction[-5:]
         b = ixr1.num
         # binary plus for ixr and address
@@ -90,6 +101,7 @@ def cal_EA(instruction: []):  # calculate EA
         c = a_dec + b_dec
         data = bin(c)[2:].zfill(16)
         EA = [num for num in str(data)]
+        print("CAL_EA,01EA:",EA)
     elif instruction[8] == '1' and instruction[9] == '0':
         EA = ['0'] * 16
         a = ['0'] * 11 + instruction[-5:]
@@ -180,7 +192,7 @@ def lda003(instruction):  # load address to gpr
 
 
 def ldx041(instruction):  # load from mem to ixr
-    EA_result = cal_EA(instruction)
+    EA_result = cal_ldx_EA(instruction)
     EA = EA_result.pop()
     if len(EA_result) != 0:
         del EA_result[-2:]
@@ -507,18 +519,29 @@ def not025(instruction):
 
 
 def in061(instruction):
-    global Consolekey
+    global Consolekey  #["100","w",] ["w","o","r","d"]
+    #90["w"ascii],91["o"ascii]  "1aw7"
+    # assume is a list of char
+    # number ascii from 48- 57
+    #A-Z :65 -90  a-z:97-122  + -: 43 45
     r = get_gpr_in_instr(instruction, 6, 7)
     devid = instruction[-5:]
     a_bin = ''.join(i for i in devid)
     devid_dec = int(a_bin, 2)
     if devid_dec == 0:
-        # in program 1 assume the input is a positive int
-        # not overflow everything ok after check
-        num = Consolekey.pop(0)
-        result = bin(int(num))[2:].zfill(16)
-        data = [num for num in str(result)]
-        r.set(data)
+        chr = Consolekey.pop(0)
+        if chr.isdigit():
+            num = chr
+            result = bin(int(num))[2:].zfill(16)
+            data = [num for num in str(result)]
+            r.set(data)
+            print("num", num)
+        else:
+            asc = ord(chr)
+            result = bin(int(asc))[2:].zfill(16)
+            data = [num for num in str(result)]
+            r.set(data)
+            print("asc:", asc, "data:", data)
     in061_result = list()
     in061_result.append(f"{r.name}")
     r_data = ''.join(i for i in r.num)
@@ -526,6 +549,22 @@ def in061(instruction):
     return in061_result
 
 
+def chk063(instruction):
+    global Consolekey
+    r = get_gpr_in_instr(instruction, 6, 7)
+    devid = instruction[-5:]
+    a_bin = ''.join(i for i in devid)
+    devid_dec = int(a_bin, 2)
+    if devid_dec == 0:
+        if Consolekey:
+            r.set(['0'] * 15+["1"])
+        else:
+            r.set(['0'] * 16)
+    chk063_result = list()
+    chk063_result.append(f"{r.name}")
+    r_data = ''.join(i for i in r.num)
+    chk063_result.append(r_data)
+    return chk063_result
 '''
 '''
 
@@ -554,7 +593,7 @@ def jz010(instruction):  # Jump If Zero
         pc.set(EA_PC_bin[2:].zfill(12))
         JZ10_result.append("pc")
         JZ10_result.append(pc.num)
-        print("JZ!PC:",EA_PC_bin[2:].zfill(12))
+        print("JZ!PC:",EA_PC_dec)
     else:
         pc.set(pc.num)
         JZ10_result.append("pc")
@@ -575,7 +614,7 @@ def amr(instruction):
         return []
     # add c(EA) AND C(r) to r
     dest_reg.set(int_to_string(add_result))
-
+    print("cont_EA:",cont_EA,"cont_reg:",cont_reg,"reg_num:", dest_reg.num)
     amr_result.append(dest_reg.name)
     amr_result.append(dest_reg.num)
     return amr_result
@@ -663,7 +702,6 @@ def air(instruction):
         if check_overflow_or_underflow(add_result):
             return []
         dest_reg.set(int_to_string(add_result))
-
     air_result = [dest_reg.name, dest_reg.num]
     return air_result
 
@@ -713,6 +751,7 @@ def jne011(instruction):  # Jump If not equal
         EA_PC_dec = int(to_one_str(EA), 2)
         EA_PC_bin = bin(EA_PC_dec)
         pc.set(EA_PC_bin[2:].zfill(12))
+        print("JNE!PC:", EA_PC_dec)
         JZ11_result.append("pc")
         JZ11_result.append(pc.num)
     else:
@@ -754,6 +793,7 @@ def jma013(instruction):  # Unconditional Jump To Address
     EA_PC_dec = int(to_one_str(EA), 2)
     EA_PC_bin = bin(EA_PC_dec)
     pc.set(EA_PC_bin[2:].zfill(12))
+    print("EA_PC_dec",EA_PC_dec)
     jma013_result.append("pc")
     jma013_result.append(pc.num)
     return jma013_result

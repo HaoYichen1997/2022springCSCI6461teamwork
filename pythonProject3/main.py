@@ -778,7 +778,7 @@ def run_instructions():
             print("stop now")
             break
         root.update()
-        # time.sleep(0.05)
+        time.sleep(0.005)
 
     # Binary translate to Decimal made by Zihao Wen
 
@@ -1174,13 +1174,12 @@ def ClickInit2():
             for i in range((1000+count*150), (len(line)+150*count+1000)):
                 for j in range(len(line[i - (1000+count*150)])):
                     instr.memory[i][j] = line[i - (1000+count*150)][j]
-                print(instr.memory[i])
+                print(f"loc:{i}",instr.memory[i])
             count += 1
         if countS != 6:  # if number of sentence is not 6
             messagebox.showerror("Error", "Your number of Sentence is error")
             for address in range(1000, 1950):
                 instr.memory[address] = ['0'] * 16
-
 
         #     address, data = line.split(" ")
         #     # transform hex to decimal or binary
@@ -1215,7 +1214,9 @@ def Program2(event):
     else:
         for i in range(0, len(TargetWord2.get())):
             Consolekey[i] = TargetWord2.get()[i]
-        print(Consolekey)
+        Consolekey[len(TargetWord2.get())] = "+"
+        print("Consolekey:",Consolekey)
+        print("mem22:", instr.memory[22], "mem1000:", instr.memory[1000], "mem900:",instr.memory[900])
         TargetWord2.delete(0, END)
         # instruct in and store to memory
         run_instructions()
@@ -1224,6 +1225,7 @@ def Program2(event):
         TargetWord2.insert(0, "start matching!")
         # run
         # halt的灯 更新成为run
+
 
 
 
