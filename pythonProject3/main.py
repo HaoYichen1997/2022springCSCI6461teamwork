@@ -627,11 +627,12 @@ def show_out(result):
         instr.Consolekey_out.append(result[1])
     elif result[0] == "halt":
         if instr.Consolekey_out:
-            ResultNumber.delete(0, END)
-            reverse_out = instr.Consolekey_out[::-1]
-            str1 = ''.join(reverse_out)
-            i = int(str1)
-            ResultNumber.insert(0, str(i))
+            Program2Result.delete(0, END)
+            # reverse_out = instr.Consolekey_out[::-1]
+            # print("consolekeyout",instr.Consolekey_out,"\nreverse out",reverse_out)
+            str1 = ''.join(instr.Consolekey_out)
+            # i = int(str1)
+            Program2Result.insert(0, str1)
             instr.Consolekey_out.clear()
 # SS
 def run_Single_Step():
@@ -1219,10 +1220,11 @@ def Program2(event):
         print("mem22:", instr.memory[22], "mem1000:", instr.memory[1000], "mem900:",instr.memory[900])
         TargetWord2.delete(0, END)
         # instruct in and store to memory
-        run_instructions()
-        # halt
         TargetWord2.delete(0, END)
         TargetWord2.insert(0, "start matching!")
+        run_instructions()
+        # halt
+
         # run
         # halt的灯 更新成为run
 
