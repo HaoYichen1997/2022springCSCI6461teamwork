@@ -13,7 +13,7 @@ add_counter = 0
 # define idx number
 # for i in range(16):
 #     exec("Idx")
-# for i in range(8):
+# for i in range(8): test
 #     instructions.memory[i] = ["0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "1", "0"]
 
 # instructions.memory[0] = ["0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "1", "0"]
