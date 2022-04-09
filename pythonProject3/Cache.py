@@ -1,8 +1,8 @@
 import instructions
 import copy
 # define cache
-cache = [0] * 16
-for elements in range(16):  # elements 0 == val, elements 1 == Block Num, elements 2-9 == 8 words
+cache = [0] * 1000
+for elements in range(1000):  # elements 0 == val, elements 1 == Block Num, elements 2-9 == 8 words
     cache[elements] = ["0"] * 10
 
 cache_length = 16
@@ -15,6 +15,9 @@ add_counter = 0
 #     exec("Idx")
 # for i in range(8):
 #     instructions.memory[i] = ["0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "1", "0"]
+
+# instructions.memory[0] = ["0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "1", "0"]
+
 
 '''
 '''
@@ -51,12 +54,10 @@ def add_to_cache(address):  # add content in cache
         cache_line = cache[add_counter]
         load_from_memory(address, cache_line)
         print("cache[add_C]:",cache[add_counter])
-
     else:
         cache_line = cache[add_counter % 16]
         load_from_memory(address, cache_line)
         print("cache[add_C]:",cache[add_counter])
-
     add_counter += 1
     return cache_line
 
@@ -122,3 +123,6 @@ def get_words(offset: int, cache_line):
 def set_count():
     global add_counter
     add_counter = 0
+
+
+# read_cache(0)

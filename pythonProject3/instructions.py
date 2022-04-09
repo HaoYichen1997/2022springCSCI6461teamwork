@@ -44,14 +44,16 @@ cc = reg.Cc(FOURBIT)
 def read_Mem_to_Mbr(mar: reg.Mar, mbr: reg.Mbr):  # use mar mbr read mem
     address_bin = ''.join(i for i in mar.num)
     address_dec = int(address_bin, 2)
-    # mbr.set(Cache.read_cache(address_dec))
+    mbr.set(Cache.read_cache(address_dec))
+    # Cache.add_to_cache(address_dec)
     mbr.set(memory[address_dec])
 
 
 def str_Mbr_to_Mem(mar: reg.Mar, mbr: reg.Mbr):  # put mbr to mem address
     address_bin = ''.join(i for i in mar.num)
     address_dec = int(address_bin, 2)
-    # Cache.write_reg_to_c_m(address_dec, mbr.num)
+    Cache.write_reg_to_c_m(address_dec, mbr.num)
+    # Cache.add_to_cache(address_dec)
     memory[address_dec] = mbr.num
 
 

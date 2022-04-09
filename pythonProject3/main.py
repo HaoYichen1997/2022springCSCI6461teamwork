@@ -640,82 +640,82 @@ def run_Single_Step():
     if opcode == 1:
         ldr001_result = instr.ldr001(instr.ir.num)
         show_general(ldr001_result)
-        print('opcode is 001')
+        print('opcode is 001, LDR')
     elif opcode == 2:
         str002_result = instr.str002(instr.ir.num)
-        print('opcode is 002')
+        print('opcode is 002, STR')
         show_general(str002_result)
     elif opcode == 3:
         lda003_result = instr.lda003(instr.ir.num)
-        print('opcode is 003')
+        print('opcode is 003, LDA')
         show_general(lda003_result)
     elif opcode == 4:
         amr_result = instr.amr(instr.ir.num)
-        print('opcode is 04')
+        print('opcode is 04, AMR')
         show_general(amr_result)
     elif opcode == 5:
         smr_result = instr.smr(instr.ir.num)
-        print('opcode is 05')
+        print('opcode is 05, SMR')
         show_general(smr_result)
     elif opcode == 6:
         air_result = instr.air(instr.ir.num)
-        print('opcode is 06')
+        print('opcode is 06, AIR')
         show_general(air_result)
     elif opcode == 7:
         sir_result = instr.sir(instr.ir.num)
-        print('opcode is 07')
+        print('opcode is 07, SIR')
         show_general(sir_result)
     elif opcode == 25:
         src_result = instr.src(instr.ir.num)
-        print('opcode is 31')
+        print('opcode is 31, SRC')
         show_general(src_result)
     elif opcode == 26:
         rrc_result = instr.rrc(instr.ir.num)
-        print('opcode is 32')
+        print('opcode is 32,RRC')
         show_general(rrc_result)
     elif opcode == 50:
         out_result = instr.out(instr.ir.num)
-        print('opcode is 62')
+        print('opcode is 62, OUT')
         show_out(out_result)
     elif opcode == 33:
         ldx041_result = instr.ldx041(instr.ir.num)
-        print('opcode is 041')
+        print('opcode is 041, LDX')
         show_general(ldx041_result)
     elif opcode == 34:
         stx042_result = instr.stx042(instr.ir.num)
-        print('opcode is 042')
+        print('opcode is 042, STX')
         show_general(stx042_result)
     elif opcode == 8:  # Jump if Zero
         jp010_result = instr.jz010(instr.ir.num)
-        print('opcode is 010')
+        print('opcode is 010, JZ')
         show_general(jp010_result)
     elif opcode == 9:  # Jump if Zero
         jne11_result = instr.jne011(instr.ir.num)
-        print('opcode is 011')
+        print('opcode is 011, JNE')
         show_general(jne11_result)
     elif opcode == 10:
         jcc012_result = instr.jcc012(instr.ir.num)
-        print('opcode is 012')
+        print('opcode is 012, JCC')
         show_general(jcc012_result)
     elif opcode == 11:
         jma013_result = instr.jma013(instr.ir.num)
-        print('opcode is 013')
+        print('opcode is 013, JMA')
         show_general(jma013_result)
     elif opcode == 12:
         jsr014_result = instr.jsr014(instr.ir.num)
-        print('opcode is 014')
+        print('opcode is 014, JSR')
         show_general(jsr014_result)
     elif opcode == 13:
         rfs015_result = instr.rfs015(instr.ir.num)
-        print('opcode is 015')
+        print('opcode is 015, RFS')
         show_general(rfs015_result)
     elif opcode == 14:
         sob016_result = instr.sob016(instr.ir.num)
-        print('opcode is 016')
+        print('opcode is 016, SOB')
         show_general(sob016_result)
     elif opcode == 15:
         jge017_result = instr.jge017(instr.ir.num)
-        print('opcode is 017')
+        print('opcode is 017, JGE')
         show_general(jge017_result)
     elif opcode == 0:
         halt000_result = instr.halt000()
@@ -724,31 +724,31 @@ def run_Single_Step():
         show_general(halt000_result)
     elif opcode == 16:
         mlt020_result = instr.mlt020(instr.ir.num)
-        print('opcode is 020')
+        print('opcode is 020, MLT')
         show_general(mlt020_result)
     elif opcode == 17:
         dvd021_result = instr.dvd021(instr.ir.num)
-        print('opcode is 021')
+        print('opcode is 021, DVD')
         show_general(dvd021_result)
     elif opcode == 18:
         trr022_result = instr.trr022(instr.ir.num)
-        print('opcode is 022')
+        print('opcode is 022, TRR')
         show_general(trr022_result)
     elif opcode == 19:
         and023_result = instr.and023(instr.ir.num)
-        print('opcode is 023')
+        print('opcode is 023, AND')
         show_general(and023_result)
     elif opcode == 20:
         orr024_result = instr.orr024(instr.ir.num)
-        print('opcode is 024')
+        print('opcode is 024, ORR')
         show_general(orr024_result)
     elif opcode == 21:
         not025_result = instr.not025(instr.ir.num)
-        print('opcode is 025')
+        print('opcode is 025, NOT')
         show_general(not025_result)
     elif opcode == 49:
         in061_result = instr.in061(instr.ir.num)
-        print('opcode is 061')
+        print('opcode is 061, IN')
         show_general(in061_result)
     else:
         print("incorrect opcode", opcode)
@@ -1228,11 +1228,11 @@ def Program2(event):
         # run
         # halt的灯 更新成为run
 
-
-
-
-
 root.bind('<Return>', Program2)
+
+
+
+
 
 
 # define location of elements
