@@ -415,7 +415,7 @@ def open():
                 exec("Ewords" + str(i-1) + str(j-3) + '.' + "grid(row=" + str(i) + ",column=" + str(j) + ')')
 
     RefreshBtn.grid(row=20, column=10)
-    ClearBtn.grid(row=20, column=9)
+    # ClearBtn.grid(row=20, column=9)
 
 
 
