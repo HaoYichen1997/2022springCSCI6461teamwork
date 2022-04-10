@@ -15,7 +15,7 @@ and other instructions about memory
 memory = [0] * 2048
 for address in range(2048):
     memory[address] = ['0'] * 16
-# ZERO_16 = ["0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0"]
+# ZERO_16 = ["0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0"].
 '''
 buffers of IN instruction
 '''
@@ -23,7 +23,7 @@ console_keyboard_buffer = list()
 
 # [[0],[1]]
 # e.p. memory=list[2048]
-#  mem[0]= ['0','0','0','0','0','0','0','0','0','0','0','0','0','0','0']    list[16]
+#  mem[0]= ['0','0','0','0','0','0','0','0','0','0','0','0','0','0','0']    list[16].
 SIXTEENBIT = ['0'] * 16
 TWELVEBIT = ['0'] * 12
 FOURBIT = ['0'] * 4
