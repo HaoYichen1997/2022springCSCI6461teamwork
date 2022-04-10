@@ -1215,9 +1215,7 @@ InitSen = Button(framePhaseII, text="InSen", padx=1, pady=1, bg="red", fg="white
 
 def Program2(event):
     Consolekey = instr.Consolekey
-    if TargetWord2.get().isdigit():
-        messagebox.showerror("Error", "Your input is not a word")
-    else:
+    if TargetWord2.get().isalpha():
         for i in range(0, len(TargetWord2.get())):
             Consolekey[i] = TargetWord2.get()[i]
         Consolekey[len(TargetWord2.get())] = "+"
@@ -1229,9 +1227,10 @@ def Program2(event):
         TargetWord2.insert(0, "start matching!")
         run_instructions()
         # halt
-
         # run
         # halt的灯 更新成为run
+    else:
+        messagebox.showerror("Error", "Your input is not a word")
 
 root.bind('<Return>', Program2)
 
