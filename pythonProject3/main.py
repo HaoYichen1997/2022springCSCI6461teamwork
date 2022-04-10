@@ -17,7 +17,7 @@ import Program1
 
 # Basic interface made by Zihao Wen 1
 root = Tk()
-root.title("6461 Project1")
+root.title("6461 Project3")
 root.geometry("1440x600")
 # Btn Frame made by Zihao Wen
 frameBtn = LabelFrame(root, text="Num Button")
