@@ -5,7 +5,9 @@ from tkinter import *
 import Program1 as pg1
 import Cache
 
-# import main
+
+
+
 '''
 this module about the 16-bit instructions 
 and other instructions about memory
@@ -73,6 +75,7 @@ def fetch(pcaddress):  # take instruction from mem to ir
     fetch_result.append(ir.num)
     return fetch_result
 
+
 def cal_ldx_EA(instruction: []):
     # in ldx EA do not count number already in ixr
     EA_result = list()  # for return if needed
@@ -84,6 +87,7 @@ def cal_ldx_EA(instruction: []):
         EA = copy.deepcopy(mbr.num)
     EA_result.append(EA)
     return EA_result
+
 
 def cal_EA(instruction: []):  # calculate EA
     # EA is Effective Address not a const
@@ -103,7 +107,7 @@ def cal_EA(instruction: []):  # calculate EA
         c = a_dec + b_dec
         data = bin(c)[2:].zfill(16)
         EA = [num for num in str(data)]
-        print("CAL_EA,01EA:",EA)
+        print("CAL_EA,01EA:", EA)
     elif instruction[8] == '1' and instruction[9] == '0':
         EA = ['0'] * 16
         a = ['0'] * 11 + instruction[-5:]
@@ -403,7 +407,7 @@ def dvd021(instruction):
         a_dec = int(a_bin, 2)
         b_bin = ''.join(i for i in operand2[0])
         b_dec = int(b_bin, 2)
-        print("a_dec:",a_dec,"b_dec",b_dec)
+        print("a_dec:", a_dec, "b_dec", b_dec)
         c_dec = a_dec // b_dec
         d_dec = a_dec % b_dec
         quotient = bin(c_dec)[2:].zfill(16)
@@ -521,11 +525,11 @@ def not025(instruction):
 
 
 def in061(instruction):
-    global Consolekey  #["100","w",] ["w","o","r","d"]
-    #90["w"ascii],91["o"ascii]  "1aw7"
+    global Consolekey  # ["100","w",] ["w","o","r","d"]
+    # 90["w"ascii],91["o"ascii]  "1aw7"
     # assume is a list of char
     # number ascii from 48- 57
-    #A-Z :65 -90  a-z:97-122  + -: 43 45
+    # A-Z :65 -90  a-z:97-122  + -: 43 45
     r = get_gpr_in_instr(instruction, 6, 7)
     devid = instruction[-5:]
     a_bin = ''.join(i for i in devid)
@@ -559,7 +563,7 @@ def chk063(instruction):
     devid_dec = int(a_bin, 2)
     if devid_dec == 0:
         if Consolekey:
-            r.set(['0'] * 15+["1"])
+            r.set(['0'] * 15 + ["1"])
         else:
             r.set(['0'] * 16)
     chk063_result = list()
@@ -567,6 +571,8 @@ def chk063(instruction):
     r_data = ''.join(i for i in r.num)
     chk063_result.append(r_data)
     return chk063_result
+
+
 '''
 '''
 
@@ -595,7 +601,7 @@ def jz010(instruction):  # Jump If Zero
         pc.set(EA_PC_bin[2:].zfill(12))
         JZ10_result.append("pc")
         JZ10_result.append(pc.num)
-        print("JZ!PC:",EA_PC_dec)
+        print("JZ!PC:", EA_PC_dec)
     else:
         pc.set(pc.num)
         JZ10_result.append("pc")
@@ -616,7 +622,7 @@ def amr(instruction):
         return []
     # add c(EA) AND C(r) to r
     dest_reg.set(int_to_string(add_result))
-    print("cont_EA:",cont_EA,"cont_reg:",cont_reg,"reg_num:", dest_reg.num)
+    print("cont_EA:", cont_EA, "cont_reg:", cont_reg, "reg_num:", dest_reg.num)
     amr_result.append(dest_reg.name)
     amr_result.append(dest_reg.num)
     return amr_result
@@ -688,7 +694,7 @@ def smr(instruction):
 
 # 06 Add  Immediate to Register
 def air(instruction):
-    immediate = int("".join(instruction[-5:]),2)
+    immediate = int("".join(instruction[-5:]), 2)
     # if Immed = 0, does nothing
     if immediate == 0:
         return []
@@ -720,7 +726,7 @@ def check_overflow_or_underflow(number):
 
 # 07 Subtract  Immediate  from Register
 def sir(instruction):
-    immediate = int("".join(instruction[-5:]),2)
+    immediate = int("".join(instruction[-5:]), 2)
     if immediate == 0:
         return []
     dest_reg = get_register(instruction)
@@ -795,7 +801,7 @@ def jma013(instruction):  # Unconditional Jump To Address
     EA_PC_dec = int(to_one_str(EA), 2)
     EA_PC_bin = bin(EA_PC_dec)
     pc.set(EA_PC_bin[2:].zfill(12))
-    print("EA_PC_dec",EA_PC_dec)
+    print("EA_PC_dec", EA_PC_dec)
     jma013_result.append("pc")
     jma013_result.append(pc.num)
     return jma013_result
@@ -991,8 +997,106 @@ def out(instruction):
     value_int = string_to_int(value)
     print("value_int:", value_int)
     output = chr(value_int)
-    print("out:",output)
+    print("out:", output)
     return ['out', output]
+
+
+def trap(instruction):
+    pc_bin = ''.join(i for i in pc.num)
+    pc_int = int(pc_bin, 2)
+    pc_int = pc_int + 1
+    pc_adr = list(str(bin(pc_int)[2:].zfill(12)))
+    Cache.write_reg_to_c_m(2, pc_adr)
+    memory[2] = pc_adr
+    trapcode = int(''.join(i for i in instruction[12:]), 2)
+    table_adr = int(''.join(i for i in memory[0]), 2)
+    routine_adr = table_adr + trapcode
+    pc.num = list(str(bin(routine_adr)[2:].zfill(12)))
+    fetch(pc.num)
+    show_result = process_instr()
+    pc.num = memory[2]
+    return show_result
+
+
+def process_instr():
+    opcode = int("".join(i for i in ir.num[:6]), 2)
+    if opcode == 1:
+        return ldr001(ir.num)
+    elif opcode == 2:
+        return str002(ir.num)
+    elif opcode == 3:
+        return lda003(ir.num)
+    elif opcode == 4:
+        return amr(ir.num)
+    elif opcode == 5:
+        return smr(ir.num)
+    elif opcode == 6:
+        return air(ir.num)
+    elif opcode == 7:
+        return sir(ir.num)
+    elif opcode == 25:
+        return src(ir.num)
+    elif opcode == 26:
+        return rrc(ir.num)
+    elif opcode == 50:
+        return out(ir.num)
+
+    elif opcode == 33:
+        return ldx041(ir.num)
+
+    elif opcode == 34:
+        return stx042(ir.num)
+
+    elif opcode == 8:  # Jump if Zero
+        return jz010(ir.num)
+
+    elif opcode == 9:  # Jump if Zero
+        return jne011(ir.num)
+
+    elif opcode == 10:
+        return jcc012(ir.num)
+
+    elif opcode == 11:
+        return  jma013(ir.num)
+
+    elif opcode == 12:
+        return  jsr014(ir.num)
+
+    elif opcode == 13:
+        return rfs015(ir.num)
+
+    elif opcode == 14:
+        return sob016(ir.num)
+
+    elif opcode == 15:
+        return jge017(ir.num)
+
+    elif opcode == 0:
+        return halt000()
+
+    elif opcode == 16:
+        return  mlt020(ir.num)
+
+    elif opcode == 17:
+        return dvd021(ir.num)
+
+    elif opcode == 18:
+        return trr022(ir.num)
+
+    elif opcode == 19:
+        return and023(ir.num)
+
+    elif opcode == 20:
+        return orr024(ir.num)
+
+    elif opcode == 21:
+        return not025(ir.num)
+    elif opcode == 49:
+        return in061(ir.num)
+    else:
+        print("incorrect opcode", opcode)
+
+
 
 
 # program 1.
