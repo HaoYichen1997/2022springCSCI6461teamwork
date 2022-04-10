@@ -601,6 +601,7 @@ def show_Reg_to_Panel(a: str, num):  # test for uniform update
     elif a == "out":
         ResultNumber.delete(0, END)
         ResultNumber.insert(0, str(num))
+
     # !!!!!
     elif a == "cc":
         test = 0
@@ -750,6 +751,10 @@ def run_Single_Step():
         in061_result = instr.in061(instr.ir.num)
         print('opcode is 061, IN')
         show_general(in061_result)
+    elif opcode == 24:
+        trap_result = instr.trap(instr.ir.num)
+        print('opcode is 030, TRAP')
+        show_general(trap_result)
     else:
         print("incorrect opcode", opcode)
 
