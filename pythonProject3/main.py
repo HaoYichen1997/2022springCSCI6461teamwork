@@ -1109,41 +1109,41 @@ global step
 step = 0
 #
 #
-# def Program1(event):
-#     global step
-#     Consolekey = instr.Consolekey
-#     if InitialNumber.get().isdigit():
-#         if step <= 20:
-#             Consolekey[0] = InitialNumber.get()
-#             print(InitialNumber.get())
-#             # print(Consolekey)
-#             InitialNumber.delete(0, END)
-#             # instruct in and store to memory
-#             run_instructions()
-#             # halt
-#         else:
-#             InitialNumber.delete(0, END)
-#             Tip.insert(0, "number has been enough, start calculateing!")
-#             # run
-#             # halt的灯 更新成为run
-#     else:
-#         messagebox.showerror("Error", "Your input is not a number")
-#         step -= 1
-#     step += 1
-#     # tips
-#     if step == 20:
-#         Tip.delete(0, END)
-#         Tip.insert(0, "please input target,wait")
-#     else:
-#         Tip.delete(0, END)
-#         Tip.insert(0, "Please input No." + str(step + 1) + "Num")
-#     if step == 21:
-#         Tip.delete(0, END)
-#         Tip.insert(0, "the closest num below")
-#         Tip.update()
-#
-#
-# root.bind('<Return>', Program1)
+def Program1(event):
+    global step
+    Consolekey = instr.Consolekey
+    if InitialNumber.get().isdigit():
+        if step <= 20:
+            Consolekey[0] = InitialNumber.get()
+            print(InitialNumber.get())
+            # print(Consolekey)
+            InitialNumber.delete(0, END)
+            # instruct in and store to memory
+            run_instructions()
+            # halt
+        else:
+            InitialNumber.delete(0, END)
+            Tip.insert(0, "number has been enough, start calculateing!")
+            # run
+            # halt的灯 更新成为run
+    else:
+        messagebox.showerror("Error", "Your input is not a number")
+        step -= 1
+    step += 1
+    # tips
+    if step == 20:
+        Tip.delete(0, END)
+        Tip.insert(0, "please input target,wait")
+    else:
+        Tip.delete(0, END)
+        Tip.insert(0, "Please input No." + str(step + 1) + "Num")
+    if step == 21:
+        Tip.delete(0, END)
+        Tip.insert(0, "the closest num below")
+        Tip.update()
+
+
+InitialNumber.bind('<Return>', Program1)
 
 
 
@@ -1232,7 +1232,7 @@ def Program2(event):
     else:
         messagebox.showerror("Error", "Your input is not a word")
 
-root.bind('<Return>', Program2)
+TargetWord2.bind('<Return>', Program2)
 
 
 
@@ -1249,21 +1249,21 @@ Space.grid(row=5, column=9)
 Space.grid(row=6, column=9)
 Space.grid(row=7, column=9)
 
-# InitialLabel.grid(row=1, column=10)
-# InitialNumber.grid(row=2, column=10)
-# Program1Label.grid(row=0, column=9)
-# TipLabel.grid(row=3, column=10)
-# Tip.grid(row=4, column=10)
-#
-# ResultLabel.grid(row=5, column=10)
-# ResultNumber.grid(row=6, column=10)
+InitialLabel.grid(row=1, column=10)
+InitialNumber.grid(row=2, column=10)
+Program1Label.grid(row=0, column=10)
+TipLabel.grid(row=3, column=10)
+Tip.grid(row=4, column=10)
+
+ResultLabel.grid(row=5, column=10)
+ResultNumber.grid(row=6, column=10)
 
 #program 2 grid
-Program2Label.grid(row=0, column=9)
-Target2Label.grid(row=2, column=9)
-TargetWord2.grid(row=2, column=10)
-Program2ResultLabel.grid(row=3, column=9)
-Program2Result.grid(row=3, column=10)
+Program2Label.grid(row=0, column=11)
+Target2Label.grid(row=2, column=11)
+TargetWord2.grid(row=2, column=12)
+Program2ResultLabel.grid(row=3, column=11)
+Program2Result.grid(row=3, column=12)
 InitSen.grid(row=7, column=7)
 
 root.mainloop()
