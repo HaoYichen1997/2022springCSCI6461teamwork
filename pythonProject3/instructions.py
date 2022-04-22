@@ -374,10 +374,10 @@ def check_mul_overflew(num: int):  # dec multiple overflow is 2 **32
     # overflew underflew return true
     flag = False
     if num > 2 ** 32:
-        print("overflew in multiple ")
+        print("overflew")
         flag = True
     elif num < -2 ** 32 - 1:
-        print("underflew in multiple")
+        print("underflew")
         flag = True
     return flag
 
@@ -1018,6 +1018,111 @@ def trap(instruction):
     return show_result
 
 
+def fadd033(instruction):  # Floating Add Memory To Register
+    EA_result = cal_EA(instruction)
+    EA = EA_result.pop()
+    if len(EA_result) != 0:  #
+        del EA_result[-2:]
+    fadd033_result = copy.deepcopy(EA_result)
+    if (instruction[6] == "0" and instruction[7] == "0" and instruction[10] == "0"):
+        EA_dec = int(to_one_str(EA), 2)
+        fr_dec = int(to_one_str(fr0), 2)
+        fr_result_dec = fr_dec + EA_dec
+        fr_result = bin(fr_result_dec)[2:].zfill(16)
+        fadd033_result.append("fr0")
+        fadd033_result.append(fr0.num)
+        print("fr = 0, I = 0")
+    elif (instruction[6] == "0" and instruction[7] == "1" and instruction[10] == "0"):
+        EA_dec = int(to_one_str(EA), 2)
+        fr_dec = int(to_one_str(fr0), 2)
+        fr_result_dec = fr_dec + EA_dec
+        fr_result = bin(fr_result_dec)[2:].zfill(16)
+        fadd033_result.append("fr1")
+        fadd033_result.append(fr1.num)
+        print("fr = 1, I = 0")
+    elif (instruction[6] == "0" and instruction[7] == "0" and instruction[10] == "1"):
+        EA_result = cal_EA(list(EA))
+        EA = EA_result.pop()
+        if len(EA_result) != 0:  #
+            del EA_result[-2:]
+        EA_dec = int(to_one_str(EA), 2)
+        fr_dec = int(to_one_str(fr0), 2)
+        fr_result_dec = fr_dec + EA_dec
+        fr_result = bin(fr_result_dec)[2:].zfill(16)
+        fadd033_result.append("fr0")
+        fadd033_result.append(fr0.num)
+        print("fr = 0, I = 0")
+    elif (instruction[6] == "0" and instruction[7] == "1" and instruction[10] == "1"):
+        EA_result = cal_EA(list(EA))
+        EA = EA_result.pop()
+        if len(EA_result) != 0:  #
+            del EA_result[-2:]
+        EA_dec = int(to_one_str(EA), 2)
+        fr_dec = int(to_one_str(fr0), 2)
+        fr_result_dec = fr_dec + EA_dec
+        fr_result = bin(fr_result_dec)[2:].zfill(16)
+        fadd033_result.append("fr1")
+        fadd033_result.append(fr1.num)
+        print("fr = 1, I = 0")
+    if check_mul_overflew(fr_result_dec):
+        cc.set_overflow("1")
+        fadd033_result.append('cc')
+        fadd033_result.append('overflow_1')
+        print("over flow in fadd033")
+    return fadd033_result
+def fsub034(instruction):  # Floating Subtract Memory From Register
+    EA_result = cal_EA(instruction)
+    EA = EA_result.pop()
+    if len(EA_result) != 0:  #
+        del EA_result[-2:]
+    fsub034_result = copy.deepcopy(EA_result)
+    if (instruction[6] == "0" and instruction[7] == "0" and instruction[10] == "0"):
+        EA_dec = int(to_one_str(EA), 2)
+        fr_dec = int(to_one_str(fr0), 2)
+        fr_result_dec = fr_dec - EA_dec
+        fr_result = bin(fr_result_dec)[2:].zfill(16)
+        fsub034_result.append("fr0")
+        fsub034_result.append(fr0.num)
+        print("fr = 0, I = 0")
+    elif (instruction[6] == "0" and instruction[7] == "1" and instruction[10] == "0"):
+        EA_dec = int(to_one_str(EA), 2)
+        fr_dec = int(to_one_str(fr0), 2)
+        fr_result_dec = fr_dec - EA_dec
+        fr_result = bin(fr_result_dec)[2:].zfill(16)
+        fsub034_result.append("fr1")
+        fsub034_result.append(fr1.num)
+        print("fr = 1, I = 0")
+    elif (instruction[6] == "0" and instruction[7] == "0" and instruction[10] == "1"):
+        EA_result = cal_EA(list(EA))
+        EA = EA_result.pop()
+        if len(EA_result) != 0:  #
+            del EA_result[-2:]
+        EA_dec = int(to_one_str(EA), 2)
+        fr_dec = int(to_one_str(fr0), 2)
+        fr_result_dec = fr_dec - EA_dec
+        fr_result = bin(fr_result_dec)[2:].zfill(16)
+        fsub034_result.append("fr1")
+        fsub034_result.append(fr1.num)
+        print("fr = 0, I = 1")
+    elif (instruction[6] == "0" and instruction[7] == "1" and instruction[10] == "1"):
+        EA_result = cal_EA(list(EA))
+        EA = EA_result.pop()
+        if len(EA_result) != 0:  #
+            del EA_result[-2:]
+        EA_dec = int(to_one_str(EA), 2)
+        fr_dec = int(to_one_str(fr0), 2)
+        fr_result_dec = fr_dec - EA_dec
+        fr_result = bin(fr_result_dec)[2:].zfill(16)
+        fsub034_result.append("fr1")
+        fsub034_result.append(fr1.num)
+        print("fr = 1, I = 1")
+    if check_mul_overflew(fr_result_dec):
+        cc.set_underflow("1")
+        fadd033_result.append('cc')
+        fadd033_result.append('underflow_1')
+        print("underflow in fsub034")
+    return fsub034_result
+
 def process_instr():
     opcode = int("".join(i for i in ir.num[:6]), 2)
     if opcode == 1:
@@ -1038,12 +1143,12 @@ def process_instr():
         return src(ir.num)
     elif opcode == 26:
         return rrc(ir.num)
+
     elif opcode == 50:
         return out(ir.num)
 
     elif opcode == 33:
         return ldx041(ir.num)
-
     elif opcode == 34:
         return stx042(ir.num)
 
@@ -1093,10 +1198,12 @@ def process_instr():
         return not025(ir.num)
     elif opcode == 49:
         return in061(ir.num)
+    elif opcode == 25:
+        return fadd033(ir.num)
+    elif opcode == 26:
+        return fsub034(ir.num)
     else:
         print("incorrect opcode", opcode)
-
-
 
 
 # program 1.
