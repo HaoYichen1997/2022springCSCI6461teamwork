@@ -1,9 +1,12 @@
+import struct
+
 import register as reg
 import copy
 import time
 from tkinter import *
 import Program1 as pg1
 import Cache
+from struct import *
 
 
 
@@ -41,6 +44,8 @@ mar = reg.Mar(TWELVEBIT)
 pc = reg.Pc(TWELVEBIT)
 ir = reg.Ir(SIXTEENBIT, "ir")
 cc = reg.Cc(FOURBIT)
+fr0 =reg.fr(SIXTEENBIT,"fr0")
+fr1 =reg.fr(SIXTEENBIT,"fr1")
 
 
 def read_Mem_to_Mbr(mar: reg.Mar, mbr: reg.Mbr):  # use mar mbr read mem
@@ -575,7 +580,198 @@ def chk063(instruction):
 
 '''
 '''
+def float2bin32(num):
+    ''' python float to 32bit bin
+    :param num: a float num int is ok
+    :return: a 32bit str like 0 01111111 10000000000000000000000
+    '''
+    return bin(struct.unpack('!I', struct.pack('!f', num))[0])[2:].zfill(32)
+def bin2float32(binary):
+    '''  python 32bit bin to float
+    :param binary: a 32 bit str
+    :return: float
+    '''
+    return struct.unpack('!f',struct.pack('!I', int(binary, 2)))[0]
 
+def turndecint(content: []):
+    # if value is negative
+    if content[0] == '1':
+        return -int("".join(content[1:]), 2)
+    int_cont = int("".join(content), 2)
+    return int_cont
+
+def int_to7bit(number: int):
+    if number < 0:
+        return '1' + str(bin(number)[3:].zfill(6))
+    if number >= 0:
+        return str(bin(number)[2:].zfill(7))
+
+def convertfloat2bin16(value):
+    '''
+    :param value: float
+    :return: str 16bit
+    '''
+    bin32 = float2bin32(value)
+    sign = bin32[0]
+    expo32 = bin32[1:9]
+    manti32 = bin32[9:]
+    #print("sign:",sign,"exp32:",expo32,"ma32:",manti32)
+    manti16 = manti32[0:8]
+    expo_dec = int(expo32,2) - 127
+    if expo_dec < -63 or expo_dec > 64:
+        print("float overflow or underflow in convertf2bin")
+        #return
+    expo16 = int_to7bit(expo_dec)
+    float16 = sign + expo16 +manti16
+    return float16
+
+def convertbin16_tofloat(bin16):
+    '''
+    :param bin16: str
+    :return: float
+    '''
+    sign = bin16[0]
+    expo16 = bin16[1:8]
+    manti16 = bin16[8:]
+    #print("sign:", sign, "exp16:", expo16, "ma16:", manti16)
+    manti32 = manti16 + "000000000000000"
+    expo_dec = turndecint(expo16) + 127
+    #print("expdec:", expo_dec)
+    expo32 = bin(expo_dec)[2:].zfill(8)
+    bin32 = sign + expo32+ manti32
+    #print("sign:", sign, "exp32:", expo32, "ma32:", manti32)
+    fnum = bin2float32(bin32)
+    print(fnum)
+    return fnum
+
+def convertbin16_tofixed(bin16):
+    '''
+    :param bin16: str
+    :return: fixed point
+    '''
+    sign = bin16[0]
+    manti16 = bin16[1:]
+    fixed = 0
+    times = 1   # config times set in here e.p. 0.01, 0.001
+    # must same as the times in convertfixed2bin16
+    if sign == '0':
+        a_bin = ''.join(i for i in manti16)
+        a_dec = int(a_bin, 2)
+        fixed = a_dec * times
+    elif sign == "1":
+        a_bin = ''.join(i for i in manti16)
+        a_dec = int(a_bin, 2)
+        fixed = - a_dec * times
+    else:
+        print("conver fixed wrong")
+    return fixed
+
+def convertfixed2bin16(value):
+    '''
+    :param fixed
+    :return: bin16
+    '''
+    if value >= 0:
+        sign = "0"
+    else:
+        sign = "1"
+    manti_bin = bin(value)[2:].zfill(15)
+    fix16 = sign + manti_bin
+    return fix16
+#print(float2bin32(-14.888))  # 0 01111111 10000000000000000000000
+#print(type(bin2float32("11000001011011100011010100111111")))
+#print(covertfloat2bin16(-0.5))
+#covertbin16_tofloat("1100000100000000")
+'''
+'''
+def cnvrt037(instruction):
+    cnvrt037_result = list()
+    r = get_gpr_in_instr(instruction, 6, 7)
+    a_bin = ''.join(i for i in r.num)
+    a_dec = int(a_bin, 2)
+    if a_dec == 0:
+        EA_result = cal_EA(instruction)
+        EA = EA_result.pop()
+        if len(EA_result) != 0:
+            del EA_result[-2:]
+        cnvrt037_result = copy.deepcopy(EA_result)
+        num = convertbin16_tofloat(EA)
+        fix16 = convertfixed2bin16(num)
+        fix16_list = [num for num in fix16]
+        print(fix16_list)
+        r.set(fix16_list)
+        cnvrt037_result.append(r.name)
+        cnvrt037_result.append(r.num)
+    elif a_dec == 1:
+        EA_result = cal_EA(instruction)
+        EA = EA_result.pop()
+        if len(EA_result) != 0:
+            del EA_result[-2:]
+        cnvrt037_result = copy.deepcopy(EA_result)
+        num = convertbin16_tofixed(EA)
+        float16 = convertfloat2bin16(num)
+        float16_list = [num for num in float16]
+        print(float16_list)
+        fr0.set(float16_list)
+        cnvrt037_result.append("fr0")
+        cnvrt037_result.append(fr0.num)
+    else:
+        print("F invalid")
+    return cnvrt037_result
+
+def ldfr050(instruction):
+    EA_result = cal_EA(instruction)
+    EA = EA_result.pop()
+    if len(EA_result) != 0:  # indirect EA use fetch
+        del EA_result[-2:]  # delete the "ir" and ir.num in fetch_result
+    ldfr050_result = copy.deepcopy(EA_result)
+
+    address = EA[-12:]  # to 12 bits for MAR
+    mar.set(address)
+    ldfr050_result.append("mar")
+    ldfr050_result.append(mar.num)
+
+    read_Mem_to_Mbr(mar, mbr)
+    ldfr050_result.append("mbr")
+    ldfr050_result.append(mbr.num)
+
+    if instruction[6] == "0" and instruction[7] == "0":
+        fr0.set(mbr.num)
+        ldfr050_result.append("fr0")
+        ldfr050_result.append(fr0.num)
+    elif instruction[6] == "0" and instruction[7] == "1":
+        fr1.set(mbr.num)
+        ldfr050_result.append("fr1")
+        ldfr050_result.append(fr1.num)
+    else:
+        print("ldfr wrong")
+    return ldfr050_result
+
+def stfr051(instruction):
+    EA_result = cal_EA(instruction)
+    EA = EA_result.pop()
+    if len(EA_result) != 0:
+        del EA_result[-2:]
+    stfr051_result = copy.deepcopy(EA_result)
+
+    address = EA[-12:]
+    mar.set(address)
+    stfr051_result.append("mar")
+    stfr051_result.append(mar.num)
+
+    if instruction[6] == "0" and instruction[7] == "0":
+        mbr.set(fr0.num)
+        stfr051_result.append("mbr")
+        stfr051_result.append(mbr.num)
+        str_Mbr_to_Mem(mar, mbr)
+    elif instruction[6] == "0" and instruction[7] == "1":
+        mbr.set(fr1.num)
+        stfr051_result.append("mbr")
+        stfr051_result.append(mbr.num)
+        str_Mbr_to_Mem(mar, mbr)
+    else:
+        print("stfr wrong")
+    return stfr051_result
 
 def to_one_str(data: list):
     i = ''.join(data)
@@ -1026,17 +1222,21 @@ def fadd033(instruction):  # Floating Add Memory To Register
     fadd033_result = copy.deepcopy(EA_result)
     if (instruction[6] == "0" and instruction[7] == "0" and instruction[10] == "0"):
         EA_dec = int(to_one_str(EA), 2)
-        fr_dec = int(to_one_str(fr0), 2)
+        fr_dec = convertbin16_tofloat(to_one_str(EA))
         fr_result_dec = fr_dec + EA_dec
-        fr_result = bin(fr_result_dec)[2:].zfill(16)
+        fr_result = convertbin16_tofloat(fr_result_dec)
+        a = [num for num in fr_result]
+        fr0.set(a)
         fadd033_result.append("fr0")
         fadd033_result.append(fr0.num)
         print("fr = 0, I = 0")
     elif (instruction[6] == "0" and instruction[7] == "1" and instruction[10] == "0"):
         EA_dec = int(to_one_str(EA), 2)
-        fr_dec = int(to_one_str(fr0), 2)
+        fr_dec = convertbin16_tofloat(to_one_str(EA))
         fr_result_dec = fr_dec + EA_dec
-        fr_result = bin(fr_result_dec)[2:].zfill(16)
+        fr_result = convertbin16_tofloat(fr_result_dec)
+        a = [num for num in fr_result]
+        fr1.set(a)
         fadd033_result.append("fr1")
         fadd033_result.append(fr1.num)
         print("fr = 1, I = 0")
@@ -1046,9 +1246,11 @@ def fadd033(instruction):  # Floating Add Memory To Register
         if len(EA_result) != 0:  #
             del EA_result[-2:]
         EA_dec = int(to_one_str(EA), 2)
-        fr_dec = int(to_one_str(fr0), 2)
+        fr_dec = convertbin16_tofloat(to_one_str(EA))
         fr_result_dec = fr_dec + EA_dec
-        fr_result = bin(fr_result_dec)[2:].zfill(16)
+        fr_result = convertbin16_tofloat(fr_result_dec)
+        a = [num for num in fr_result]
+        fr0.set(a)
         fadd033_result.append("fr0")
         fadd033_result.append(fr0.num)
         print("fr = 0, I = 0")
@@ -1058,9 +1260,11 @@ def fadd033(instruction):  # Floating Add Memory To Register
         if len(EA_result) != 0:  #
             del EA_result[-2:]
         EA_dec = int(to_one_str(EA), 2)
-        fr_dec = int(to_one_str(fr0), 2)
+        fr_dec = convertbin16_tofloat(to_one_str(EA))
         fr_result_dec = fr_dec + EA_dec
-        fr_result = bin(fr_result_dec)[2:].zfill(16)
+        fr_result = convertbin16_tofloat(fr_result_dec)
+        a = [num for num in fr_result]
+        fr1.set(a)
         fadd033_result.append("fr1")
         fadd033_result.append(fr1.num)
         print("fr = 1, I = 0")
@@ -1078,17 +1282,21 @@ def fsub034(instruction):  # Floating Subtract Memory From Register
     fsub034_result = copy.deepcopy(EA_result)
     if (instruction[6] == "0" and instruction[7] == "0" and instruction[10] == "0"):
         EA_dec = int(to_one_str(EA), 2)
-        fr_dec = int(to_one_str(fr0), 2)
+        fr_dec = convertbin16_tofloat(to_one_str(EA))
         fr_result_dec = fr_dec - EA_dec
-        fr_result = bin(fr_result_dec)[2:].zfill(16)
+        fr_result = convertbin16_tofloat(fr_result_dec)
+        a = [num for num in fr_result]
+        fr0.set(a)
         fsub034_result.append("fr0")
         fsub034_result.append(fr0.num)
         print("fr = 0, I = 0")
     elif (instruction[6] == "0" and instruction[7] == "1" and instruction[10] == "0"):
         EA_dec = int(to_one_str(EA), 2)
-        fr_dec = int(to_one_str(fr0), 2)
+        fr_dec = convertbin16_tofloat(to_one_str(EA))
         fr_result_dec = fr_dec - EA_dec
-        fr_result = bin(fr_result_dec)[2:].zfill(16)
+        fr_result = convertbin16_tofloat(fr_result_dec)
+        a = [num for num in fr_result]
+        fr1.set(a)
         fsub034_result.append("fr1")
         fsub034_result.append(fr1.num)
         print("fr = 1, I = 0")
@@ -1098,10 +1306,12 @@ def fsub034(instruction):  # Floating Subtract Memory From Register
         if len(EA_result) != 0:  #
             del EA_result[-2:]
         EA_dec = int(to_one_str(EA), 2)
-        fr_dec = int(to_one_str(fr0), 2)
+        fr_dec = convertbin16_tofloat(to_one_str(EA))
         fr_result_dec = fr_dec - EA_dec
-        fr_result = bin(fr_result_dec)[2:].zfill(16)
-        fsub034_result.append("fr1")
+        fr_result = convertbin16_tofloat(fr_result_dec)
+        a = [num for num in fr_result]
+        fr0.set(a)
+        fsub034_result.append("fr0")
         fsub034_result.append(fr1.num)
         print("fr = 0, I = 1")
     elif (instruction[6] == "0" and instruction[7] == "1" and instruction[10] == "1"):
@@ -1110,16 +1320,18 @@ def fsub034(instruction):  # Floating Subtract Memory From Register
         if len(EA_result) != 0:  #
             del EA_result[-2:]
         EA_dec = int(to_one_str(EA), 2)
-        fr_dec = int(to_one_str(fr0), 2)
+        fr_dec = convertbin16_tofloat(to_one_str(EA))
         fr_result_dec = fr_dec - EA_dec
-        fr_result = bin(fr_result_dec)[2:].zfill(16)
+        fr_result = convertbin16_tofloat(fr_result_dec)
+        a = [num for num in fr_result]
+        fr1.set(a)
         fsub034_result.append("fr1")
         fsub034_result.append(fr1.num)
         print("fr = 1, I = 1")
     if check_mul_overflew(fr_result_dec):
         cc.set_underflow("1")
-        fadd033_result.append('cc')
-        fadd033_result.append('underflow_1')
+        fsub034_result.append('cc')
+        fsub034_result.append('underflow_1')
         print("underflow in fsub034")
     return fsub034_result
 

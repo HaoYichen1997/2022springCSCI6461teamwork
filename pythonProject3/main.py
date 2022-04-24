@@ -599,6 +599,12 @@ def show_Reg_to_Panel(a: str, num):  # test for uniform update
     elif a == "ixr3":
         IXR3.delete(0, END)
         IXR3.insert(0, ''.join(i for i in num))
+    elif a == "fr0":
+        FR0.delete(0, END)
+        FR0.insert(0, ''.join(i for i in num))
+    elif a == "fr1":
+        FR1.delete(0, END)
+        FR1.insert(0, ''.join(i for i in num))
     elif a == "halt":
         HaltLight.delete(0, END)
         HaltLight.insert(0, "1")
@@ -769,6 +775,18 @@ def run_Single_Step():
         fsub034_result = instr.fsub034(instr.ir.num)
         print('opcode is 034, fsub')
         show_general(fsub034_result)
+    elif opcode == 31:
+        cnvrt037_result = instr.cnvrt037(instr.ir.num)
+        print('opcode is 037, convert')
+        show_general(cnvrt037_result)
+    elif opcode == 40:
+        ldfr050_result = instr.ldfr050(instr.ir.num)
+        print('opcode is 050, ldfr')
+        show_general(ldfr050_result)
+    elif opcode == 41:
+        stfr051_result = instr.stfr051(instr.ir.num)
+        print('opcode is 051, stfr')
+        show_general(stfr051_result)
     else:
         print("incorrect opcode", opcode)
 

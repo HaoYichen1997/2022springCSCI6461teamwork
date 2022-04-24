@@ -102,3 +102,6 @@ class Cc(register):
 
 '''
 '''
+class fr(register):
+    def __init__(self, num, name):
+        super().__init__(num, name)
