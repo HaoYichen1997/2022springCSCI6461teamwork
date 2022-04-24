@@ -8,9 +8,6 @@ import Program1 as pg1
 import Cache
 from struct import *
 
-
-
-
 '''
 this module about the 16-bit instructions 
 and other instructions about memory
@@ -1274,6 +1271,8 @@ def fadd033(instruction):  # Floating Add Memory To Register
         fadd033_result.append('overflow_1')
         print("over flow in fadd033")
     return fadd033_result
+
+
 def fsub034(instruction):  # Floating Subtract Memory From Register
     EA_result = cal_EA(instruction)
     EA = EA_result.pop()
@@ -1335,6 +1334,46 @@ def fsub034(instruction):  # Floating Subtract Memory From Register
         print("underflow in fsub034")
     return fsub034_result
 
+
+def vector_add(instruction):
+    if instruction[6] == "0" and instruction[7] == "0":
+        fr = fr0
+    elif instruction[6] == "0" and instruction[7] == "1":
+        fr = fr1
+    fr_dec_value = int("".join(fr.num), 2)
+    EA = int("".join(instruction[-5:]), 2)
+    EA_second = list(str(bin(EA + 1)[2:].zfill(5)))
+    instruction2 = instruction[:11] + EA_second
+    first_adr = get_data_from_memory(instruction)[2]
+    adr1 = int("".join(first_adr), 2)
+    sec_adr = get_data_from_memory(instruction2)[2]
+    adr2 = int("".join(sec_adr), 2)
+    for i in range(fr_dec_value):
+        adr_vector1 = adr1 + i
+        vector_sum = Cache.read_cache(adr_vector1) + Cache.read_cache(adr2 + i)
+
+    Cache.write_reg_to_c_m(adr_vector1, list(str(bin(vector_sum)[2].zfill(16))))
+
+
+def vector_sub(instruction):
+    if instruction[6] == "0" and instruction[7] == "0":
+        fr = fr0
+    elif instruction[6] == "0" and instruction[7] == "1":
+        fr = fr1
+    fr_dec_value = int("".join(fr.num), 2)
+    EA = int("".join(instruction[-5:]), 2)
+    EA_second = list(str(bin(EA + 1)[2:].zfill(5)))
+    instruction2 = instruction[:11] + EA_second
+    first_adr = get_data_from_memory(instruction)[2]
+    adr1 = int("".join(first_adr), 2)
+    sec_adr = get_data_from_memory(instruction2)[2]
+    adr2 = int("".join(sec_adr), 2)
+    for i in range(fr_dec_value):
+        adr_vector1 = adr1 + i
+        sub = Cache.read_cache(adr_vector1) - Cache.read_cache(adr2 + i)
+    Cache.write_reg_to_c_m(adr_vector1, list(str(bin(sub)[2].zfill(16))))
+
+
 def process_instr():
     opcode = int("".join(i for i in ir.num[:6]), 2)
     if opcode == 1:
@@ -1374,10 +1413,10 @@ def process_instr():
         return jcc012(ir.num)
 
     elif opcode == 11:
-        return  jma013(ir.num)
+        return jma013(ir.num)
 
     elif opcode == 12:
-        return  jsr014(ir.num)
+        return jsr014(ir.num)
 
     elif opcode == 13:
         return rfs015(ir.num)
@@ -1392,7 +1431,7 @@ def process_instr():
         return halt000()
 
     elif opcode == 16:
-        return  mlt020(ir.num)
+        return mlt020(ir.num)
 
     elif opcode == 17:
         return dvd021(ir.num)
