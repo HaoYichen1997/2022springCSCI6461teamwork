@@ -1311,11 +1311,11 @@ TipVector = Entry(root, width=30, borderwidth=4)
 VectorResult = Entry(root, width=30, borderwidth=4)
 
 
-
+step1 = 0
 # Vector Test
 def VectorTest(event):
     if InitialVector.get().isdigit():
-        if step <= 20:
+        if step1 <= 20:
             Consolekey[0] = InitialVector.get()
             print(InitialVector.get())
             # print(Consolekey)
@@ -1330,16 +1330,16 @@ def VectorTest(event):
             # halt的灯 更新成为run
     else:
         messagebox.showerror("Error", "Your input is not a number")
-        step -= 1
-    step += 1
+        step1 -= 1
+    step1 += 1
     # tips
-    if step == 20:
+    if step1 == 20:
         TipVector.delete(0, END)
         TipVector.insert(0, "please input target,wait")
     else:
         TipVector.delete(0, END)
         TipVector.insert(0, "Please input No." + str(step + 1) + "Num")
-    if step == 21:
+    if step1 == 21:
         TipVector.delete(0, END)
         TipVector.insert(0, "the closest num below")
         TipVector.update()
