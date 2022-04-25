@@ -1270,11 +1270,6 @@ def Program2(event):
 
 TargetWord2.bind('<Return>', Program2)
 
-
-
-
-
-
 # define location of elements
 Space.grid(row=0, column=9)
 Space.grid(row=1, column=9)
@@ -1296,12 +1291,70 @@ ResultNumber.grid(row=6, column=10)
 
 #program 2 grid
 Program2Label.grid(row=0, column=11)
-Target2Label.grid(row=2, column=11)
-TargetWord2.grid(row=2, column=12)
-Program2ResultLabel.grid(row=3, column=11)
-Program2Result.grid(row=3, column=12)
+Target2Label.grid(row=1, column=11)
+TargetWord2.grid(row=1, column=12)
+Program2ResultLabel.grid(row=2, column=11)
+Program2Result.grid(row=2, column=12)
 InitSen.grid(row=7, column=7)
 
+
+#Vector test setting
+
+InitialVectorLabel = Label(root, text="Initial Vector")
+TipVectorLabel = Label(root, text="Tips")
+VectorResultLabel = Label(root, text="Vector Result")
+VectorTestLabel = Label(root, text="Vector Test")
+Space = Label(root, text=" ")
+# define intial number textbox
+InitialVector = Entry(root, width=30, borderwidth=4)
+TipVector = Entry(root, width=30, borderwidth=4)
+VectorResult = Entry(root, width=30, borderwidth=4)
+
+
+
+# Vector Test
+def VectorTest(event):
+    if InitialVector.get().isdigit():
+        if step <= 20:
+            Consolekey[0] = InitialVector.get()
+            print(InitialVector.get())
+            # print(Consolekey)
+            InitialVector.delete(0, END)
+            # instruct in and store to memory
+            run_instructions()
+            # halt
+        else:
+            InitialVector.delete(0, END)
+            TipVector.insert(0, "number has been enough, start calculateing!")
+            # run
+            # halt的灯 更新成为run
+    else:
+        messagebox.showerror("Error", "Your input is not a number")
+        step -= 1
+    step += 1
+    # tips
+    if step == 20:
+        TipVector.delete(0, END)
+        TipVector.insert(0, "please input target,wait")
+    else:
+        TipVector.delete(0, END)
+        TipVector.insert(0, "Please input No." + str(step + 1) + "Num")
+    if step == 21:
+        TipVector.delete(0, END)
+        TipVector.insert(0, "the closest num below")
+        TipVector.update()
+
+InitialVector.bind('<Return>', VectorTest)
+
+#test grid
+VectorTestLabel.grid(row = 4, column = 11)
+InitialVectorLabel.grid(row = 5, column = 11)
+InitialVector.grid(row=5, column = 12)
+TipVectorLabel.grid(row=6, column = 11)
+TipVector.grid(row=6, column=12)
+VectorResultLabel.grid(row=7, column=11)
+VectorResult.grid(row=7, column=12)
+
 # test vector add
-instr.run_vector()
+# instr.run_vector()
 root.mainloop()
