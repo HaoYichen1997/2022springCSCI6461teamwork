@@ -11,7 +11,7 @@ def open():
     cacheW.title('Cache Display')
     cacheW.geometry("1360x515")
 
-    #define Label .
+    #define Label .1
     IdxLabel = Label(cacheW, text="Index")
     ValLabel = Label(cacheW, text="Valid")
     BlkNLabel = Label(cacheW, text="Block#")

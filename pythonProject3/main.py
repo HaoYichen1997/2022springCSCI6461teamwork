@@ -1346,7 +1346,7 @@ def VectorTest(event):
 
 InitialVector.bind('<Return>', VectorTest)
 
-#test grid
+#test grid 1
 VectorTestLabel.grid(row = 4, column = 11)
 InitialVectorLabel.grid(row = 5, column = 11)
 InitialVector.grid(row=5, column = 12)
