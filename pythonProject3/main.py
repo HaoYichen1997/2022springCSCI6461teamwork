@@ -1302,4 +1302,6 @@ Program2ResultLabel.grid(row=3, column=11)
 Program2Result.grid(row=3, column=12)
 InitSen.grid(row=7, column=7)
 
+# test vector add
+instr.run_vector()
 root.mainloop()

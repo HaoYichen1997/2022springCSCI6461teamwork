@@ -41,8 +41,8 @@ mar = reg.Mar(TWELVEBIT)
 pc = reg.Pc(TWELVEBIT)
 ir = reg.Ir(SIXTEENBIT, "ir")
 cc = reg.Cc(FOURBIT)
-fr0 =reg.fr(SIXTEENBIT,"fr0")
-fr1 =reg.fr(SIXTEENBIT,"fr1")
+fr0 = reg.fr(SIXTEENBIT, "fr0")
+fr1 = reg.fr(SIXTEENBIT, "fr1")
 
 
 def read_Mem_to_Mbr(mar: reg.Mar, mbr: reg.Mbr):  # use mar mbr read mem
@@ -577,9 +577,12 @@ def chk063(instruction):
 
 '''
 '''
+
+
 def to_one_str(data: list):
     i = ''.join(data)
     return i
+
 
 def float2bin32(num):
     ''' python float to 32bit bin
@@ -587,12 +590,15 @@ def float2bin32(num):
     :return: a 32bit str like 0 01111111 10000000000000000000000
     '''
     return bin(struct.unpack('!I', struct.pack('!f', num))[0])[2:].zfill(32)
+
+
 def bin2float32(binary):
     '''  python 32bit bin to float
     :param binary: a 32 bit str
     :return: float
     '''
-    return struct.unpack('!f',struct.pack('!I', int(binary, 2)))[0]
+    return struct.unpack('!f', struct.pack('!I', int(binary, 2)))[0]
+
 
 def turndecint(content: []):
     # if value is negative
@@ -601,31 +607,34 @@ def turndecint(content: []):
     int_cont = int("".join(content), 2)
     return int_cont
 
+
 def int_to7bit(number: int):
     if number < 0:
         return '1' + str(bin(number)[3:].zfill(6))
     if number >= 0:
         return str(bin(number)[2:].zfill(7))
 
+
 def convertfloat2bin16(value):
     '''
     :param value: float
     :return: str 16bit
     '''
-    print("float2b16v:",value)
+    print("float2b16v:", value)
     bin32 = float2bin32(value)
     sign = bin32[0]
     expo32 = bin32[1:9]
     manti32 = bin32[9:]
-    #print("sign:",sign,"exp32:",expo32,"ma32:",manti32)
+    # print("sign:",sign,"exp32:",expo32,"ma32:",manti32)
     manti16 = manti32[0:8]
-    expo_dec = int(expo32,2) - 127
+    expo_dec = int(expo32, 2) - 127
     if expo_dec < -63 or expo_dec > 64:
         print("float overflow or underflow in convertf2bin")
-        #return
+        # return
     expo16 = int_to7bit(expo_dec)
-    float16 = sign + expo16 +manti16
+    float16 = sign + expo16 + manti16
     return float16
+
 
 def convertbin16_tofloat(bin16):
     '''
@@ -636,17 +645,18 @@ def convertbin16_tofloat(bin16):
     expo16 = to_one_str(bin16[1:8])
     manti16 = to_one_str(bin16[8:])
 
-    #print("sign:", sign, "exp16:", expo16, "ma16:", manti16)
+    # print("sign:", sign, "exp16:", expo16, "ma16:", manti16)
     manti32 = manti16 + "000000000000000"
     expo_dec = turndecint(expo16) + 127
-    #print("expdec:", expo_dec)
+    # print("expdec:", expo_dec)
     expo32 = bin(expo_dec)[2:].zfill(8)
-    bin32 = sign + expo32+ manti32
-    #print("sign:", sign, "exp32:", expo32, "ma32:", manti32)
-    print("cb2float bin32:",bin32)
+    bin32 = sign + expo32 + manti32
+    # print("sign:", sign, "exp32:", expo32, "ma32:", manti32)
+    print("cb2float bin32:", bin32)
     fnum = bin2float32(bin32)
     print(fnum)
     return fnum
+
 
 def convertbin16_tofixed(bin16):
     '''
@@ -656,7 +666,7 @@ def convertbin16_tofixed(bin16):
     sign = bin16[0]
     manti16 = bin16[1:]
     fixed = 0
-    times = 0.1   # config times set in here e.p. 0.01, 0.001
+    times = 0.1  # config times set in here e.p. 0.01, 0.001
     # must same as the times in convertfixed2bin16
     if sign == '0':
         a_bin = ''.join(i for i in manti16)
@@ -670,6 +680,7 @@ def convertbin16_tofixed(bin16):
         print("conver fixed wrong")
     return fixed
 
+
 def convertfixed2bin16(value):
     '''
     :param fixed
@@ -680,17 +691,21 @@ def convertfixed2bin16(value):
         sign = "0"
     else:
         sign = "1"
-    a = int(value/times)
+    a = int(value / times)
     manti_bin = bin(a)[2:].zfill(15)
     fix16 = sign + manti_bin
     return fix16
-#print(float2bin32(-14.888))  # 0 01111111 10000000000000000000000
-#print(type(bin2float32("11000001011011100011010100111111")))
-#print(covertfloat2bin16(-0.5))
+
+
+# print(float2bin32(-14.888))  # 0 01111111 10000000000000000000000
+# print(type(bin2float32("11000001011011100011010100111111")))
+# print(covertfloat2bin16(-0.5))
 # print("test")
 # print(convertbin16_tofloat("0100001010011001"))
 '''
 '''
+
+
 def cnvrt037(instruction):
     cnvrt037_result = list()
     r = get_gpr_in_instr(instruction, 6, 7)
@@ -702,11 +717,11 @@ def cnvrt037(instruction):
         if len(EA_result) != 0:
             del EA_result[-2:]
         cnvrt037_result = copy.deepcopy(EA_result)
-        print("cnvertEA",EA)
+        print("cnvertEA", EA)
         num = convertbin16_tofloat(EA)
         fix16 = convertfixed2bin16(num)
         fix16_list = [num for num in fix16]
-        print("fix16list:",fix16_list)
+        print("fix16list:", fix16_list)
         r.set(fix16_list)
         cnvrt037_result.append(r.name)
         cnvrt037_result.append(r.num)
@@ -721,13 +736,14 @@ def cnvrt037(instruction):
         print("cnvert1num", num)
         float16 = convertfloat2bin16(num)
         float16_list = [num for num in float16]
-        print("float16_list:",float16_list)
+        print("float16_list:", float16_list)
         fr0.set(float16_list)
         cnvrt037_result.append("fr0")
         cnvrt037_result.append(fr0.num)
     else:
         print("F invalid")
     return cnvrt037_result
+
 
 def ldfr050(instruction):
     EA_result = cal_EA(instruction)
@@ -744,7 +760,7 @@ def ldfr050(instruction):
     read_Mem_to_Mbr(mar, mbr)
     ldfr050_result.append("mbr")
     ldfr050_result.append(mbr.num)
-    print("050:",mbr.num)
+    print("050:", mbr.num)
     if instruction[6] == "0" and instruction[7] == "0":
         fr0.set(mbr.num)
         ldfr050_result.append("fr0")
@@ -756,6 +772,7 @@ def ldfr050(instruction):
     else:
         print("ldfr wrong")
     return ldfr050_result
+
 
 def stfr051(instruction):
     EA_result = cal_EA(instruction)
@@ -784,8 +801,6 @@ def stfr051(instruction):
     else:
         print("stfr wrong")
     return stfr051_result
-
-
 
 
 def jz010(instruction):  # Jump If Zero
@@ -1230,13 +1245,13 @@ def fadd033(instruction):  # Floating Add Memory To Register
     if len(EA_result) != 0:  #
         del EA_result[-2:]
     fadd033_result = copy.deepcopy(EA_result)
-    print("faddEA",EA)
+    print("faddEA", EA)
     if (instruction[6] == "0" and instruction[7] == "0" and instruction[10] == "0"):
         fetch(EA[-12:])
         EA_dec = int(to_one_str(mbr.num), 2)
         fr_dec = convertbin16_tofloat(to_one_str(fr0.num))
         fr_result_dec = fr_dec + EA_dec
-        print("00+","frdec:", fr_dec, "EAdec", EA_dec)
+        print("00+", "frdec:", fr_dec, "EAdec", EA_dec)
         fr_result = convertfloat2bin16(fr_result_dec)
         a = [num for num in fr_result]
         fr0.set(a)
@@ -1312,7 +1327,7 @@ def fsub034(instruction):  # Floating Subtract Memory From Register
         EA_dec = int(to_one_str(mbr.num), 2)
         fr_dec = convertbin16_tofloat(to_one_str(fr1.num))
         fr_result_dec = fr_dec - EA_dec
-        print("frdec:",fr_dec,"EAdec",EA_dec)
+        print("frdec:", fr_dec, "EAdec", EA_dec)
         fr_result = convertfloat2bin16(fr_result_dec)
         a = [num for num in fr_result]
         fr1.set(a)
@@ -1364,15 +1379,18 @@ def vector_add(instruction):
     EA = int("".join(instruction[-5:]), 2)
     EA_second = list(str(bin(EA + 1)[2:].zfill(5)))
     instruction2 = instruction[:11] + EA_second
-    first_adr = get_data_from_memory(instruction)[2]
+    first_adr = get_data_from_memory(instruction)[3]
     adr1 = int("".join(first_adr), 2)
-    sec_adr = get_data_from_memory(instruction2)[2]
+    sec_adr = get_data_from_memory(instruction2)[3]
     adr2 = int("".join(sec_adr), 2)
+    result = ""
     for i in range(fr_dec_value):
         adr_vector1 = adr1 + i
-        vector_sum = Cache.read_cache(adr_vector1) + Cache.read_cache(adr2 + i)
-
-    Cache.write_reg_to_c_m(adr_vector1, list(str(bin(vector_sum)[2].zfill(16))))
+        vector_sum = int(''.join(n for n in Cache.read_cache(adr_vector1)), 2) + int(
+            ''.join(n for n in Cache.read_cache(adr2 + i)), 2)
+        result = result + str(vector_sum) + ","
+    print("The result is " + result)
+    Cache.write_reg_to_c_m(adr_vector1, int_to_string(vector_sum))
 
 
 def vector_sub(instruction):
@@ -1384,14 +1402,60 @@ def vector_sub(instruction):
     EA = int("".join(instruction[-5:]), 2)
     EA_second = list(str(bin(EA + 1)[2:].zfill(5)))
     instruction2 = instruction[:11] + EA_second
-    first_adr = get_data_from_memory(instruction)[2]
+    first_adr = get_data_from_memory(instruction)[3]
     adr1 = int("".join(first_adr), 2)
-    sec_adr = get_data_from_memory(instruction2)[2]
+    sec_adr = get_data_from_memory(instruction2)[3]
     adr2 = int("".join(sec_adr), 2)
+    result = ""
     for i in range(fr_dec_value):
         adr_vector1 = adr1 + i
-        sub = Cache.read_cache(adr_vector1) - Cache.read_cache(adr2 + i)
-    Cache.write_reg_to_c_m(adr_vector1, list(str(bin(sub)[2].zfill(16))))
+        sub = int(''.join(n for n in Cache.read_cache(adr_vector1)), 2) - int(
+            ''.join(n for n in Cache.read_cache(adr2 + i)), 2)
+        result = result + str(sub) + ","
+    print("The result is " + result)
+    Cache.write_reg_to_c_m(adr_vector1, int_to_string(sub))
+
+
+def run_vector():
+    # memory 0 store the address of vector1
+    instruction = ['1', '0', '0', '0', '1', '1', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0']
+    print("Please input the 1st value for vector1:")
+    v1_1 = input()
+    print("Please input the 2nd value for vector1:")
+    v1_2 = input()
+    print("Please input the 3rd value for vector1:")
+    v1_3 = input()
+    print("Please input the 1st value for vector2:")
+    v2_1 = input()
+    print("Please input the 2nd value for vector2:")
+    v2_2 = input()
+    print("Please input the 3rd value for vector1:")
+    v2_3 = input()
+
+    fr0.num = ['0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '1', '1']
+    # address 2
+    memory[0] = ['0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '1', '0']
+    # address 5
+    memory[1] = ['0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '1', '0', '1']
+    try:
+        memory[2] = int_to_string(int(v1_1))
+        memory[3] = int_to_string(int(v1_2))
+        memory[4] = int_to_string(int(v1_3))
+        memory[5] = int_to_string(int(v2_1))
+        memory[6] = int_to_string(int(v2_2))
+        memory[7] = int_to_string(int(v2_3))
+
+    except TypeError:
+        print("Invalid input")
+        return
+    print("Please enter the number for: 1:vector add,2: vector sub:")
+    select = int(input())
+    if select == 1:
+        vector_add(instruction)
+    elif select == 2:
+        vector_sub(instruction)
+    else:
+        print("Invalid Number")
 
 
 def process_instr():
