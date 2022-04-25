@@ -767,11 +767,11 @@ def run_Single_Step():
         trap_result = instr.trap(instr.ir.num)
         print('opcode is 030, TRAP')
         show_general(trap_result)
-    elif opcode == 25:
+    elif opcode == 27:
         fadd033_result = instr.fadd033(instr.ir.num)
         print('opcode is 033, fadd')
         show_general(fadd033_result)
-    elif opcode == 26:
+    elif opcode == 28:
         fsub034_result = instr.fsub034(instr.ir.num)
         print('opcode is 034, fsub')
         show_general(fsub034_result)
