@@ -1310,8 +1310,8 @@ InitialVector = Entry(root, width=30, borderwidth=4)
 TipVector = Entry(root, width=30, borderwidth=4)
 VectorResult = Entry(root, width=30, borderwidth=4)
 
-
-step1 = 0
+global step100
+step100 = 0
 
 test1 = 0
 test2 = 0
@@ -1324,45 +1324,43 @@ test6 = 0
 test7 = 0
 # Vector Test
 def VectorTest(event):
+    global step100
     if InitialVector.get().isdigit():
-        if step1 == 0:
+        if step100 == 0:
             test1 = InitialVector.get()
             InitialVector.delete(0, END)
             TipVector.insert(0, "Please input second number of vector 1")
-        if step1 == 1:
+        if step100 == 1:
             test2 = InitialVector.get()
             InitialVector.delete(0, END)
             TipVector.insert(0, "Please input third number of vector 1")
-        if step1 == 2:
+        if step100 == 2:
             test3 = InitialVector.get()
             InitialVector.delete(0, END)
             TipVector.insert(0, "Please input next vector 2")
-        if step1 == 3:
+        if step100 == 3:
             test4 = InitialVector.get()
             InitialVector.delete(0, END)
             TipVector.insert(0, "Please input second number of vector 2")
-        if step1 == 4:
+        if step100 == 4:
             test5 = InitialVector.get()
             InitialVector.delete(0, END)
             TipVector.insert(0, "Please input third number of vector 2")
-        if step1 == 5:
+        if step100 == 5:
             test6 = InitialVector.get()
             InitialVector.delete(0, END)
             TipVector.insert(0, "Input Positive(0)/ negative(1)")
-        if step1 == 6:
+        if step100 == 6:
             test7 = InitialVector.get()
             InitialVector.delete(0, END)
             TipVector.insert(0, "finished ")
-
         else:
             InitialVector.delete(0, END)
             TipVector.insert(0, "number has been enough, start calculateing!")
-            # run
-            # halt的灯 更新成为run
     else:
         messagebox.showerror("Error", "Your input is not a number")
-        step1 -= 1
-    step1 += 1
+        step100 -= 1
+    step100 += 1
     # tips
     # if step1 == 20:
     #     TipVector.delete(0, END)
