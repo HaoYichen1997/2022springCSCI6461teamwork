@@ -1329,34 +1329,42 @@ def VectorTest(event):
         if step100 == 0:
             test1 = InitialVector.get()
             InitialVector.delete(0, END)
+            TipVector.delete(0, END)
             TipVector.insert(0, "Please input second number of vector 1")
         if step100 == 1:
             test2 = InitialVector.get()
             InitialVector.delete(0, END)
+            TipVector.delete(0, END)
             TipVector.insert(0, "Please input third number of vector 1")
         if step100 == 2:
             test3 = InitialVector.get()
             InitialVector.delete(0, END)
+            TipVector.delete(0, END)
             TipVector.insert(0, "Please input next vector 2")
         if step100 == 3:
             test4 = InitialVector.get()
             InitialVector.delete(0, END)
+            TipVector.delete(0, END)
             TipVector.insert(0, "Please input second number of vector 2")
         if step100 == 4:
             test5 = InitialVector.get()
             InitialVector.delete(0, END)
+            TipVector.delete(0, END)
             TipVector.insert(0, "Please input third number of vector 2")
         if step100 == 5:
             test6 = InitialVector.get()
             InitialVector.delete(0, END)
+            TipVector.delete(0, END)
             TipVector.insert(0, "Input Positive(0)/ negative(1)")
         if step100 == 6:
             test7 = InitialVector.get()
             InitialVector.delete(0, END)
+            TipVector.delete(0, END)
             TipVector.insert(0, "finished ")
-        else:
-            InitialVector.delete(0, END)
-            TipVector.insert(0, "number has been enough, start calculateing!")
+        # else:
+        #     InitialVector.delete(0, END)
+        #     TipVector.delete(0, END)
+        #     TipVector.insert(0, "number has been enough, start calculateing!")
     else:
         messagebox.showerror("Error", "Your input is not a number")
         step100 -= 1
