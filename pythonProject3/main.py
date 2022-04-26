@@ -635,6 +635,7 @@ def show_general(result):
     for i in range(0, len(result), 2):
         show_Reg_to_Panel(result[i], result[i + 1])
 
+
 def show_out(result):
     if result[0] == "out":
         instr.Consolekey_out.append(result[1])
@@ -647,6 +648,8 @@ def show_out(result):
             # i = int(str1)
             Program2Result.insert(0, str1)
             instr.Consolekey_out.clear()
+
+
 # SS
 def run_Single_Step():
     opcode = int("".join(i for i in instr.ir.num[:6]), 2)
@@ -950,7 +953,6 @@ def clearAll():
     RunLight.delete(0, END)
     HaltLight.delete(0, END)
 
-
     GPR0.insert(0, "0000000000000000")
     GPR1.insert(0, "0000000000000000")
     GPR2.insert(0, "0000000000000000")
@@ -1143,6 +1145,8 @@ ResultNumber = Entry(root, width=20, borderwidth=4)
 
 global step
 step = 0
+
+
 #
 #
 def Program1(event):
@@ -1182,8 +1186,7 @@ def Program1(event):
 InitialNumber.bind('<Return>', Program1)
 
 
-
-#Program 2 setting
+# Program 2 setting
 def ClickInit2():
     try:
         initText = filedialog.askopenfilename(initialdir="/pythonProject3", title="Select a text file",
@@ -1194,29 +1197,29 @@ def ClickInit2():
         count = 0
         countS = 0
         for line in lines:
-            countS += 1    # count the number of sentence whether it is enough
+            countS += 1  # count the number of sentence whether it is enough
             line = line.strip('\n')
             # print(line)
             line = list(line)
             # for j in range(6):
             for i in range(len(line)):
                 if line[i] == ' ' or line[i] == ',':
-                    line[i]='-'
+                    line[i] = '-'
                 elif line[i] == '.' or line[i] == '!' or line[i] == '?':
                     line[i] = '+'
-            for i in range(len(line)-1):
-                if line[i] == '-' and line[i+1] == '-':
-                    del(line[i])
+            for i in range(len(line) - 1):
+                if line[i] == '-' and line[i + 1] == '-':
+                    del (line[i])
             for i in range(len(line)):
                 line[i] = str(ord(line[i]))
             print(line)
             for i in range(len(line)):
                 line[i] = str(bin(int(line[i])))[2:].zfill(16)
             print(line)
-            for i in range((1000+count*150), (len(line)+150*count+1000)):
-                for j in range(len(line[i - (1000+count*150)])):
-                    instr.memory[i][j] = line[i - (1000+count*150)][j]
-                print(f"loc:{i}",instr.memory[i])
+            for i in range((1000 + count * 150), (len(line) + 150 * count + 1000)):
+                for j in range(len(line[i - (1000 + count * 150)])):
+                    instr.memory[i][j] = line[i - (1000 + count * 150)][j]
+                print(f"loc:{i}", instr.memory[i])
             count += 1
         if countS != 6:  # if number of sentence is not 6
             messagebox.showerror("Error", "Your number of Sentence is error")
@@ -1241,7 +1244,6 @@ def ClickInit2():
         print('No such file or directory!')
 
 
-
 Program2Label = Label(root, text="Program2")
 Target2Label = Label(root, text="Target Word")
 Program2ResultLabel = Label(root, text="Result")
@@ -1249,14 +1251,15 @@ TargetWord2 = Entry(root, width=30, borderwidth=4)
 Program2Result = Entry(root, width=30, borderwidth=4)
 InitSen = Button(framePhaseII, text="InSen", padx=1, pady=1, bg="red", fg="white", command=ClickInit2)
 
+
 def Program2(event):
     Consolekey = instr.Consolekey
     if TargetWord2.get().isalpha():
         for i in range(0, len(TargetWord2.get())):
             Consolekey[i] = TargetWord2.get()[i]
         Consolekey[len(TargetWord2.get())] = "+"
-        print("Consolekey:",Consolekey)
-        print("mem22:", instr.memory[22], "mem1000:", instr.memory[1000], "mem900:",instr.memory[900])
+        print("Consolekey:", Consolekey)
+        print("mem22:", instr.memory[22], "mem1000:", instr.memory[1000], "mem900:", instr.memory[900])
         TargetWord2.delete(0, END)
         # instruct in and store to memory
         TargetWord2.delete(0, END)
@@ -1267,6 +1270,7 @@ def Program2(event):
         # halt的灯 更新成为run
     else:
         messagebox.showerror("Error", "Your input is not a word")
+
 
 TargetWord2.bind('<Return>', Program2)
 
@@ -1289,7 +1293,7 @@ Tip.grid(row=4, column=10)
 ResultLabel.grid(row=5, column=10)
 ResultNumber.grid(row=6, column=10)
 
-#program 2 grid
+# program 2 grid
 Program2Label.grid(row=0, column=11)
 Target2Label.grid(row=1, column=11)
 TargetWord2.grid(row=1, column=12)
@@ -1297,8 +1301,7 @@ Program2ResultLabel.grid(row=2, column=11)
 Program2Result.grid(row=2, column=12)
 InitSen.grid(row=7, column=7)
 
-
-#Vector test setting
+# Vector test setting
 
 InitialVectorLabel = Label(root, text="Initial Vector")
 TipVectorLabel = Label(root, text="Tips")
@@ -1322,9 +1325,12 @@ test5 = 0
 test6 = 0
 
 test7 = 0
+
+
 # Vector Test
 def VectorTest(event):
     global step100
+    global test1, test2, test3, test4, test5, test6, test7
     if InitialVector.get().isdigit():
         if step100 == 0:
             test1 = InitialVector.get()
@@ -1355,12 +1361,15 @@ def VectorTest(event):
             test6 = InitialVector.get()
             InitialVector.delete(0, END)
             TipVector.delete(0, END)
-            TipVector.insert(0, "Input Positive(0)/ negative(1)")
+            TipVector.insert(0, "Enter 1: Vector Add 2: Vector Sub")
         if step100 == 6:
             test7 = InitialVector.get()
             InitialVector.delete(0, END)
             TipVector.delete(0, END)
             TipVector.insert(0, "finished ")
+            result = instr.run_vector(test1, test2, test3, test4, test5, test6, test7)
+            VectorResult.insert(0, result)
+            print(result)
         # else:
         #     InitialVector.delete(0, END)
         #     TipVector.delete(0, END)
@@ -1381,13 +1390,16 @@ def VectorTest(event):
     #     TipVector.insert(0, "the closest num below")
     #     TipVector.update()
 
+
+
+
 InitialVector.bind('<Return>', VectorTest)
 
-#test grid 1
-VectorTestLabel.grid(row = 4, column = 11)
-InitialVectorLabel.grid(row = 5, column = 11)
-InitialVector.grid(row=5, column = 12)
-TipVectorLabel.grid(row=6, column = 11)
+# test grid 1
+VectorTestLabel.grid(row=4, column=11)
+InitialVectorLabel.grid(row=5, column=11)
+InitialVector.grid(row=5, column=12)
+TipVectorLabel.grid(row=6, column=11)
 TipVector.grid(row=6, column=12)
 VectorResultLabel.grid(row=7, column=11)
 VectorResult.grid(row=7, column=12)

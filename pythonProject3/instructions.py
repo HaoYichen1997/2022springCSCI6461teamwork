@@ -1391,6 +1391,7 @@ def vector_add(instruction):
         result = result + str(vector_sum) + ","
     print("The result is " + result)
     Cache.write_reg_to_c_m(adr_vector1, int_to_string(vector_sum))
+    return result
 
 
 def vector_sub(instruction):
@@ -1414,11 +1415,13 @@ def vector_sub(instruction):
         result = result + str(sub) + ","
     print("The result is " + result)
     Cache.write_reg_to_c_m(adr_vector1, int_to_string(sub))
+    return result
 
 
-def run_vector():
+def run_vector(v1_1, v1_2, v1_3, v2_1, v2_2, v2_3, select):
     # memory 0 store the address of vector1
     instruction = ['1', '0', '0', '0', '1', '1', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0']
+    """""
     print("Please input the 1st value for vector1:")
     v1_1 = input()
     print("Please input the 2nd value for vector1:")
@@ -1431,31 +1434,29 @@ def run_vector():
     v2_2 = input()
     print("Please input the 3rd value for vector1:")
     v2_3 = input()
-
+    """
     fr0.num = ['0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '1', '1']
     # address 2
     memory[0] = ['0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '1', '0']
     # address 5
     memory[1] = ['0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '0', '1', '0', '1']
-    try:
-        memory[2] = int_to_string(int(v1_1))
-        memory[3] = int_to_string(int(v1_2))
-        memory[4] = int_to_string(int(v1_3))
-        memory[5] = int_to_string(int(v2_1))
-        memory[6] = int_to_string(int(v2_2))
-        memory[7] = int_to_string(int(v2_3))
+    memory[2] = int_to_string(int(v1_1))
+    memory[3] = int_to_string(int(v1_2))
+    memory[4] = int_to_string(int(v1_3))
+    memory[5] = int_to_string(int(v2_1))
+    memory[6] = int_to_string(int(v2_2))
+    memory[7] = int_to_string(int(v2_3))
 
-    except TypeError:
-        print("Invalid input")
-        return
-    print("Please enter the number for: 1:vector add,2: vector sub:")
-    select = int(input())
-    if select == 1:
-        vector_add(instruction)
-    elif select == 2:
-        vector_sub(instruction)
+
+    # print("Please enter the number for: 1:vector add,2: vector sub:")
+    # select = int(input())
+    if int(select) == 1:
+        return vector_add(instruction)
+    elif int(select) == 2:
+        return vector_sub(instruction)
     else:
         print("Invalid Number")
+        return "Invalid"
 
 
 def process_instr():
