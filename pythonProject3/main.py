@@ -1312,17 +1312,48 @@ VectorResult = Entry(root, width=30, borderwidth=4)
 
 
 step1 = 0
+
+test1 = 0
+test2 = 0
+test3 = 0
+
+test4 = 0
+test5 = 0
+test6 = 0
+
+test7 = 0
 # Vector Test
 def VectorTest(event):
     if InitialVector.get().isdigit():
-        if step1 <= 20:
-            Consolekey[0] = InitialVector.get()
-            print(InitialVector.get())
-            # print(Consolekey)
+        if step1 == 0:
+            test1 = InitialVector.get()
             InitialVector.delete(0, END)
-            # instruct in and store to memory
-            run_instructions()
-            # halt
+            TipVector.insert(0, "Please input second number of vector 1")
+        if step1 == 1:
+            test2 = InitialVector.get()
+            InitialVector.delete(0, END)
+            TipVector.insert(0, "Please input third number of vector 1")
+        if step1 == 2:
+            test3 = InitialVector.get()
+            InitialVector.delete(0, END)
+            TipVector.insert(0, "Please input next vector 2")
+        if step1 == 3:
+            test4 = InitialVector.get()
+            InitialVector.delete(0, END)
+            TipVector.insert(0, "Please input second number of vector 2")
+        if step1 == 4:
+            test5 = InitialVector.get()
+            InitialVector.delete(0, END)
+            TipVector.insert(0, "Please input third number of vector 2")
+        if step1 == 5:
+            test6 = InitialVector.get()
+            InitialVector.delete(0, END)
+            TipVector.insert(0, "Input Positive(0)/ negative(1)")
+        if step1 == 6:
+            test7 = InitialVector.get()
+            InitialVector.delete(0, END)
+            TipVector.insert(0, "finished ")
+
         else:
             InitialVector.delete(0, END)
             TipVector.insert(0, "number has been enough, start calculateing!")
@@ -1333,16 +1364,16 @@ def VectorTest(event):
         step1 -= 1
     step1 += 1
     # tips
-    if step1 == 20:
-        TipVector.delete(0, END)
-        TipVector.insert(0, "please input target,wait")
-    else:
-        TipVector.delete(0, END)
-        TipVector.insert(0, "Please input No." + str(step + 1) + "Num")
-    if step1 == 21:
-        TipVector.delete(0, END)
-        TipVector.insert(0, "the closest num below")
-        TipVector.update()
+    # if step1 == 20:
+    #     TipVector.delete(0, END)
+    #     TipVector.insert(0, "please input target,wait")
+    # else:
+    #     TipVector.delete(0, END)
+    #     TipVector.insert(0, "Please input No." + str(step + 1) + "Num")
+    # if step1 == 21:
+    #     TipVector.delete(0, END)
+    #     TipVector.insert(0, "the closest num below")
+    #     TipVector.update()
 
 InitialVector.bind('<Return>', VectorTest)
 
